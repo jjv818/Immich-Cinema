@@ -18,6 +18,7 @@
     <string name="clock">Часы</string>
     <string name="country">Страна</string>
     <string name="date">Дата</string>
+    <string name="time">Время</string>
     <string name="description">Описание</string>
     <string name="filename">Имя файла</string>
     <string name="filepath">Путь файла</string>

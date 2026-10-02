@@ -40,7 +40,13 @@ object AssetMetaDataMapping {
                 .joinToString(" ")
                 .ifBlank { null }
         },
-        MetaDataType.ALBUM_NAME to { it.albumName?.ifBlank { null } }
+        MetaDataType.ALBUM_NAME to { it.albumName?.ifBlank { null } },
+        MetaDataType.TIME to {asset ->
+            val date = asset.exifInfo?.dateTimeOriginal
+                ?: asset.fileCreatedAt
+                ?: asset.fileModifiedAt
+            date?.let { formatAssetTime(it) }
+        },
     )
 
     /**
