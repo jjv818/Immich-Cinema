@@ -48,7 +48,6 @@ object AssetMetaDataMapping {
             date?.let { formatAssetTime(it) }
         },
         MetaDataType.CURRENT_DATE to { null },
-        MetaDataType.CURRENT_TIME to { null },
     )
 
     /**
@@ -69,7 +68,6 @@ object AssetMetaDataMapping {
                 inline != null -> StaticMetaDataProvider(inline)
                 field == MetaDataType.ALBUM_NAME -> AlbumMetaDataProvider(asset.id)
                 field == MetaDataType.CURRENT_DATE -> DateMetaDataProvider()
-                field == MetaDataType.CURRENT_TIME -> TimeMetaDataProvider()
                 else -> AssetDetailMetaDataProvider(asset.id, field)
             }
         }

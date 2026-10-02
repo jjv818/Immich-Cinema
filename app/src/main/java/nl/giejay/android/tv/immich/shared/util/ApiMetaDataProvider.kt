@@ -41,12 +41,6 @@ class DateMetaDataProvider() : MetaDataProvider {
     }
 }
 
-class TimeMetaDataProvider() : MetaDataProvider {
-    override suspend fun getValue(): String? {
-        return formatAssetTime(Calendar.getInstance().time, false)
-    }
-}
-
 /**
  * Lazy [GET /assets/{id}] metadata for slider details. Field projection is delegated to
  * [AssetMetaDataMapping] so new metadata types are defined in one place.
