@@ -116,11 +116,11 @@ internal fun formatAssetDate(date: Date): String {
     return SimpleDateFormat(formatString, locale).format(date)
 }
 
-internal fun formatAssetTime(date: Date): String {
+internal fun formatAssetTime(date: Date, withSeconds: Boolean = true): String {
     val calendar = Calendar.getInstance()
     calendar.time = date
     val locale = Locale.getDefault(Locale.Category.FORMAT)
-    val formatString = "H:mm:ss"
+    val formatString = if (withSeconds) "H:mm:ss" else "H:mm"
     return SimpleDateFormat(formatString, locale).format(date)
 }
 
