@@ -15,4 +15,6 @@
   -->
 <resources>
     <integer name="button_focused_animation_duration_ms">150</integer>
+    <integer name="motion_ui_ms">150</integer>
+    <integer name="motion_background_ms">250</integer>
 </resources>

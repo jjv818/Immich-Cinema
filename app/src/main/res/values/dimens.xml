@@ -15,8 +15,8 @@
   -->
 <resources>
 
-    <dimen name="text_body">24sp</dimen>
-    <dimen name="text_title">64sp</dimen>
+    <dimen name="text_body">20sp</dimen>
+    <dimen name="text_title">44sp</dimen>
 
     <dimen name="overscan_horizontal">48dp</dimen>
     <dimen name="overscan_vertical">27dp</dimen>
@@ -90,4 +90,25 @@
     -->
     <dimen name="timeline_memories_end_clearance">56dp</dimen>
     <dimen name="timeline_memories_horizontal_margin">8dp</dimen>
+
+    <!-- ===== Immich Cinema design system (AGENTS.md §5.1) ===== -->
+    <!-- Type scale (four sizes, no more) -->
+    <dimen name="text_heading">30sp</dimen>
+    <dimen name="text_meta">15sp</dimen>
+
+    <!-- Geometry: spacing scale (no ad-hoc values) -->
+    <dimen name="space_1">8dp</dimen>
+    <dimen name="space_2">16dp</dimen>
+    <dimen name="space_3">24dp</dimen>
+    <dimen name="space_4">32dp</dimen>
+    <dimen name="space_5">48dp</dimen>
+
+    <!-- Radii -->
+    <dimen name="radius_card">8dp</dimen>
+    <dimen name="radius_rail">12dp</dimen>
+    <dimen name="radius_cell">6dp</dimen>
+
+    <!-- Tab bar -->
+    <dimen name="tab_bar_height">64dp</dimen>
+    <dimen name="tab_bar_top_margin">28dp</dimen>
 </resources>

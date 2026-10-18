@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Floating tab-bar capsule fill: translucent dark (tab_scrim), fully rounded ends (64dp height). -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/tab_scrim" />
+    <corners android:radius="32dp" />
+</shape>

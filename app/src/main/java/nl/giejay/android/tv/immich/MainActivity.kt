@@ -81,6 +81,9 @@ class MainActivity : FragmentActivity() {
         lifecycleScope.launch {
             homeNavViewModel.sections.collect { tabBar.setTabs(it) }
         }
+        lifecycleScope.launch {
+            homeNavViewModel.selectedTabIndex.collect { tabBar.setSelectedIndex(it) }
+        }
 
         if(!PreferenceManager.hasMetaDataForScreen(MetaDataScreen.VIEWER, AlignOption.RIGHT) || !PreferenceManager.hasMetaDataForScreen(MetaDataScreen.SCREENSAVER, AlignOption.RIGHT)){
             // first time using the customizer, do a migration
