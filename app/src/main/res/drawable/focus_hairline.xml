@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Focus hairline: thin white (85%) rounded outline, inset so clipToOutline doesn't clip the
+     edge stroke away. -->
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:inset="2dp">
+    <shape android:shape="rectangle">
+        <solid android:color="@android:color/transparent" />
+        <stroke
+            android:width="3dp"
+            android:color="@color/focus_hairline" />
+        <corners android:radius="@dimen/radius_card" />
+    </shape>
+</inset>

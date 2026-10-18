@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Shows the white focus hairline automatically when the card is focused (state-driven). -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_focused="true" android:drawable="@drawable/focus_hairline" />
+    <item android:drawable="@android:color/transparent" />
+</selector>
