@@ -52,11 +52,4 @@
             android:textColor="@color/text_secondary"
             android:textSize="@dimen/text_meta" />
     </LinearLayout>
-
-    <!-- Focus hairline overlay -->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/focus_hairline_selector"
-        android:duplicateParentState="true" />
 </FrameLayout>
