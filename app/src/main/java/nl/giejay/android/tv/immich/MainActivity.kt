@@ -4,7 +4,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.KeyEvent
+import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -18,6 +20,8 @@ import kotlinx.coroutines.withContext
 import nl.giejay.android.tv.immich.api.ApiClient
 import nl.giejay.android.tv.immich.api.ApiClientConfig
 import nl.giejay.android.tv.immich.home.HomeFragmentDirections
+import nl.giejay.android.tv.immich.home.nav.HomeNavViewModel
+import nl.giejay.android.tv.immich.home.nav.HomeTabBarView
 import nl.giejay.android.tv.immich.homescreenchannels.ChannelDeepLinks
 import nl.giejay.android.tv.immich.homescreenchannels.DeepLinkTarget
 import nl.giejay.android.tv.immich.shared.prefs.MetaDataScreen
@@ -52,6 +56,7 @@ class MainActivity : FragmentActivity() {
     private lateinit var keyEventsModel: KeyEventsViewModel
     private lateinit var navGraph: NavGraph
     private lateinit var navController: NavController
+    private val homeNavViewModel: HomeNavViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,6 +71,16 @@ class MainActivity : FragmentActivity() {
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
         navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
+
+        val tabBar = findViewById<HomeTabBarView>(R.id.home_tab_bar)
+        tabBar.onTabSelected = { index -> homeNavViewModel.selectTab(index) }
+        tabBar.onTabBarFocusChanged = { focused -> homeNavViewModel.setTabBarFocused(focused) }
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            tabBar.visibility = if (destination.id == R.id.homeFragment) View.VISIBLE else View.GONE
+        }
+        lifecycleScope.launch {
+            homeNavViewModel.sections.collect { tabBar.setTabs(it) }
+        }
 
         if(!PreferenceManager.hasMetaDataForScreen(MetaDataScreen.VIEWER, AlignOption.RIGHT) || !PreferenceManager.hasMetaDataForScreen(MetaDataScreen.SCREENSAVER, AlignOption.RIGHT)){
             // first time using the customizer, do a migration
