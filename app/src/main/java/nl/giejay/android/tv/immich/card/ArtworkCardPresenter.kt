@@ -25,6 +25,7 @@ class ArtworkCardPresenter(private val context: Context) : Presenter() {
     private val cornerRadiusPx = context.resources.getDimension(R.dimen.radius_card)
     private val cardWidthPx = context.resources.getDimension(R.dimen.artwork_card_width).toInt()
     private val motionUiMs = context.resources.getInteger(R.integer.motion_ui_ms)
+    private val focusScale = 1f + context.resources.getFraction(R.fraction.focus_scale, 1, 1)
 
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.artwork_card, parent, false)
@@ -74,8 +75,8 @@ class ArtworkCardPresenter(private val context: Context) : Presenter() {
 
         view.setOnFocusChangeListener { v, hasFocus ->
             v.animate()
-                .scaleX(if (hasFocus) 1.05f else 1f)
-                .scaleY(if (hasFocus) 1.05f else 1f)
+                .scaleX(if (hasFocus) focusScale else 1f)
+                .scaleY(if (hasFocus) focusScale else 1f)
                 .setDuration(motionUiMs.toLong())
                 .start()
             v.elevation = if (hasFocus) 8f else 0f

@@ -16,9 +16,6 @@
   -->
 
 <resources>
-    <!-- Strings for the "No Firebase" screen -->
-    <string name="no_firebase_title">Firebase 未配置</string>
-    <string name="no_firebase_body">尚未为本应用配置 Firebase。这意味着所有与账户相关的功能均不可用，观看进度将保存在本地。如需启用 Firebase 功能，请参阅 README 文件。</string>
     <string name="continue_text">继续</string>
 
     <!-- Menus -->
@@ -75,7 +72,6 @@
     <string name="server">服务器</string>
     <string name="screensaver">屏保</string>
     <string name="debug">调试</string>
-    <string name="donate">捐赠</string>
     <string name="use_hd_thumbnails">使用高分辨率缩略图</string>
     <string name="use_hd_thumbnails_text">使用高分辨率缩略图代替原图/完整尺寸图片，可大幅提升加载速度。</string>
     <string name="show_partner_photos_in_timeline">在时间线中显示伴侣的照片</string>
@@ -90,7 +86,6 @@
     <string name="done">完成</string>
 
     <!-- Auth by phone -->
-    <string name="scan_qr_below">扫描下方二维码</string>
     <string name="or_enter_code_on_site">或在 https://immich.giejay.nl 输入该代码</string>
 
     <!-- Metadata -->
@@ -222,8 +217,6 @@
     <!-- Auth step 1 -->
     <string name="auth_sign_in_by_api_key">使用 API 密钥登录</string>
     <string name="auth_sign_in_by_api_key_desc">输入 API 密钥以登录你的 Immich 服务器。</string>
-    <string name="auth_sign_in_by_phone">使用手机登录</string>
-    <string name="auth_sign_in_by_phone_desc">用手机扫描二维码登录你的 Immich 服务器。注意：仅当你的 Immich 服务器可从互联网访问时才有效（不支持本地/内网 IP 地址）。</string>
     <string name="auth_demo_mode">演示模式</string>
     <string name="auth_demo_mode_desc">登录 Immich 演示服务器。</string>
 

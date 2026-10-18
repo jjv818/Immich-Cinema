@@ -1,16 +1,24 @@
 package nl.giejay.android.tv.immich.settings
 
 import android.app.Activity
+import android.os.Bundle
+import android.view.View
 import androidx.leanback.app.RowsSupportFragment
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.HeaderItem
 import androidx.leanback.widget.ListRow
 import androidx.leanback.widget.ListRowPresenter
 import androidx.leanback.widget.OnItemViewClickedListener
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import kotlinx.coroutines.launch
 import nl.giejay.android.tv.immich.ImmichApplication
 import nl.giejay.android.tv.immich.R
 import nl.giejay.android.tv.immich.home.HomeFragmentDirections
+import nl.giejay.android.tv.immich.home.nav.HomeNavViewModel
 import nl.giejay.android.tv.immich.shared.prefs.DebugPrefScreen
 import nl.giejay.android.tv.immich.shared.prefs.HomeScreenChannelsPrefScreen
 import nl.giejay.android.tv.immich.shared.prefs.ScreensaverPrefScreen
@@ -34,6 +42,21 @@ class SettingsFragment : RowsSupportFragment() {
     override fun onAttach(activity: Activity) {
         super.onAttach(activity)
         loadData()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        // Tab selection hands focus into the settings rows.
+        val navViewModel = ViewModelProvider(requireActivity()).get(HomeNavViewModel::class.java)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                navViewModel.contentFocusRequest.collect { request ->
+                    if (request > 0) {
+                        view.post { view.requestFocus() }
+                    }
+                }
+            }
+        }
     }
 
     private fun loadData() {

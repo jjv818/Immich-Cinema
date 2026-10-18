@@ -33,6 +33,9 @@ class MemoryPresenter(
     private val cornerRadiusPx =
         context.resources.getDimension(R.dimen.memory_card_corner_radius)
 
+    private val focusScale = 1f + context.resources.getFraction(R.fraction.focus_scale, 1, 1)
+    private val motionUiMs = context.resources.getInteger(R.integer.motion_ui_ms).toLong()
+
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.memory_card, parent, false)
         // Explicit outline so the cover ImageView is clipped to the same rounded rect as Immich.
@@ -66,11 +69,12 @@ class MemoryPresenter(
         view.setOnFocusChangeListener { v, hasFocus ->
             // Resting cards stay clipped inside end clearance; focused scale may cover the scrubber.
             findMemoriesGrid(v)?.clipToPadding = !hasFocus
-            v.animate().scaleX(if (hasFocus) 1.05f else 1f)
-                .scaleY(if (hasFocus) 1.05f else 1f)
-                .setDuration(150)
+            v.animate().scaleX(if (hasFocus) focusScale else 1f)
+                .scaleY(if (hasFocus) focusScale else 1f)
+                .setDuration(motionUiMs)
                 .start()
             v.elevation = if (hasFocus) 8f else 0f
+            v.foreground = if (hasFocus) context.getDrawable(R.drawable.focus_hairline) else null
             if (hasFocus) {
                 onMemoryFocused(memory)
             }
