@@ -14,7 +14,10 @@ import com.bumptech.glide.Glide
 import nl.giejay.android.tv.immich.R
 import nl.giejay.android.tv.immich.api.model.Memory
 import nl.giejay.android.tv.immich.api.util.ApiUtil
+import java.text.SimpleDateFormat
 import java.time.Year
+import java.util.Date
+import java.util.Locale
 
 /**
  * Renders one "N years ago" memory card in the timeline's horizontal memories row.
@@ -47,8 +50,10 @@ class MemoryPresenter(
         val view = viewHolder.view
         val image = view.findViewById<ImageView>(R.id.memory_card_image)
         val title = view.findViewById<TextView>(R.id.memory_card_title)
+        val date = view.findViewById<TextView>(R.id.memory_card_date)
 
         title.text = yearsAgoLabel(context, memory)
+        date.text = formatMemoryDate(memory.memoryAt)
 
         val coverId = memory.assets.firstOrNull()?.id
         Glide.with(image)
@@ -61,11 +66,11 @@ class MemoryPresenter(
         view.setOnFocusChangeListener { v, hasFocus ->
             // Resting cards stay clipped inside end clearance; focused scale may cover the scrubber.
             findMemoriesGrid(v)?.clipToPadding = !hasFocus
-            v.animate().scaleX(if (hasFocus) 1.14f else 1f)
-                .scaleY(if (hasFocus) 1.14f else 1f)
-                .setDuration(120)
+            v.animate().scaleX(if (hasFocus) 1.05f else 1f)
+                .scaleY(if (hasFocus) 1.05f else 1f)
+                .setDuration(150)
                 .start()
-            v.elevation = if (hasFocus) 24f else 0f
+            v.elevation = if (hasFocus) 8f else 0f
             if (hasFocus) {
                 onMemoryFocused(memory)
             }
@@ -76,6 +81,9 @@ class MemoryPresenter(
         val image = viewHolder.view.findViewById<ImageView>(R.id.memory_card_image)
         Glide.with(image).clear(image)
     }
+
+    private fun formatMemoryDate(date: Date): String =
+        SimpleDateFormat("MMM d, yyyy", Locale.getDefault(Locale.Category.FORMAT)).format(date)
 
     companion object {
         fun yearsAgoLabel(context: Context, memory: Memory): String {
