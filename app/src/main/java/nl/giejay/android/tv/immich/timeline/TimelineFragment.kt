@@ -26,6 +26,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.drop
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import nl.giejay.android.tv.immich.ImmichApplication
@@ -35,6 +36,7 @@ import nl.giejay.android.tv.immich.api.ApiClient
 import nl.giejay.android.tv.immich.api.ApiClientConfig
 import nl.giejay.android.tv.immich.api.model.Memory
 import nl.giejay.android.tv.immich.home.HomeFragmentDirections
+import nl.giejay.android.tv.immich.home.nav.HomeNavViewModel
 import nl.giejay.android.tv.immich.shared.prefs.API_KEY
 import nl.giejay.android.tv.immich.shared.prefs.DEBUG_MODE
 import nl.giejay.android.tv.immich.shared.prefs.DISABLE_SSL_VERIFICATION
@@ -76,6 +78,7 @@ class TimelineFragment : BrandedSupportFragment(), BrowseSupportFragment.MainFra
     private lateinit var apiClient: ApiClient
     private lateinit var viewModel: TimelineViewModel
     private val sliderViewModel: MediaSliderViewModel by activityViewModels()
+    private val homeNavViewModel: HomeNavViewModel by activityViewModels()
 
     private var recyclerView: RecyclerView? = null
     private var progressBar: ProgressBar? = null
@@ -182,7 +185,7 @@ class TimelineFragment : BrandedSupportFragment(), BrowseSupportFragment.MainFra
                 viewModel.prefetchAroundDay(cell.dayKey)
                 // Don't overwrite sticky leave-off while the menu owns focus or before restore.
                 if (!ignoreSelectionMemory &&
-                    !isBrowseShowingHeaders() &&
+                    !isNavChromeExpanded() &&
                     TimelineLeaveOff.shouldUpdateLiveLeaveOff(selectionRestored)
                 ) {
                     viewModel.lastSelectedMemoryId = null
@@ -204,7 +207,7 @@ class TimelineFragment : BrandedSupportFragment(), BrowseSupportFragment.MainFra
             onMemoryClicked = { memory -> onMemoryClicked(memory) },
             onMemoryFocused = { memory ->
                 if (!ignoreSelectionMemory &&
-                    !isBrowseShowingHeaders() &&
+                    !isNavChromeExpanded() &&
                     TimelineLeaveOff.shouldUpdateLiveLeaveOff(selectionRestored)
                 ) {
                     viewModel.lastSelectedMemoryId = memory.id
@@ -225,7 +228,7 @@ class TimelineFragment : BrandedSupportFragment(), BrowseSupportFragment.MainFra
             onFocused = { dayKey, assetId ->
                 viewModel.prefetchAroundDay(dayKey)
                 if (!ignoreSelectionMemory &&
-                    !isBrowseShowingHeaders() &&
+                    !isNavChromeExpanded() &&
                     TimelineLeaveOff.shouldUpdateLiveLeaveOff(selectionRestored)
                 ) {
                     viewModel.lastSelectedMemoryId = null
@@ -300,43 +303,28 @@ class TimelineFragment : BrandedSupportFragment(), BrowseSupportFragment.MainFra
         // Host is attached by now; keep Browse from flashing/animating the "Timeline" title.
         hideBrowseTitle()
 
-        (parentFragment as? BrowseSupportFragment)?.setBrowseTransitionListener(
-            object : BrowseSupportFragment.BrowseTransitionListener() {
-                override fun onHeadersTransitionStart(withHeaders: Boolean) {
-                    if (!isAdded) return
-                    if (withHeaders) {
-                        // Opening menu — remember the mosaic cell before Leanback steals focus.
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                homeNavViewModel.isTabBarFocused.drop(1).collect { expanded ->
+                    if (!isAdded) return@collect
+                    if (expanded) {
+                        // Focus moved to the tab bar — remember the cell before focus is stolen.
                         captureResumeState()
                         beginResumeFocusLock()
-                    } else if (
-                        viewModel.pendingResumeAssetId != null ||
-                        viewModel.lastSelectedMemoryId != null ||
-                        viewModel.lastSelectedAssetId != null
-                    ) {
-                        // Re-entering with a prior cell — block children so Leanback cannot flash
-                        // a neighboring item before we hand focus back.
-                        beginResumeFocusLock()
-                    }
-                }
-
-                override fun onHeadersTransitionStop(withHeaders: Boolean) {
-                    if (!isAdded) return
-                    if (withHeaders) {
-                        // Snapshot already taken on start — don't recapture with focus gone.
-                        selectionRestored = false
                     } else {
-                        hideBrowseTitle()
+                        // Focus returned to the page — restore leave-off.
+                        selectionRestored = false
                         restoreSelectionIfNeeded()
                     }
                 }
             }
-        )
+        }
 
         rv.post {
             contentWidthPx = (rv.width - rv.paddingStart - rv.paddingEnd).coerceAtLeast(1)
             // Recreated while the menu is already open (e.g. Photos → Timeline): never auto-enter.
             // Leave-off was captured when the user left Timeline; do not wipe it with a null focus.
-            if (isBrowseShowingHeaders()) {
+            if (isNavChromeExpanded()) {
                 beginResumeFocusLock()
                 selectionRestored = false
             }
@@ -406,7 +394,6 @@ class TimelineFragment : BrandedSupportFragment(), BrowseSupportFragment.MainFra
     override fun onDestroyView() {
         // Do not captureResumeState here — focus is already cleared and would wipe a sticky
         // memory/mosaic leave-off set when opening the slider. Menu open already snapshots.
-        (parentFragment as? BrowseSupportFragment)?.setBrowseTransitionListener(null)
         focusVideoPreview?.release()
         focusVideoPreview = null
         super.onDestroyView()
@@ -689,7 +676,7 @@ class TimelineFragment : BrandedSupportFragment(), BrowseSupportFragment.MainFra
 
             when {
                 // Side menu owns focus — never requestFocus into the mosaic (auto-enters Timeline).
-                isBrowseShowingHeaders() -> {
+                isNavChromeExpanded() -> {
                     selectionRestored = false
                     beginResumeFocusLock()
                 }
@@ -789,7 +776,7 @@ class TimelineFragment : BrandedSupportFragment(), BrowseSupportFragment.MainFra
 
         // Never pull focus while the side menu is still open — wait until the user
         // presses Enter/Right (BrowseTransitionListener → restoreSelectionIfNeeded).
-        if (isBrowseShowingHeaders()) return
+        if (isNavChromeExpanded()) return
 
         when (val target = TimelineLeaveOff.resolveRestore(viewModel.leaveOffSnapshot())) {
             is TimelineLeaveOff.Target.Memory -> {
@@ -869,7 +856,7 @@ class TimelineFragment : BrandedSupportFragment(), BrowseSupportFragment.MainFra
         selectionRestored = true
         finishResumeFocusLock()
         Handler(Looper.getMainLooper()).postDelayed({
-            if (!isAdded || isBrowseShowingHeaders()) {
+            if (!isAdded || isNavChromeExpanded()) {
                 selectionRestored = false
                 return@postDelayed
             }
@@ -877,8 +864,8 @@ class TimelineFragment : BrandedSupportFragment(), BrowseSupportFragment.MainFra
         }, 100)
     }
 
-    private fun isBrowseShowingHeaders(): Boolean =
-        (parentFragment as? BrowseSupportFragment)?.isShowingHeaders == true
+    private fun isNavChromeExpanded(): Boolean =
+        homeNavViewModel.isTabBarFocused.value
 
     /** Timeline has no page title — hide immediately so Leanback cannot flash/animate one. */
     private fun hideBrowseTitle() {

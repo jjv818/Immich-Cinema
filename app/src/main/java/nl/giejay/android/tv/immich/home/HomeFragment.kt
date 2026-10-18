@@ -4,6 +4,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.leanback.app.BrowseSupportFragment
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.ClassPresenterSelector
@@ -16,9 +20,11 @@ import androidx.leanback.widget.PresenterSelector
 import androidx.leanback.widget.Row
 import androidx.leanback.widget.RowHeaderPresenter
 import androidx.leanback.widget.SectionRow
+import kotlinx.coroutines.launch
 import nl.giejay.android.tv.immich.ImmichApplication
 import nl.giejay.android.tv.immich.R
 import nl.giejay.android.tv.immich.album.AlbumFragment
+import nl.giejay.android.tv.immich.home.nav.HomeNavViewModel
 import nl.giejay.android.tv.immich.assets.AllAssetFragment
 import nl.giejay.android.tv.immich.assets.FolderFragment
 import nl.giejay.android.tv.immich.assets.RandomAssetsFragment
@@ -36,6 +42,7 @@ class HomeFragment : BrowseSupportFragment() {
     private lateinit var mRowsAdapter: ArrayObjectAdapter
     private lateinit var rows: List<PageRow>
     val immichRowPresenter = ImmichRowPresenter()
+    private val homeNavViewModel: HomeNavViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,45 +57,16 @@ class HomeFragment : BrowseSupportFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        headersSupportFragment.setOnHeaderViewSelectedListener { _, row ->
-            selectedPosition = row?.let { mRowsAdapter.indexOf(it) } ?: 0
-            val name = row?.headerItem?.name ?: "-"
-            // Timeline is a full-bleed mosaic — never show the Leanback page title there
-            // (it flashes and slides away when entering the page).
-            if (name == getString(R.string.timeline)) {
-                title = ""
-                showTitle(false)
-            } else {
-                title = name
-            }
-        }
-
-        headersSupportFragment.setOnHeaderClickedListener { _, row ->
-            if (row.headerItem.name == getString(R.string.edit)) {
-                immichRowPresenter.editMode = !immichRowPresenter.editMode
-                if(immichRowPresenter.editMode){
-                    mRowsAdapter.clear()
-                    mRowsAdapter.addAll(0, rows.filter { it.headerItem.name != getString(R.string.settings) })
-                } else {
-                    mRowsAdapter.clear();
-                    mRowsAdapter.addAll(0, rows.filter { !PreferenceManager.itemInStringSet(it.headerItem.name, HIDDEN_HOME_ITEMS) })
-                }
-                adapter.notifyItemRangeChanged(0, mRowsAdapter.size());
-            } else if(immichRowPresenter.editMode){
-                PreferenceManager.toggleStringSetItem(row.headerItem.name, HIDDEN_HOME_ITEMS)
-                adapter.notifyItemRangeChanged(0, mRowsAdapter.size())
-            } else{
-                if (!this.isInHeadersTransition) {
-                    this.startHeadersTransition(false)
-//                    this.mainFragment.requireView().requestFocus()
-                }
+        // The top tab bar drives page selection; mirror its selection onto the browse host.
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                homeNavViewModel.selectedTabIndex.collect { index -> selectedPosition = index }
             }
         }
     }
 
     private fun setupUi() {
-        headersState = HEADERS_ENABLED
-        isHeadersTransitionOnBackEnabled = true
+        headersState = HEADERS_DISABLED
         brandColor = resources.getColor(android.R.color.black)
         // First page is Timeline, which never shows a Browse title.
         title = ""
@@ -115,11 +93,18 @@ class HomeFragment : BrowseSupportFragment() {
         mRowsAdapter = ArrayObjectAdapter(ListRowPresenter())
         adapter = mRowsAdapter
         rows = createRows()
-        mRowsAdapter.addAll(0, rows.filter { !PreferenceManager.itemInStringSet(it.headerItem.name, HIDDEN_HOME_ITEMS) })
+        mRowsAdapter.addAll(0, rows)
+        // Tab bar mirrors the same filtered list, so tab index == selectedPosition.
+        homeNavViewModel.setSections(rows.map { it.headerItem.name })
     }
 
     private fun createRows(): List<PageRow> {
-        return HEADERS.mapIndexed { index, header -> PageRow(HeaderItem(index.toLong(), header.name)) }
+        return HEADERS.mapIndexed { index, header -> index to header }
+            .filter { (index, header) ->
+                index != EDIT_INDEX &&
+                    !PreferenceManager.itemInStringSet(header.name, HIDDEN_HOME_ITEMS)
+            }
+            .map { (index, header) -> PageRow(HeaderItem(index.toLong(), header.name)) }
     }
 
     private class PageRowFragmentFactory : FragmentFactory<Fragment>() {
@@ -147,6 +132,9 @@ class HomeFragment : BrowseSupportFragment() {
             Header(ImmichApplication.appContext!!.getString(R.string.edit)) { GridFragment(hideProgressBar = true) },
             Header(ImmichApplication.appContext!!.getString(R.string.settings)) { SettingsFragment() },
         )
+
+        private val EDIT_INDEX: Int =
+            HEADERS.indexOfFirst { it.name == ImmichApplication.appContext!!.getString(R.string.edit) }
     }
 }
 
