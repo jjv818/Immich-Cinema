@@ -331,6 +331,18 @@ class TimelineFragment : BrandedSupportFragment(), BrowseSupportFragment.MainFra
             }
         }
 
+        // Tab selection hands focus into the timeline content; the tab bar losing focus then
+        // drives the leave-off restore in the collector above.
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                homeNavViewModel.contentFocusRequest.collect { request ->
+                    if (request > 0 && isNavChromeExpanded()) {
+                        recyclerView?.post { recyclerView?.requestFocus() }
+                    }
+                }
+            }
+        }
+
         rv.post {
             contentWidthPx = (rv.width - rv.paddingStart - rv.paddingEnd).coerceAtLeast(1)
             // Recreated while the menu is already open (e.g. Photos → Timeline): never auto-enter.

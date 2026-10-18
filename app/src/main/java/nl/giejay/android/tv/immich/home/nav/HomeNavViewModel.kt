@@ -27,6 +27,10 @@ class HomeNavViewModel : ViewModel() {
     /** True while the tab bar (nav chrome) owns focus. Replaces `isBrowseShowingHeaders()`. */
     val isTabBarFocused: StateFlow<Boolean> = _isTabBarFocused
 
+    private val _contentFocusRequest = MutableStateFlow(0)
+    /** Incremented each time a tab is selected; page fragments request content focus in response. */
+    val contentFocusRequest: StateFlow<Int> = _contentFocusRequest
+
     fun setSections(titles: List<String>) {
         _sections.value = titles
     }
@@ -37,5 +41,10 @@ class HomeNavViewModel : ViewModel() {
 
     fun setTabBarFocused(focused: Boolean) {
         _isTabBarFocused.value = focused
+    }
+
+    /** Signals the currently-shown page to take focus (after a tab selection). */
+    fun requestContentFocus() {
+        _contentFocusRequest.value += 1
     }
 }
