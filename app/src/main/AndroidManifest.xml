@@ -19,13 +19,9 @@
 
     <!-- Access internet-based media -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <!-- Donation -->
-    <uses-permission android:name="com.android.vending.BILLING" />
 
     <!-- For writing to home screen channels -->
     <uses-permission android:name="com.android.providers.tv.permission.WRITE_EPG_DATA" />
-
-    <uses-permission android:name="com.google.android.gms.permission.AD_ID" tools:node="remove"/>
 
     <!-- Touch screen is not required -->
     <uses-feature
@@ -51,8 +47,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!-- Runs before Application.onCreate() and before any other provider with a lower
-             initOrder (FirebaseInitProvider is at 100, this is set higher so it always wins). -->
+        <!-- Runs before Application.onCreate() so ImmichApplication.appContext is set early. -->
         <provider
             android:name="nl.giejay.android.tv.immich.AppContextInitializer"
             android:authorities="${applicationId}.appcontextinitializer"
