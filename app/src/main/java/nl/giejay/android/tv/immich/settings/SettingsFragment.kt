@@ -106,8 +106,8 @@ class SettingsFragment : RowsSupportFragment() {
     }
 
     private fun createCardRow(cards: List<SettingsCard>): ListRow {
-        val iconCardPresenter = SettingsIconPresenter(requireContext())
-        val adapter = ArrayObjectAdapter(iconCardPresenter)
+        val textPresenter = SettingsTextPresenter(requireContext())
+        val adapter = ArrayObjectAdapter(textPresenter)
         adapter.addAll(0, cards.filter { it.visible })
         val headerItem = HeaderItem(ImmichApplication.appContext!!.getString(R.string.settings))
         return ListRow(headerItem, adapter)

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Text-first settings row: surface_raised with a white focus hairline (no icon tile). -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_focused="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/surface_raised" />
+            <stroke
+                android:width="2dp"
+                android:color="@color/focus_hairline" />
+            <corners android:radius="@dimen/radius_card" />
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/surface_raised" />
+            <corners android:radius="@dimen/radius_card" />
+        </shape>
+    </item>
+</selector>

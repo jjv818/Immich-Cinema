@@ -19,20 +19,44 @@
         android:layout_width="match_parent"
         android:layout_height="72dp"
         android:layout_gravity="bottom"
-        android:background="@drawable/memory_card_scrim" />
+        android:background="@drawable/scrim_bottom" />
 
-    <TextView
-        android:id="@+id/memory_card_title"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|start"
-        android:layout_margin="14dp"
-        android:includeFontPadding="false"
-        android:shadowColor="#CC000000"
-        android:shadowDx="0"
-        android:shadowDy="0"
-        android:shadowRadius="4"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:paddingBottom="12dp">
+
+        <TextView
+            android:id="@+id/memory_card_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:textAllCaps="true"
+            android:textColor="@color/text_primary"
+            android:textSize="@dimen/text_body"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/memory_card_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:textColor="@color/text_secondary"
+            android:textSize="@dimen/text_meta" />
+    </LinearLayout>
+
+    <!-- Focus hairline overlay -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/focus_hairline_selector"
+        android:duplicateParentState="true" />
 </FrameLayout>
