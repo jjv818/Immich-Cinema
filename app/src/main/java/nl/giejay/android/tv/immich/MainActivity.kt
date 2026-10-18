@@ -73,7 +73,11 @@ class MainActivity : FragmentActivity() {
         navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
 
         val tabBar = findViewById<HomeTabBarView>(R.id.home_tab_bar)
-        tabBar.onTabSelected = { index -> homeNavViewModel.selectTab(index) }
+        tabBar.onTabSelected = { index ->
+            homeNavViewModel.selectTab(index)
+            // Hand focus from the tab bar into the freshly-shown page content.
+            homeNavViewModel.requestContentFocus()
+        }
         tabBar.onTabBarFocusChanged = { focused -> homeNavViewModel.setTabBarFocused(focused) }
         navController.addOnDestinationChangedListener { _, destination, _ ->
             tabBar.visibility = if (destination.id == R.id.homeFragment) View.VISIBLE else View.GONE

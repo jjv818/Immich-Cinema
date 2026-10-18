@@ -26,11 +26,18 @@ import androidx.leanback.app.BrandedSupportFragment
 import androidx.leanback.app.BrowseSupportFragment
 import androidx.leanback.transition.TransitionHelper
 import androidx.leanback.widget.ArrayObjectAdapter
+import androidx.leanback.widget.BrowseFrameLayout
 import androidx.leanback.widget.OnChildLaidOutListener
 import androidx.leanback.widget.OnItemViewClickedListener
 import androidx.leanback.widget.OnItemViewSelectedListener
 import androidx.leanback.widget.VerticalGridPresenter
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import kotlinx.coroutines.launch
 import nl.giejay.android.tv.immich.R
+import nl.giejay.android.tv.immich.home.nav.HomeNavViewModel
 import timber.log.Timber
 
 /**
@@ -161,6 +168,38 @@ open class GridFragment(val hideProgressBar: Boolean = false) : BrandedSupportFr
         mGridViewHolder = mGridPresenter?.onCreateViewHolder(gridDock)
         mGridViewHolder?.view?.apply { gridDock.addView(this) }
         mGridViewHolder?.gridView?.setOnChildLaidOutListener(mChildLaidOutListener)
+
+        // UP from the top grid row hands focus to the top tab bar (which lives in the activity
+        // layout, outside this fragment's focus hierarchy).
+        val frame = view.findViewById<BrowseFrameLayout>(R.id.grid_frame)
+        frame.onFocusSearchListener = BrowseFrameLayout.OnFocusSearchListener { focused, direction ->
+            if (direction == View.FOCUS_UP && focused != null) {
+                // selectedPosition is the focused card's adapter index (getChildAdapterPosition
+                // returns -1 through Leanback's ItemBridgeAdapter wrapper).
+                val pos = mGridViewHolder?.gridView?.selectedPosition ?: -1
+                val columns = mGridPresenter?.numberOfColumns ?: 1
+                if (pos in 0 until columns) {
+                    requireActivity().findViewById<View>(R.id.home_tab_bar)?.requestFocus()
+                    return@OnFocusSearchListener focused
+                }
+            }
+            null
+        }
+
+        // After a tab is selected, hand focus into the freshly-shown grid content.
+        val navViewModel = ViewModelProvider(requireActivity()).get(HomeNavViewModel::class.java)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                navViewModel.contentFocusRequest.collect { request ->
+                    if (request > 0) {
+                        mGridViewHolder?.gridView?.postDelayed({
+                            mGridViewHolder?.gridView?.requestFocus()
+                        }, 400)
+                    }
+                }
+            }
+        }
+
         mSceneAfterEntranceTransition =
             TransitionHelper.createScene(gridDock) { setEntranceTransitionState(true) }
         mainFragmentAdapter.fragmentHost?.notifyViewCreated(mMainFragmentAdapter)
