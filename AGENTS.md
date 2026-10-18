@@ -258,7 +258,7 @@ it uses `DefaultCardTheme` (206×116dp).
 
 ### Architecture
 - Keep Leanback (`BrowseSupportFragment` + `PageRow`).
-- Custom top tab bar as an **overlay in `activity_main.xml`**; `headersState = HEADERS_DISABLED`.
+- Custom top tab bar as an **overlay in `activity_main.xml`**; `headersState = HEADERS_HIDDEN`.
 - `NavFocusContract` (1:1 mapping) preserves Timeline leave-off; **Plan B** (restyled vertical rail)
   is pre-authorised as the escape hatch if leave-off regresses on device.
 - Section show/hide → Settings (reuse `HIDDEN_HOME_ITEMS` unchanged).
@@ -417,9 +417,15 @@ replaced.
 Retain `BrowseSupportFragment` + `PageRow` page switching + page transitions. The rail is replaced;
 the host is not.
 
+**Gotcha (verified on device):** use `HEADERS_HIDDEN`, never `HEADERS_DISABLED`. In
+`BrowseSupportFragment#createMainFragment`, `mIsPageRow = mCanShowHeaders && item instanceof PageRow`;
+`HEADERS_DISABLED` sets `mCanShowHeaders = false`, so every `PageRow` is treated as a plain `ListRow`
+and no page fragment is ever hosted (the screen renders as an empty browse container). `HEADERS_HIDDEN`
+keeps `mCanShowHeaders = true` while hiding the rail.
+
 ### 6.2 `NavFocusContract` — required, not optional
 
-With `headersState = HEADERS_DISABLED`, `isShowingHeaders` is permanently `false` and the header
+With `headersState = HEADERS_HIDDEN`, `isShowingHeaders` is permanently `false` and the header
 transition callbacks never fire, silently disabling Timeline's leave-off protection. Fix with a 1:1
 mapping rather than by editing the state machine:
 
@@ -479,7 +485,7 @@ One milestone, internally ordered steps, **each of which compiles and can be ins
 | Step | Contents | Guarded by |
 |---|---|---|
 | **S0 Prep** | Remove Firebase (deps + plugin + call sites + `google-services.json`), Donate/billing, QR sign-in. Add `NOTICE` + "modified on" line; change `applicationId`; keep the Kotlin package. Confirm a clean `assembleDebug` on the now-Firebase-free tree. (Upstream's `copilot/create-fdroid-flavor-without-firebase` shows a Firebase-free build.gradle/manifest, but it is a **stale, divergent rewrite** — consult its Firebase deltas only, never cherry-pick it.) | clean `assembleDebug` + `testDebugUnitTest` |
-| **S1 Nav shell** | Tab bar + `HomeNavViewModel` + `NavFocusContract` + `HomeFragment` `headersState = HEADERS_DISABLED` + focus hand-off on tab activation. No visual restyle. | `TimelineLeaveOffTest`, `TimelineMosaicIndexTest`, `TimelineFocusActionsTest` |
+| **S1 Nav shell** | Tab bar + `HomeNavViewModel` + `NavFocusContract` + `HomeFragment` `headersState = HEADERS_HIDDEN` + focus hand-off on tab activation. No visual restyle. | `TimelineLeaveOffTest`, `TimelineMosaicIndexTest`, `TimelineFocusActionsTest` |
 | **S2 Nav follow-ons** | Remove Edit section; Settings → Sections screen on `HIDDEN_HOME_ITEMS`; BACK semantics; Timeline top inset for the bar; UP-chain | `TimelineViewModelTest`, `TimelineScrubberModelTest` |
 | **S3 Tokens + cards** | Palette/type/spacing/radii; `ArtworkCardPresenter` + `artwork_card.xml`; 4:3 grid sizing; `CardPresenter` placeholder/error/`.override()`; fast background cross-fade; Leanback dimen/attr overrides | new Robolectric tests; `TimelineMosaicLayoutEngineTest` |
 | **S4 Timeline polish** | Day headers, memory cards, scrubber paints, focus hairlines, extracted focus constants | `TimelineMosaicLayoutEngineTest`, `TimelineDateFormatterTest`, `MemoryLabelsTest` |
@@ -590,7 +596,7 @@ New tests to add (Robolectric is configured via `includeAndroidResources = true`
 | Rank | Risk | Mitigation |
 |---|---|---|
 | 1 | **Timeline leave-off regression** from the header-contract change | `NavFocusContract` 1:1 mapping; `TimelineLeaveOff` untouched; `NavFocusContractTest`; Plan B escape hatch; device pass |
-| 2 | `HEADERS_DISABLED` layout/padding surprises | `VERIFY-ON-DEVICE` comments; `lb_browse_rows_margin_start → 0dp` fallback |
+| 2 | `HEADERS_HIDDEN` layout/padding surprises | `VERIFY-ON-DEVICE` comments; `lb_browse_rows_margin_start → 0dp` fallback |
 | 3 | Tab activation leaves the remote seemingly dead | explicit `requestFocus()` into page content + checklist item |
 | 4 | Focus-scale change invalidates `MOSAIC_FOCUS_LOCK_RELEASE_MS = 160L` | re-verify constant vs. new duration |
 | 5 | Single-pass scope produces one large diff | S0–S5 compilable steps, kept as separate commits |
