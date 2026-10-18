@@ -37,6 +37,7 @@ import nl.giejay.android.tv.immich.api.ApiClientConfig
 import nl.giejay.android.tv.immich.api.model.Memory
 import nl.giejay.android.tv.immich.home.HomeFragmentDirections
 import nl.giejay.android.tv.immich.home.nav.HomeNavViewModel
+import nl.giejay.android.tv.immich.home.nav.HomeTabBarView
 import nl.giejay.android.tv.immich.shared.prefs.API_KEY
 import nl.giejay.android.tv.immich.shared.prefs.DEBUG_MODE
 import nl.giejay.android.tv.immich.shared.prefs.DISABLE_SSL_VERIFICATION
@@ -264,6 +265,16 @@ class TimelineFragment : BrandedSupportFragment(), BrowseSupportFragment.MainFra
                     focused
                 } else {
                     focused
+                }
+            }
+            // Memory card is the top of the timeline: UP hands focus to the tab bar (which lives
+            // in the activity layout, outside this fragment's focus hierarchy).
+            if (focused?.getTag(R.id.timeline_memory_id) as? String != null) {
+                return@OnFocusSearchListener if (direction == View.FOCUS_UP) {
+                    requireActivity().findViewById<HomeTabBarView>(R.id.home_tab_bar)?.requestFocus()
+                    focused
+                } else {
+                    null
                 }
             }
             if (focused?.getTag(R.id.timeline_mosaic_cell_asset_id) == null) {
