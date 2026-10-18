@@ -22,7 +22,6 @@ import timber.log.Timber
 class AuthFragmentStep1 : GuidedStepSupportFragment() {
     private val ACTION_SIGN_IN = 0L
     private val ACTION_DEMO = 1L
-    private val ACTION_PHONE_SIGN_IN = 2L
     private val ACTION_CONTINUE = 3L
     private var SELECTED_OPTION: Long = ACTION_SIGN_IN
 
@@ -44,14 +43,6 @@ class AuthFragmentStep1 : GuidedStepSupportFragment() {
             getString(R.string.auth_sign_in_by_api_key),
             getString(R.string.auth_sign_in_by_api_key_desc),
             true,
-            1
-        )
-        addCheckedAction(
-            actions,
-            ACTION_PHONE_SIGN_IN,
-            getString(R.string.auth_sign_in_by_phone),
-            getString(R.string.auth_sign_in_by_phone_desc),
-            false,
             1
         )
         addCheckedAction(
@@ -93,8 +84,6 @@ class AuthFragmentStep1 : GuidedStepSupportFragment() {
                     //https://stackoverflow.com/questions/51060762/illegalargumentexception-navigation-destination-xxx-is-unknown-to-this-navcontr
                     navController.navigate(AuthFragmentStep1Directions.actionAuthToAuth2())
                 }
-            } else if (SELECTED_OPTION == ACTION_PHONE_SIGN_IN) {
-                findNavController().navigate(AuthFragmentStep1Directions.actionAuthToAuthByPhone())
             }
         } else {
             SELECTED_OPTION = action.id

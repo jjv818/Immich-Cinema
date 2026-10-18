@@ -1,0 +1,27 @@
+Immich Cinema
+=============
+
+Immich Cinema is a modified fork of Immich-Android-TV
+(https://github.com/giejay/Immich-Android-TV), an unofficial Android TV client for the
+Immich self-hosted photo server.
+
+Modified on 2026-10-18:
+  - Rebranded to "Immich Cinema"; changed the application id (Kotlin package unchanged).
+  - Removed Firebase Analytics and Crashlytics.
+  - Removed the in-app donation flow (Play Billing).
+  - Removed the QR "sign in by phone" flow.
+
+Immich Cinema is unofficial and is not affiliated with, endorsed by, or sponsored by the
+Immich project (https://github.com/immich-app/immich) or its developers. The name
+"Immich" is used descriptively to indicate compatibility with the Immich server.
+
+Licence
+-------
+This application is licensed under the GNU General Public License v3.0 (see LICENSE).
+
+The vendored mediaslider module (mediaslider/) is derived from Zeuskartik/MediaSliderView
+and is licensed under the Apache License 2.0 (see mediaslider/LICENSE.md).
+
+Portions of this application are derived from the Android TV Leanback sample and retain
+their original Apache License 2.0 headers (Copyright 2020 Google LLC) in the affected
+files.

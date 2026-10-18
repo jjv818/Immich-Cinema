@@ -47,8 +47,10 @@ open class CardPresenter(context: Context, style: Int = R.style.DefaultCardTheme
                     .into(cardView.mainImageView!!)
             } else {
                 cardView.mainImageView!!.scaleType = ImageView.ScaleType.CENTER_INSIDE
+                // Resources live under the namespace package, not the applicationId;
+                // getIdentifier(..., context.packageName) breaks when the two differ.
                 val resourceId = context.resources.getIdentifier(it, "drawable",
-                    context.packageName);
+                    "nl.giejay.android.tv.immich");
                 cardView.mainImageView!!.setImageResource(resourceId)
             }
 //                .addListener(object : RequestListener<Bitmap> {

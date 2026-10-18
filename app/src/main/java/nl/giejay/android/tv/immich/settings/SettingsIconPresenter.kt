@@ -30,7 +30,7 @@ class SettingsIconPresenter(context: Context) : CardPresenter(context, R.style.I
         val resourceId = context.resources
             .getIdentifier(
                 card.thumbnailUrl,
-                "drawable", context.packageName
+                "drawable", "nl.giejay.android.tv.immich"
             )
         Glide.with(context)
             .asBitmap()

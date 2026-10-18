@@ -23,7 +23,7 @@ pluginManagement {
 }
 
 include ':app'
-rootProject.name = "Immich TV"
+rootProject.name = "Immich Cinema"
 include ':mediaslider:mediaslider'
 
 

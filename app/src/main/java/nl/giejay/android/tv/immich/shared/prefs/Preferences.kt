@@ -7,14 +7,10 @@ import android.content.SharedPreferences
 import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.navigation.NavController
 import androidx.preference.ListPreference
 import androidx.preference.Preference
-import com.github.alexzhirkevich.customqrgenerator.QrData
-import com.github.alexzhirkevich.customqrgenerator.vector.QrCodeDrawable
 import nl.giejay.android.tv.immich.ImmichApplication
 import nl.giejay.android.tv.immich.R
 import nl.giejay.android.tv.immich.album.AlbumFragmentDirections
@@ -451,17 +447,9 @@ data object USER_ID : ActionPref(null, ImmichApplication.appContext!!.getString(
     { context, _ ->
         val userId = PreferenceManager.get(USER_ID)
         if (userId.isNotEmpty()) {
-            val layoutInflater = LayoutInflater.from(context)
-            val view = layoutInflater.inflate(R.layout.dialog_user_id_qr, null)
-            val qrImageView = view.findViewById<ImageView>(R.id.qrCode)
-            val userIdTextView = view.findViewById<TextView>(R.id.userIdText)
-
-            userIdTextView.text = userId
-            val data = QrData.Text(userId)
-            qrImageView.setImageDrawable(QrCodeDrawable(data))
-
             AlertDialog.Builder(context)
-                .setView(view)
+                .setTitle(R.string.user_id)
+                .setMessage(userId)
                 .setPositiveButton(R.string.close) { dialog, _ -> dialog.dismiss() }
                 .show()
         }
