@@ -26,12 +26,16 @@
         android:layout_height="match_parent"
         app:defaultNavHost="true" />
 
-    <!-- Top section tab bar. Temporary flat scrim here; the capsule/pill look lands in S3. -->
+    <!-- Top section tab bar: a floating, centred capsule (tab_scrim fill, white pill on the
+         active tab). Content-sized so it floats like the tvOS reference; the grid scrolls if the
+         labels ever exceed the screen width. -->
     <nl.giejay.android.tv.immich.home.nav.HomeTabBarView
         android:id="@+id/home_tab_bar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        android:background="#80000000"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/tab_bar_height"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="@dimen/tab_bar_top_margin"
+        android:background="@drawable/tab_bar_background"
+        android:clipToPadding="false"
         android:visibility="gone" />
 </FrameLayout>
