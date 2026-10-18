@@ -66,7 +66,10 @@ class HomeFragment : BrowseSupportFragment() {
     }
 
     private fun setupUi() {
-        headersState = HEADERS_DISABLED
+        // Hide the rail but keep PageRow fragment hosting: HEADERS_DISABLED sets mCanShowHeaders
+        // false, which makes BrowseSupportFragment treat PageRows as ListRows and never host the
+        // page fragments (see androidx.leanback BrowseSupportFragment#createMainFragment).
+        headersState = HEADERS_HIDDEN
         brandColor = resources.getColor(android.R.color.black)
         // First page is Timeline, which never shows a Browse title.
         title = ""
