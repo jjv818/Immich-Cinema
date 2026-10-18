@@ -108,6 +108,10 @@
     <dimen name="radius_rail">12dp</dimen>
     <dimen name="radius_cell">6dp</dimen>
 
+    <!-- Artwork card: 4:3 centre-crop grid cell -->
+    <dimen name="artwork_card_width">206dp</dimen>
+    <dimen name="artwork_card_height">155dp</dimen>
+
     <!-- Tab bar -->
     <dimen name="tab_bar_height">64dp</dimen>
     <dimen name="tab_bar_top_margin">28dp</dimen>

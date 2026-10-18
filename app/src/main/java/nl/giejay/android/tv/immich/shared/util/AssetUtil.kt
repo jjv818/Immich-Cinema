@@ -148,9 +148,18 @@ fun List<Asset>.toCards(): List<Card> {
 }
 
 fun Asset.toCard(): Card {
-    return Card(this.originalFileName ?: this.deviceAssetId ?: "",
-        this.exifInfo?.description ?: "",
+    // Never show a raw filename as the title. Prefer the user's description; otherwise fall back
+    // to the capture date (human-readable), then a neutral type label.
+    val description = this.exifInfo?.description?.takeIf { it.isNotBlank() }
+    val dateLabel = this.fileCreatedAt?.let {
+        SimpleDateFormat("MMM d, yyyy", Locale.getDefault(Locale.Category.FORMAT)).format(it)
+    }
+    val title = description ?: dateLabel ?: if (this.type == "VIDEO") "Video" else "Photo"
+    return Card(
+        title,
+        if (description != null) dateLabel else null,
         this.id,
         ApiUtil.getThumbnailUrl(this.id, "thumbnail"),
-        ApiUtil.getThumbnailUrl(this.id, "preview"))
+        ApiUtil.getThumbnailUrl(this.id, "preview")
+    )
 }
