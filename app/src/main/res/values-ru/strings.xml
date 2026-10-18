@@ -17,9 +17,6 @@
 <resources>
 
 
-    <!-- Strings for the "No Firebase" screen -->
-    <string name="no_firebase_title">Firebase не настроен</string>
-    <string name="no_firebase_body">Firebase не настроен для этого приложения. Это означает, что функции, зависящие от аккаунта, недоступны, а прогресс просмотра сохраняется локально. Чтобы включить функции Firebase, обратитесь к файлу readme.</string>
     <string name="continue_text">Продолжить</string>
 
     <!-- Menus -->
@@ -79,7 +76,6 @@
     <string name="server">Сервер</string>
     <string name="screensaver">Заставка\n</string>
     <string name="debug">Отладка</string>
-    <string name="donate">Пожертвовать</string>
     <string name="use_hd_thumbnails">Использовать миниатюры высокого разрешения</string>
     <string name="use_hd_thumbnails_text">Использовать миниатюры высокого разрешения вместо полноразмерных изображений. Это значительно ускорит загрузку.</string>
     <string name="show_partner_photos_in_timeline">Показывать фото партнёра на временной шкале</string>
@@ -94,7 +90,6 @@
     <string name="done">Готово</string>
 
     <!-- Auth by phone -->
-    <string name="scan_qr_below">Сканируйте QR-код ниже</string>
     <string name="or_enter_code_on_site">Или введите код на https://immich.giejay.nl</string>
 
     <!-- Metadata -->
@@ -214,8 +209,6 @@
     <!-- Auth step 1 -->
     <string name="auth_sign_in_by_api_key">Войти по API-ключу</string>
     <string name="auth_sign_in_by_api_key_desc">Войдите в ваш экземпляр Immich, введя API-ключ.</string>
-    <string name="auth_sign_in_by_phone">Войти по телефону</string>
-    <string name="auth_sign_in_by_phone_desc">Войдите в ваш экземпляр Immich по телефону.</string>
     <string name="auth_demo_mode">Демо-режим</string>
     <string name="auth_demo_mode_desc">Войти в демонстрационный экземпляр Immich.</string>
 

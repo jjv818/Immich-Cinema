@@ -17,9 +17,6 @@
 
 <resources>
 
-    <!-- Strings for the "No Firebase" screen -->
-    <string name="no_firebase_title">Firebase n’est pas configuré</string>
-    <string name="no_firebase_body">Firebase n’a pas été configuré pour cette application. Cela signifie qu’aucune fonctionnalité propre au compte n’est activée et que la progression de lecture est stockée localement. Pour activer les fonctionnalités Firebase, consultez le fichier README.</string>
     <string name="continue_text">Continuer</string>
 
     <!-- Menus -->
@@ -77,7 +74,6 @@
     <string name="server">Serveur</string>
     <string name="screensaver">Écran de veille</string>
     <string name="debug">Débogage</string>
-    <string name="donate">Faire un don</string>
     <string name="use_hd_thumbnails">Utiliser les miniatures haute résolution</string>
     <string name="use_hd_thumbnails_text">Utiliser les miniatures haute résolution au lieu des images natives/complètes. Cela accélérera considérablement le chargement.</string>
     <string name="show_partner_photos_in_timeline">Afficher les photos du partenaire dans la chronologie</string>
@@ -93,7 +89,6 @@
 
 
     <!-- Auth by phone -->
-    <string name="scan_qr_below">Scannez le code QR ci-dessous</string>
     <string name="or_enter_code_on_site">Ou saisissez le code sur https://immich.giejay.nl</string>
 
     <!-- Metadata -->
@@ -213,8 +208,6 @@
     <!-- Auth step 1 -->
     <string name="auth_sign_in_by_api_key">Se connecter avec une clé d’API</string>
     <string name="auth_sign_in_by_api_key_desc">Connectez-vous à votre instance Immich en saisissant votre clé d’API.</string>
-    <string name="auth_sign_in_by_phone">Se connecter avec un téléphone</string>
-    <string name="auth_sign_in_by_phone_desc">Connectez-vous à votre instance Immich en scannant un code QR avec votre téléphone. Remarque : cela fonctionne uniquement si votre serveur Immich est accessible depuis Internet (pas avec des adresses IP locales/privées).</string>
     <string name="auth_demo_mode">Mode démo</string>
     <string name="auth_demo_mode_desc">Se connecter à une instance Immich de démonstration.</string>
 
