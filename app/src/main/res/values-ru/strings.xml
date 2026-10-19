@@ -58,6 +58,11 @@
     <string name="folders">Папки</string>
     <string name="settings">Настройки</string>
     <string name="sections">Разделы</string>
+    <!-- Settings hub group headers (iOS-style grouped list). -->
+    <string name="settings_group_connection">Подключение</string>
+    <string name="settings_group_playback">Просмотр и воспроизведение</string>
+    <string name="settings_group_library">Библиотека</string>
+    <string name="settings_group_advanced">Расширенные настройки</string>
     <string name="sections_desc">Выберите разделы для верхней панели навигации</string>
     <string name="sections_show">Показывать в верхней панели</string>
     <string name="edit">Редактировать</string>
@@ -304,3 +309,4 @@
     <string name="meta_data_delete_desc">Удалить элемент</string>
     <string name="meta_data_save_desc">Сохранить элемент</string>
 </resources>
+

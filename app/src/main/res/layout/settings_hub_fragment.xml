@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Settings hub page (SET-001/SET-002): a single-column vertical list of iOS-style grouped
+  home rows instead of the old one-row horizontal card rail. Top clearance mirrors
+  AppTheme browsePaddingTop (100dp) so the rows start under the floating tab bar; the
+  safe 48dp horizontal gutter applies, and 48dp bottom keeps the last row off the edge.
+  Focus on rows = settings_row_background (hairline + glow).
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipChildren="false">
+
+    <!-- SET-004 full-bleed backdrop. The opaque base below guarantees nothing behind this
+         page (and no stale focus indicator on it) stays visible, with or without artwork. -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/surface_base" />
+
+    <ImageView
+        android:id="@+id/settings_hub_backdrop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:importantForAccessibility="no"
+        android:contentDescription="@null"
+        tools:ignore="ContentDescription" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/settings_backdrop_scrim" />
+
+    <androidx.leanback.widget.BrowseFrameLayout
+        android:id="@+id/settings_hub_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:descendantFocusability="afterDescendants">
+
+        <androidx.leanback.widget.VerticalGridView
+            android:id="@+id/settings_hub_grid"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:paddingStart="@dimen/overscan_horizontal"
+            android:paddingTop="@dimen/settings_hub_top_clearance"
+            android:paddingEnd="@dimen/overscan_horizontal"
+            android:paddingBottom="@dimen/overscan_horizontal" />
+
+    </androidx.leanback.widget.BrowseFrameLayout>
+
+</FrameLayout>

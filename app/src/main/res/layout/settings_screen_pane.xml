@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Host pane for the settings inner fragments (the old LeanbackSettingsFragmentCompat header
+  harness is gone): a single pane that swaps LeanbackPreferenceFragmentCompat screens.
+  The pane owns its background stack (SET-004): full-bleed random-asset artwork
+  (SettingsBackdropLoader) under the settings_backdrop_scrim; the preference fragments
+  themselves are transparent (the preference theme's windowBackground is cleared) so this
+  stack is visible directly. Without artwork the scrim renders flat surface_base.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/settings_screen_pane"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Opaque base: the pane never shows the underlying page through it, even without
+         artwork (no stale focus indicator can ghost through the cell gaps). -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/surface_base" />
+
+    <ImageView
+        android:id="@+id/settings_pane_backdrop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:importantForAccessibility="no"
+        android:contentDescription="@null"
+        tools:ignore="ContentDescription" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/settings_backdrop_scrim" />
+
+    <FrameLayout
+        android:id="@+id/settings_pane_body"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</FrameLayout>

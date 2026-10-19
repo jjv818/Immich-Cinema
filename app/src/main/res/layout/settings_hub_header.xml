@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Settings hub group header: Meta 15sp uppercase, text_secondary, iOS section style. -->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/settings_hub_header_title"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="@dimen/space_3"
+    android:paddingBottom="@dimen/space_1"
+    android:letterSpacing="0.05"
+    android:textAllCaps="true"
+    android:textSize="@dimen/text_meta"
+    android:textColor="@color/text_secondary"
+    android:fontFamily="sans-serif-medium" />

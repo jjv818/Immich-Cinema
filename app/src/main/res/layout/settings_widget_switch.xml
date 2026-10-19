@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Boolean widget on settings rows: a real toggle switch (SwitchCompat), iOS-scaled
+  geometry (56×32 track, 28dp thumb via thumbTextPadding). Must use @android:id/checkbox —
+  CheckBoxPreference binds any Checkable under that id. Non-focusable/clickable: the row
+  intercepts the event (row root has blocksDescendants) and toggling happens on the whole
+  row's D-pad Enter, per the tvOS settings model.
+-->
+<androidx.appcompat.widget.SwitchCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@android:id/checkbox"
+    android:layout_width="@dimen/settings_switch_width"
+    android:layout_height="@dimen/settings_switch_height"
+    android:focusable="false"
+    android:clickable="false"
+    android:background="@null"
+    app:switchMinWidth="@dimen/settings_switch_width"
+    app:thumbTextPadding="@dimen/settings_switch_thumb_padding"
+    app:trackTint="@color/settings_switch_track"
+    app:thumbTint="@color/settings_switch_thumb" />

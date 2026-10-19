@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Settings hub drill-in row (SET-001/SET-002): text-first, surface_raised chip, chevron. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/settings_row_min_height"
+    android:layout_marginTop="@dimen/space_1"
+    android:background="@drawable/settings_row_background"
+    android:clickable="true"
+    android:focusable="true"
+    android:descendantFocusability="blocksDescendants"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="@dimen/space_3"
+    android:paddingEnd="@dimen/space_3">
+
+    <TextView
+        android:id="@+id/settings_hub_row_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:textSize="@dimen/text_body"
+        android:textColor="@color/text_primary" />
+
+    <Space
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <ImageView
+        android:id="@+id/settings_hub_row_chevron"
+        android:layout_width="@dimen/settings_chevron_size"
+        android:layout_height="@dimen/settings_chevron_size"
+        android:importantForAccessibility="no"
+        tools:ignore="ContentDescription"
+        android:src="@drawable/ic_settings_chevron" />
+
+</LinearLayout>

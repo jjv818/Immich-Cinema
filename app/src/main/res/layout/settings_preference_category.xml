@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Group header between row groups: Meta 15sp in text_secondary (A11Y-safe on raised base),
+     secondary weight + uppercase per iOS section headers. Paddings are typography spacing:
+     24dp above separates groups, 8dp below ties the header to its rows. -->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clipToPadding="false">
+
+    <TextView
+        android:id="@android:id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|center_vertical"
+        android:paddingTop="@dimen/space_3"
+        android:paddingBottom="@dimen/space_1"
+        android:paddingStart="?android:attr/listPreferredItemPaddingStart"
+        android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
+        android:duplicateParentState="true"
+        android:textAllCaps="true"
+        android:letterSpacing="0.05"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall" />
+
+</FrameLayout>

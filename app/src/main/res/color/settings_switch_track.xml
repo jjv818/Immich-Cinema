@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Toggle track: accent_brand only as the checked (selection) state, white 38% when off.
+     Non-state contrast is carried by the white thumb, not colour alone afterwards? — the row
+     hairline carries focus; the switch position + thumb travel carry the boolean state. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true" android:color="@color/accent_brand" />
+    <item android:color="@color/text_tertiary" />
+</selector>
