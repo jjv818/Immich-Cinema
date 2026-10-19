@@ -40,6 +40,12 @@ android {
 
     lint {
         disable "NullSafeMutableLiveData"
+        // Pre-existing debt (RestrictedApi in the home-screen-channel code, untranslated
+        // home_screen_channels_* strings, a local.properties PropertyEscape) is captured here so
+        // "no new lint errors" is a real gate instead of a manual diff. Regenerate deliberately
+        // with `./gradlew :app:updateLintBaseline` after fixing entries.
+        baseline = file("lint-baseline.xml")
+        abortOnError = true
     }
 
     buildFeatures {
