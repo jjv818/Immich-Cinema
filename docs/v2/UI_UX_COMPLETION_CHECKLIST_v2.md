@@ -201,6 +201,15 @@ each verified on the Sony TV:
   this checklist still carries the original numbers.
 - **BUILD-005** — deep links, playback entry and the screensaver preview path are intact, but the
   real daydream, TalkBack and the sign-in GuidedStep screen were not exercised.
+- **NEW P0 — grid pages render at ~40% opacity (blocks VIS-002 / A11Y-001 measurement).**
+  Measured on the Sony TV: a card title forced to pure green renders `(0,102,0)`; every card caps at
+  97 luminance while the tab bar is 230 and Timeline memory titles are 242. Not app code — there is
+  no `alpha` in any Kotlin file or resource — and it is not the card root, the fragment root, or the
+  grid view (each forced to `1f` with no effect). Leanback's `VerticalGridPresenter.setEntranceTransitionState`
+  only toggles child *visibility*, so that is not it either. Timeline is unaffected; both the Albums
+  page and album-detail grids are. The alpha must sit on an ancestor above the page fragment — most
+  likely Leanback's page-transition container. Until this is fixed, every grid screenshot under-reports
+  contrast and the grid reads as disabled.
 - **SET-002 / SET-003** — resolved on device: hub, "View Settings" index and nested
   `PreferenceScreen`s now share one raised-chip row with hairline focus; `ListPreference` rows were
   falling back to Leanback's flat default because `dialogPreferenceStyle` was missing from the
