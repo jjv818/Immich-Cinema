@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Text-first settings row: surface_raised with a white focus hairline (no icon tile). -->
+<!-- Settings row chip: surface_raised at rest; focus adds the shared focus_hairline (crisp
+     white 85% hairline over a soft white glow — tv-focus-navigation-kit recipe). Focus is
+     never colour-only: the single stroke white state reads as a full outline + lift. -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_focused="true">
-        <shape android:shape="rectangle">
-            <solid android:color="@color/surface_raised" />
-            <stroke
-                android:width="2dp"
-                android:color="@color/focus_hairline" />
-            <corners android:radius="@dimen/radius_card" />
-        </shape>
+        <layer-list>
+            <item>
+                <shape android:shape="rectangle">
+                    <solid android:color="@color/surface_raised" />
+                    <corners android:radius="@dimen/radius_card" />
+                </shape>
+            </item>
+            <item android:drawable="@drawable/focus_hairline" />
+        </layer-list>
     </item>
     <item>
         <shape android:shape="rectangle">

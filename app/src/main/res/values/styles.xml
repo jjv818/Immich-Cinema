@@ -13,7 +13,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!--
       Only styles that are actually referenced remain. The legacy Leanback sample
@@ -24,6 +24,107 @@
 
     <style name="ProgressBar" parent="AppTheme">
         <item name="colorAccent">@color/progressbarColor</item>
+    </style>
+
+    <!-- ===== Settings surface (SET-001..SET-005) ===== -->
+    <!--
+      Preference theme for the redesigned settings surface. Derives from the Leanback
+      preference overlay and re-points row text/widget/paddings at the design tokens.
+      Declared on AppTheme via `preferenceTheme`; scoping is fragment-local because the
+      preference views are inflated inside a ContextThemeWrapper keyed on this attr.
+    -->
+    <style name="SettingsPreferenceTheme" parent="PreferenceThemeOverlay.v14.Leanback">
+        <!-- The preference surface's background stack (artwork + settings_backdrop_scrim)
+             lives in the pane host (settings_screen_pane). Clear the windowBackground so
+             leanback_preference_fragment's `?android:attr/windowBackground` root does not
+             paint over the artwork; the list-pref screens hosted in the pane inherit the
+             same transparency. -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="defaultBrandColor">@android:color/transparent</item>
+        <!-- Screen heading (decor title). -->
+        <item name="android:titleTextStyle">@style/SettingsScreenTitle</item>
+        <item name="android:titleTextAppearance">@style/TextAppearance.SettingsScreenTitle</item>
+        <!-- Row title / summary follow the Body/Meta type scale. -->
+        <item name="android:textAppearanceListItem">@style/TextAppearance.SettingsRowTitle</item>
+        <item name="android:textAppearanceListItemSecondary">@style/TextAppearance.SettingsRowSummary</item>
+        <item name="android:textAppearanceListItemSmall">@style/TextAppearance.SettingsSectionHeader</item>
+        <!-- Row insets: spacing scale (24dp horizontal). -->
+        <item name="android:listPreferredItemPaddingStart">@dimen/space_3</item>
+        <item name="android:listPreferredItemPaddingEnd">@dimen/space_3</item>
+        <!-- Selection indicators only: seekbar progress, radio dots in list dialogs. -->
+        <item name="colorAccent">@color/accent_brand</item>
+        <item name="colorControlActivated">@color/accent_brand</item>
+        <!-- Grouped iOS-style rows on raised chips, toggle switches for booleans,
+             chevron widget is applied per-row for drill-ins. -->
+        <item name="preferenceStyle">@style/SettingsPreferenceRow</item>
+        <item name="preferenceCategoryStyle">@style/SettingsPreferenceCategory</item>
+        <item name="checkBoxPreferenceStyle">@style/SettingsPreferenceSwitch</item>
+        <item name="preferenceScreenStyle">@style/SettingsPreferenceRow</item>
+        <item name="seekBarPreferenceStyle">@style/SettingsPreferenceSeekbar</item>
+        <item name="preferenceFragmentListStyle">@style/SettingsPreferenceList</item>
+    </style>
+
+    <style name="SettingsScreenTitle">
+        <item name="android:minHeight">@dimen/settings_row_min_height</item>
+        <item name="android:layout_marginTop">@dimen/overscan_vertical</item>
+        <item name="android:layout_marginStart">?android:attr/listPreferredItemPaddingStart</item>
+        <item name="android:layout_marginEnd">?android:attr/listPreferredItemPaddingEnd</item>
+        <item name="android:textAppearance">@style/TextAppearance.SettingsScreenTitle</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
+    <style name="SettingsPreferenceRow" parent="@style/LeanbackPreference"
+        tools:ignore="PrivateResource">
+        <item name="android:layout">@layout/settings_preference_row</item>
+    </style>
+
+    <style name="SettingsPreferenceCategory" parent="@style/LeanbackPreference.Category">
+        <item name="android:layout">@layout/settings_preference_category</item>
+    </style>
+
+    <style name="SettingsPreferenceSwitch" parent="@style/LeanbackPreference.CheckBoxPreference">
+        <item name="android:layout">@layout/settings_preference_row</item>
+        <item name="android:widgetLayout">@layout/settings_widget_switch</item>
+    </style>
+
+    <style name="SettingsPreferenceSeekbar" parent="@style/LeanbackPreference.SeekBarPreference">
+        <item name="android:layout">@layout/settings_preference_widget_seekbar</item>
+    </style>
+
+    <style name="SettingsPreferenceList" parent="@style/PreferenceFragmentList.Leanback">
+        <item name="android:paddingBottom">@dimen/space_4</item>
+    </style>
+
+    <style name="TextAppearance.SettingsScreenTitle" parent="android:TextAppearance">
+        <item name="android:textSize">@dimen/text_heading</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
+    <style name="TextAppearance.SettingsRowTitle" parent="android:TextAppearance">
+        <item name="android:textSize">@dimen/text_body</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
+    <style name="TextAppearance.SettingsRowSummary" parent="android:TextAppearance">
+        <item name="android:textSize">@dimen/text_meta</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <style name="TextAppearance.SettingsSectionHeader" parent="android:TextAppearance">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">@dimen/text_meta</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <!-- Dialog shell for the floating settings panel: transparent window over the artwork,
+         dimmed via backgroundDimAmount (SET-004). -->
+    <style name="SettingsDialog">
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">@dimen/settings_window_dim</item>
     </style>
 
 </resources>

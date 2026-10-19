@@ -71,11 +71,11 @@ Every item has a unique ID, a concise requirement, an observable definition of d
 
 | ID | Requirement | Definition of done | Verification | Priority | Deps | Status |
 |---|---|---|---|---|---|---|
-| SET-001 | Replace the outdated right-tab ("View Settings" panel) with an iOS-style toggle-based settings surface. | No right-tab remains; settings render as grouped sections with toggle switches for booleans and chevrons for drill-in. | Screenshot inspection at 1080p | P0 | VIS-001 | NOT STARTED |
-| SET-002 | Settings rows are text-first, no icon tiles, `surface_raised` background, larger touch targets for D-pad. | Each setting row uses text + optional toggle/chevron; no decorative icon tiles. | Screenshot inspection + source audit | P0 | VIS-001 | NOT STARTED |
-| SET-003 | Boolean settings use toggle switches; drill-in settings use chevrons; grouping separates sections visually. | Toggle switches switch on/off with D-pad; chevron rows open a sub-screen; sections separated by spacing/headers. | D-pad interaction test on device | P1 | SET-001 | NOT STARTED |
-| SET-004 | Full-bleed background artwork, un-blurred and lightly dimmed; settings panel floats over it with scrims. | Background visible behind panel; panel legible via scrim. | Screenshot inspection | P1 | VIS-002 | NOT STARTED |
-| SET-005 | Same `PrefScreen` declarative schema and `HIDDEN_HOME_ITEMS` key preserved; presentation layer restyled only. | Settings behaviour unchanged; only visuals changed. | Source audit + `SettingsScreenFragmentTest` | P0 | — | NOT STARTED |
+| SET-001 | Replace the outdated right-tab ("View Settings" panel) with an iOS-style toggle-based settings surface. | No right-tab remains; settings render as grouped sections with toggle switches for booleans and chevrons for drill-in. | Screenshot inspection at 1080p | P0 | VIS-001| PASS |
+| SET-002 | Settings rows are text-first, no icon tiles, `surface_raised` background, larger touch targets for D-pad. | Each setting row uses text + optional toggle/chevron; no decorative icon tiles. | Screenshot inspection + source audit | P0 | VIS-001| IN PROGRESS |
+| SET-003 | Boolean settings use toggle switches; drill-in settings use chevrons; grouping separates sections visually. | Toggle switches switch on/off with D-pad; chevron rows open a sub-screen; sections separated by spacing/headers. | D-pad interaction test on device | P1 | SET-001| IN PROGRESS |
+| SET-004 | Full-bleed background artwork, un-blurred and lightly dimmed; settings panel floats over it with scrims. | Background visible behind panel; panel legible via scrim. | Screenshot inspection | P1 | VIS-002| PASS |
+| SET-005 | Same `PrefScreen` declarative schema and `HIDDEN_HOME_ITEMS` key preserved; presentation layer restyled only. | Settings behaviour unchanged; only visuals changed. | Source audit + `SettingsScreenFragmentTest` | P0 | —| PASS |
 
 ---
 
@@ -164,9 +164,9 @@ planning default. Basis for each marker:
   a few are known shortfalls listed below.
 - **`NOT STARTED`** — genuinely absent in v1.
 
-Tally: **30 PASS / 24 IN PROGRESS / 10 NOT STARTED**.
+Tally: **33 PASS / 26 IN PROGRESS / 5 NOT STARTED**.
 
-### The ten not started
+### The five not started
 
 | ID | Why it is open |
 |---|---|
@@ -175,11 +175,6 @@ Tally: **30 PASS / 24 IN PROGRESS / 10 NOT STARTED**.
 | VIEWER-004 | D-pad left/right paging between media not exercised. |
 | MOTION-003 | The memory scrim animates `layoutParams.height`, i.e. a layout property, not `scaleY`. |
 | MOTION-005 | Reduced-motion handling not implemented. |
-| SET-001 | Settings page not yet redesigned; outdated right-tab ("View Settings" panel) still in place. |
-| SET-002 | Settings row styling not yet applied (text-first, `surface_raised`, larger D-pad targets). |
-| SET-003 | Toggle switches / chevron drill-in not yet implemented. |
-| SET-004 | Settings panel not yet floated over full-bleed background with scrims. |
-| SET-005 | Presentation restyle not yet verified against `PrefScreen` schema preservation. |
 
 ### Known shortfalls hiding inside `IN PROGRESS`
 
@@ -194,12 +189,16 @@ Tally: **30 PASS / 24 IN PROGRESS / 10 NOT STARTED**.
   this checklist still carries the original numbers.
 - **BUILD-005** — deep links, playback entry and the screensaver preview path are intact, but the
   real daydream, TalkBack and the sign-in GuidedStep screen were not exercised.
+- **SET-002 / SET-003** — the settings hub and the "View Settings" index render the new raised-chip
+  rows with hairline focus, but **nested preference screens (e.g. Ordering) still render flat text
+  with the default Leanback focus band**. Toggles were not captured on device. The settings surface
+  therefore has two row styles in one flow.
 
 ### Read this before treating v2 as "ready to close"
 
-By this checklist's own gate — *all P0 must be `PASS`* — v1 does **not** pass: 19 P0 items sit at
-`IN PROGRESS`. That is not a regression; it is the v2 checklist being stricter than v1's definition
-of done. The gap is mostly **measurement and validation debt**, not missing features. Closing it is
-the first real body of v2 work, and most of it is cheap: sample contrast on the captured screenshots,
-time the animations, run the two unexercised viewer/daydream paths, and fix the four shortfalls
-above.
+By this checklist's own gate — *all P0 must be `PASS`* — v1 does **not** pass: 20 P0 items sit at
+`IN PROGRESS` or `NOT STARTED`. That is not a regression; it is the v2 checklist being stricter than
+v1's definition of done. The gap is mostly **measurement and validation debt**, not missing features.
+Closing it is the first real body of v2 work, and most of it is cheap: sample contrast on the
+captured screenshots, time the animations, run the two unexercised viewer/daydream paths, and fix
+the shortfalls above.

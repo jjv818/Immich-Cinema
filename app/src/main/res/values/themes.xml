@@ -30,6 +30,7 @@
              starts below it instead of being covered. -->
         <item name="browsePaddingTop">100dp</item>
         <item name="guidedStepTheme">@style/GuidedStepTheme</item>
+        <item name="preferenceTheme">@style/SettingsPreferenceTheme</item>
     </style>
 
     <!-- Guided Step (sign-in) derived from the same tokens: dark cinematic background, raised

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Toggle thumb: solid white in both states; the track colour plus thumb travel carry the
+     checked state (never colour alone). -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/text_primary" />
+</selector>

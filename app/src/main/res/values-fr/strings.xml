@@ -58,6 +58,11 @@
     <string name="folders">Dossiers</string>
     <string name="settings">Paramètres</string>
     <string name="sections">Sections</string>
+    <!-- Settings hub group headers (iOS-style grouped list). -->
+    <string name="settings_group_connection">Connexion</string>
+    <string name="settings_group_playback">Affichage et lecture</string>
+    <string name="settings_group_library">Bibliothèque</string>
+    <string name="settings_group_advanced">Avancé</string>
     <string name="sections_desc">Choisissez les sections affichées dans la barre de navigation</string>
     <string name="sections_show">Afficher dans la barre</string>
     <string name="edit">Modifier</string>

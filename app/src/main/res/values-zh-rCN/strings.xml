@@ -57,6 +57,11 @@
     <string name="folders">文件夹</string>
     <string name="settings">设置</string>
     <string name="sections">分区</string>
+    <!-- Settings hub group headers (iOS-style grouped list). -->
+    <string name="settings_group_connection">连接</string>
+    <string name="settings_group_playback">显示与播放</string>
+    <string name="settings_group_library">媒体库</string>
+    <string name="settings_group_advanced">高级设置</string>
     <string name="sections_desc">选择要在顶部导航栏中显示的分区</string>
     <string name="sections_show">在顶部栏中显示</string>
     <string name="edit">编辑</string>

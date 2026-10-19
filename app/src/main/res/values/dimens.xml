@@ -21,9 +21,6 @@
     <dimen name="overscan_horizontal">48dp</dimen>
     <dimen name="overscan_vertical">27dp</dimen>
 
-    <dimen name="menu_item_width">100dp</dimen>
-    <dimen name="menu_item_height">100dp</dimen>
-
     <dimen name="image_card_width">192dp</dimen>
     <dimen name="image_card_height">108dp</dimen>
 
@@ -143,6 +140,21 @@
 
     <!-- Timeline day header: vertical padding clears focused mosaic cell scale overflow. -->
     <dimen name="day_header_padding_vertical">24dp</dimen>
+
+    <!-- Settings surface (SET-001..SET-005): iOS-style rows over AGENTS.md §5.1 tokens. -->
+    <!-- Row minimum height: single 8dp-grid multiple for a comfortable 10-foot D-pad target. -->
+    <dimen name="settings_row_min_height">72dp</dimen>
+    <!-- Mirrors AppTheme's browsePaddingTop (100dp): clears the 64dp tab bar at its 28dp
+         top margin for plain-fragment pages that don't sit in Leanback's browse container. -->
+    <dimen name="settings_hub_top_clearance">100dp</dimen>
+    <!-- iOS-style toggle geometry: 56×32 track, 28dp thumb derived from thumbTextPadding. -->
+    <dimen name="settings_switch_width">56dp</dimen>
+    <dimen name="settings_switch_height">32dp</dimen>
+    <dimen name="settings_switch_thumb_padding">14dp</dimen>
+    <!-- Trailing chevron for drill-in rows. -->
+    <dimen name="settings_chevron_size">24dp</dimen>
+    <!-- Dialog backdrop dim behind the floating settings panel (see SettingsDialog). -->
+    <item name="settings_window_dim" type="dimen" format="float">0.45</item>
 
     <!-- Timeline scrubber paint geometry. -->
     <dimen name="scrubber_padding_v">16dp</dimen>

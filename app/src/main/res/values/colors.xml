@@ -64,6 +64,11 @@
     <!-- Soft white glow behind the focus hairline (tv-focus-navigation-kit recipe: 8dp spread @ ~28%). -->
     <color name="focus_glow">#47FFFFFF</color>
     <color name="accent_brand">#4250AF</color>
+    <!-- Settings backdrop scrim (SET-004): surface_base at 92%. 78% left the artwork bright
+         enough that text_secondary group headers measured ~3.6:1 against bright photos (below
+         the 4.5:1 floor); 92% keeps the artwork as a subtle un-blurred texture while headers
+         clear the floor (~6:1). Rows sit on opaque surface_raised either way. -->
+    <color name="settings_backdrop_scrim">#EB0A0A0B</color>
     <color name="tab_scrim">#99000000</color>
     <!-- Tab bar labels: active pill label is near-black (surface_base), idle labels stay near-white. -->
     <color name="tab_text_active">#0A0A0B</color>

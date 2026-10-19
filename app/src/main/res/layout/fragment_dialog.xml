@@ -14,9 +14,22 @@
   ~ limitations under the License.
   -->
 
+<!--
+  Settings dialog content: the settings pane fills the whole window (the dialog window is
+  full-bleed and opaque at its edges via the pane's own scrim stack) so no underlying page
+  — and no stale focus indicator on it — can remain visible around the pane. The pane's
+  artwork/scrim background comes from R.layout.settings_screen_pane (SET-004).
+  fragment_settings_holder keeps its original id: every settings surface (pref screens,
+  meta data customiser, album settings) is hosted inside it.
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:id="@+id/fragment_settings_holder"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="horizontal">
+
+    <FrameLayout
+        android:id="@+id/fragment_settings_holder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </LinearLayout>

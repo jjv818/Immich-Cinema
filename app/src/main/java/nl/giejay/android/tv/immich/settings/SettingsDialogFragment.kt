@@ -4,16 +4,24 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.Gravity
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window
 import android.widget.RelativeLayout
 import androidx.fragment.app.DialogFragment
 import nl.giejay.android.tv.immich.R
 
 
+/**
+ * Settings dialog surface (SET-001..SET-005). Window: transparent background over the
+ * underlying page's artwork, with a dim (`SettingsDialog` style) so the artwork stays
+ * visible, un-blurred and lightly dimmed behind the floating settings pane
+ * (R.layout.fragment_dialog / `fragment_settings_holder`).
+ *
+ * BACK handling: the dialog's key listener first lets the settings pane ([SettingsScreenFragment])
+ * pop drill-in/list-dialog entries before dismissing.
+ */
 class SettingsDialogFragment : DialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater,
@@ -60,31 +68,32 @@ class SettingsDialogFragment : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-
-        // the content
+        // Window shell only: transparent window, dimming behind comes from the SettingsDialog
+        // theme (backgroundDimEnabled/Amount) so the artwork stays visible and lightly
+        // dimmed; the pane layout in onCreateView provides the floating settings column.
         val root = RelativeLayout(activity)
-//        root.layoutParams = ViewGroup.LayoutParams(
-//            200,
-//            ViewGroup.LayoutParams.MATCH_PARENT
-//        )
-
-        // creating the fullscreen dialog
-        val dialog = Dialog(requireContext())
-        val dialogWindow: Window? = dialog.window
+        val dialog = Dialog(requireContext(), R.style.SettingsDialog)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.setContentView(root)
-        dialogWindow!!.setBackgroundDrawable(ColorDrawable(Color.BLACK))
-//        val params: WindowManager.LayoutParams = dialogWindow.attributes
-//        params.height = ViewGroup.LayoutParams.MATCH_PARENT
-//        dialogWindow.attributes = params
-        dialogWindow.setGravity(Gravity.END)
+        dialog.setOnKeyListener { _, keyCode, event ->
+            if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_BACK) {
+                when (val child = childFragmentManager.fragments.lastOrNull()) {
+                    is SettingsScreenFragment -> child.onBackRequested()
+                    else -> false
+                }
+            } else {
+                false
+            }
+        }
         return dialog
     }
 
     override fun onStart() {
         super.onStart()
-        val args = SettingsDialogFragmentArgs.fromBundle(requireArguments())
-        if (args.fullscreen) {
-            dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-        }
+        // Always full-bleed: the pane keeps its column geometry from the layout regardless.
+        dialog?.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
     }
 }
