@@ -69,6 +69,8 @@
     <string name="this_month">本月</string>
     <string name="today">今天</string>
     <string name="yesterday">昨天</string>
+    <string name="a11y_photo">照片，%1$s</string>
+    <string name="a11y_video">视频，%1$s</string>
     <plurals name="years_ago">
         <item quantity="other">%d 年前</item>
     </plurals>

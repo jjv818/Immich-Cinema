@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide
 import nl.giejay.android.tv.immich.R
 import nl.giejay.android.tv.immich.api.model.Memory
 import nl.giejay.android.tv.immich.api.util.ApiUtil
+import java.time.LocalDate
 
 class TimelineMosaicAdapter(
     private val gapPx: Int,
@@ -201,6 +202,19 @@ class TimelineMosaicAdapter(
         fun bind(rowItem: TimelineMosaicItem.Row) {
             clearImages()
             val inflater = LayoutInflater.from(row.context)
+            // Mosaic cells are image-only, so the cell itself has to carry the TalkBack
+            // description (uiautomator previously reported these as "not accessibility friendly").
+            // Every cell in a row shares the row's day, so resolve the label once per row.
+            val context = row.context
+            val dayLabel = runCatching {
+                TimelineDateFormatter.dayLabel(
+                    LocalDate.parse(rowItem.dayKey),
+                    todayLabel = context.getString(R.string.today),
+                    yesterdayLabel = context.getString(R.string.yesterday)
+                )
+            }.getOrDefault(rowItem.dayKey)
+            val photoLabel = context.getString(R.string.a11y_photo, dayLabel)
+            val videoLabel = context.getString(R.string.a11y_video, dayLabel)
             rowItem.cells.forEachIndexed { index, cell ->
                 val cellRoot = inflater.inflate(R.layout.timeline_mosaic_cell, row, false)
                 val image = cellRoot.findViewById<ImageView>(R.id.timeline_mosaic_image)
@@ -221,6 +235,7 @@ class TimelineMosaicAdapter(
                 cellRoot.setTag(R.id.timeline_mosaic_cell_day_key, cell.dayKey)
                 cellRoot.isFocusable = true
                 cellRoot.isFocusableInTouchMode = true
+                cellRoot.contentDescription = if (cell.asset.isImage) photoLabel else videoLabel
                 cellRoot.setOnClickListener { onCellClick(cell) }
                 cellRoot.setOnFocusChangeListener { v, hasFocus ->
                     // Scale from the cell center; headers/rows keep padding so taller

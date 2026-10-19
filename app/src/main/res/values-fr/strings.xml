@@ -70,6 +70,8 @@
     <string name="this_month">Ce mois-ci</string>
     <string name="today">Aujourd’hui</string>
     <string name="yesterday">Hier</string>
+    <string name="a11y_photo">Photo, %1$s</string>
+    <string name="a11y_video">Vidéo, %1$s</string>
     <plurals name="years_ago">
         <item quantity="one">Il y a %d an</item>
         <item quantity="other">Il y a %d ans</item>
