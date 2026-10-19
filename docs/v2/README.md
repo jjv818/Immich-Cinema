@@ -1,13 +1,13 @@
 # Immich Cinema — v2 UI/UX iteration
 
-**Status: planned, not started.** This folder holds the plan for the **next** UI/UX iteration of
-Immich Cinema. It is *not* the acceptance criteria for v1.
+**Status: v1 shipped; v2 planned.** The three files in this folder are the plan for the **next**
+UI/UX iteration. They are *not* the acceptance criteria for v1.
 
 | File | Purpose |
 |---|---|
-| `UI_UX_SPEC.md` | The v2 spec: visual identity, design system, screens, interaction, motion, accessibility. |
-| `UI_UX_COMPLETION_CHECKLIST.md` | Item-by-item acceptance checklist (IDs `VIS-*`, `HOME-*`, `GRID-*`, `ALBUM-*`, `VIEWER-*`, `FOCUS-*`, `MOTION-*`, `A11Y-*`, `BUILD-*`) with status markers. |
-| `UI_UX_VALIDATION.md` | Screenshot-review procedure, D-pad interaction matrix (`I-1..I-14`), and release gates (`G-1..G-10`). |
+| `UI_UX_SPEC_v2.md` | The v2 spec: visual identity, design system, screens, interaction, motion, accessibility. |
+| `UI_UX_COMPLETION_CHECKLIST_v2.md` | Item-by-item acceptance checklist (IDs `VIS-*`, `HOME-*`, `GRID-*`, `ALBUM-*`, `VIEWER-*`, `FOCUS-*`, `MOTION-*`, `A11Y-*`, `BUILD-*`). Statuses reconciled against v1 on 2026-10-19 — see its close-out section. |
+| `UI_UX_VALIDATION_v2.md` | Screenshot-review procedure, D-pad interaction matrix (`I-1..I-14`), and release gates (`G-1..G-10`). |
 
 ## Relationship to v1
 

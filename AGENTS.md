@@ -9,6 +9,14 @@ Revision: **v2 — post-grilling (2026-10-18)**. This revision reflects every de
 ratified through the grilling session; where it differs from an earlier assumption, this file is
 authoritative.
 
+**v1 status: implemented, device-verified 2026-10-19.** S0–S5 are on `redesign`; build and tests are
+green (153 tests / 32 classes), lint is baselined and passing, and the P0 interaction paths were
+exercised on the Sony Bravia (Android 12 / API 31, 1920×1080 @ 320dpi). Values below have been
+corrected to the **as-built** ones where the implementation deliberately diverged (tab-bar
+auto-hide, focus scale 1.06, `MOSAIC_FOCUS_LOCK_RELEASE_MS = 250L`).
+Still **unverified**: screensaver daydream, TalkBack, the sign-in GuidedStep screen, and the sign-in
+flow visually. Treat those as open, not done.
+
 Upstream: `giejay/Immich-Android-TV` (GPL-3.0). Baseline: commit `037cb7c` (`6.2.0 (148)`).
 Working branches: `main` tracks `origin/main` (upstream, for cherry-picks); all work happens on
 `redesign`, branched from `037cb7c`.
@@ -218,8 +226,10 @@ three different focus colours and radii; no image placeholder/error state wired
   `restoreSelectionIfNeeded()` (`:779-878`).
 - `TimelineLeaveOff.kt` is **pure logic with unit tests** (`TimelineLeaveOffTest`). Do not change its
   semantics; reuse it.
-- `MOSAIC_FOCUS_LOCK_RELEASE_MS = 160L` is tuned against the cell focus-scale duration. **If you
-  change the focus animation duration, re-verify this constant still exceeds it.**
+- `MOSAIC_FOCUS_LOCK_RELEASE_MS = 250L` is tuned against the cell focus-scale duration. **If you
+  change the focus animation duration, re-verify this constant still exceeds it.** (Raised from 160L
+  when the mosaic scale went to 1.06; the release must outlast the scale animation or the lock clears
+  mid-move.)
 - `MainActivity` is `singleTask` and forwards every key to `KeyEventsViewModel`; grid pages depend on
   this for DPAD_RIGHT-on-last-card.
 
@@ -270,7 +280,11 @@ it uses `DefaultCardTheme` (206×116dp).
   gear; no Edit tab; no consolidation.
 - Tab bar **centred if it fits at 20sp**, else left-aligned scrollable (verify by rendering; report
   which one landed).
-- Persistent (no auto-hide) this milestone.
+  **As built:** 9 labels (8 sections + Settings) do not fit at 20sp, so the bar is a **centred
+  capsule capped at 90% width that scrolls internally** — neither documented outcome. Consequence:
+  Settings sits off-screen at rest and is reached by scrolling the bar right.
+- **Auto-hide** (supersedes "persistent"): the bar slides away when page content scrolls and returns
+  when focus moves up into it. DOWN from the bar hands focus into the page.
 - UP-chain: mosaic row 1 → memories rail → tab bar → stop (validate on device).
 
 ### Design
@@ -280,7 +294,7 @@ it uses `DefaultCardTheme` (206×116dp).
 - Settings hub text-first, no icon tiles. Platform default font.
 - Section-page headings dropped; contextual headings kept on detail pages (album/person/folder).
 - Memories rail stays top-of-Timeline; cards restyled to the reference.
-- Focus ≈1.03–1.05 + white hairline; background cross-fade (~250ms) is the primary focus cue.
+- Focus 1.06 + white hairline + soft glow; background cross-fade is the primary focus cue.
 - Timeline stays justified/uncropped.
 
 ### Scope & sequencing
@@ -339,13 +353,15 @@ it uses `DefaultCardTheme` (206×116dp).
 
 ### 5.2 Tab bar
 
-- **Centred**, content-sized floating capsule near the top edge; if it doesn't fit at 20sp, fall back
-  to a left-aligned scrollable strip and report which happened. 8 content tabs + Settings gear.
+- **Centred**, content-sized floating capsule near the top edge, capped at 90% of screen width.
+  With 9 labels it exceeds that cap and scrolls internally (see §4 Navigation — Settings is off
+  screen at rest). 8 content tabs + Settings.
 - Height 64dp, fully rounded ends, `tab_scrim` fill, 28dp top margin.
 - Selected tab: solid white pill, near-black `Body` label. Unselected: `text_primary` at ~90%, not
   50% — the reference does not fade unselected labels.
-- **Persistent** (no auto-hide) this milestone; auto-hide revisited only after the nav migration is
-  proven on device.
+- **Auto-hide** (supersedes the earlier "persistent" decision): the bar translates up when page
+  content scrolls down and returns when focus moves up into it or content scrolls back to the top.
+  DOWN while the bar owns focus hands focus into the page.
 - Hidden on non-home destinations (auth, viewer, screensaver).
 - Focus entry follows a documented chain (§6.4) — resolve the UP-chain collision with the memories
   rail explicitly.
@@ -358,7 +374,7 @@ it uses `DefaultCardTheme` (206×116dp).
 - Asset/album cards: sentence case title + `Meta` date.
 - Video items: one small monochrome play glyph bottom-right, no duration text.
 - `.override(w, h)` plus real `placeholder` / `error` drawables (kills the grey-tile defect).
-- Focus: scale ~1.03, small lift (8dp), `focus_hairline`. Colour is never the only cue.
+- Focus: scale 1.06, small lift (8dp), `focus_hairline` + soft glow. Colour is never the only cue.
 
 ### 5.4 Grid pages
 
@@ -382,11 +398,15 @@ it uses `DefaultCardTheme` (206×116dp).
 
 | Surface | Scale | Lift | Marker | Duration |
 |---|---|---|---|---|
-| Mosaic cell | 1.05 | 8dp | `focus_hairline` | 150ms |
-| Memory / rail card | 1.03 | 8dp | `focus_hairline` | 150ms |
+| Mosaic cell | 1.06 | 8dp | `focus_hairline` + glow | 150ms |
+| Memory / rail card | 1.06 | 8dp | `focus_hairline` + glow | 150ms |
 | Grid card | small (Leanback) | small | `focus_hairline` | 150ms |
 | Rail/tab item | 1.03 | — | brightness + hairline | 150ms |
 | Background | — | — | cross-fade to focused artwork | 250ms |
+
+Scale is `@fraction/focus_scale` (6%) applied to mosaic cells and memory cards. `BackgroundManager`
+cross-fades at its own internal cadence (500ms) on grid pages; the 250ms figure above applies to
+surfaces that animate themselves.
 
 Replace the coloured rings (`#4250AF`, `#03A9F4`) with `focus_hairline`. Extract the hard-coded
 constants in `TimelineMosaicAdapter.kt`, `MemoryPresenter.kt`, `TimelineScrubberView.kt` into
@@ -446,6 +466,13 @@ interface NavFocusContract {
 `TimelineLeaveOff.kt` is untouched. **Plan B** (pre-authorised): if leave-off regresses on device and
 is not quickly fixable, restore a restyled, narrower vertical rail as the tab strip.
 
+**As built:** the contract is realised as the activity-scoped `HomeNavViewModel.isTabBarFocused`
+(a `StateFlow`), with `HomeTabBarView.onTabBarFocusChanged` publishing it. `TimelineFragment`
+collects it as the enter/exit signal. `NavFocusContractTest` pins the semantic that matters: the
+signal must fire **exactly once per transition**, because a duplicate enter re-captures the resume
+state and clobbers leave-off. Plan B was not needed — leave-off is verified on device (viewer BACK
+returns to the same cell).
+
 ### 6.3 Tab bar host
 
 **App-owned overlay in `activity_main.xml`** (sibling of the `NavHostFragment`), not Leanback's title
@@ -462,12 +489,19 @@ activity-scoped `HomeNavViewModel` (`selectedSectionIndex`, `visibleSections`) c
 
 1. **Edit mode moves.** Remove the fake "Edit" section; move section show/hide into Settings as a
    declarative screen reusing the `PrefScreen` schema and the **same `HIDDEN_HOME_ITEMS` key**.
+   *Done: `SectionsPrefScreen` + `SectionVisiblePref`.*
 2. **Tab activation hands focus into the page.** Today `startHeadersTransition(false)` makes Leanback
    return focus; with no rail nothing does — the remote will appear dead.
+   *Done: `HomeNavViewModel.requestContentFocus()`. Note DOWN from the bar must be caught by
+   `setOnKeyInterceptListener` — `BaseGridView` consumes key events before `onKeyDown` is reached.*
 3. **BACK semantics.** BACK on a non-Timeline tab → Timeline; BACK on Timeline → exit.
+   *Done in `MainActivity.onKeyDown`, gated on the home destination so the viewer, settings dialog and
+   auth keep their own BACK.*
 4. **UP-chain.** Mosaic row 1 → memories rail → tab bar → stop. Validate on device.
+   *Verified on the Sony TV.*
 5. **Verify layout padding.** With headers disabled, confirm Leanback does not still inset rows by
    `lb_browse_rows_margin_start` (238dp). Fallback: override to `0dp` and use `browsePaddingStart/End`.
+   *Done: `browseRowsMarginStart = 0dp`, `browsePaddingTop = 100dp` for the bar.*
 
 Leanback hooks available for restyling without code changes (verified against upstream): theme attrs
 `headersVerticalGridStyle`, `headerStyle`, `sectionHeaderStyle`, `browsePaddingStart/End/Top/Bottom`,
@@ -528,6 +562,14 @@ for the new applicationId. The screensaver component name changes with `applicat
 `enforceCheck false`; it will reformat unrelated files and can abort on existing sources. Format
 touched files by hand.
 
+**Lint is baselined.** `app/lint-baseline.xml` captures the pre-existing debt (16 × `RestrictedApi`
+in the home-screen-channel code, 10 × `MissingTranslation` for `home_screen_channels_*`, 1 ×
+`PropertyEscape` from `local.properties`), so `./gradlew :app:lintDebug` now **passes** and any new
+issue fails the build for real. Fix issues rather than growing the baseline; when you deliberately
+retire entries, regenerate with `./gradlew :app:updateLintBaseline` and commit the diff.
+New UI strings must land in `values-fr`, `values-ru` and `values-zh-rCN` in the same change, or
+`MissingTranslation` fires.
+
 ### 8.3 Verify the rendered interface
 
 Compilation and unit tests are necessary but **not sufficient** (§2.2). Capture the real screen at TV
@@ -579,15 +621,16 @@ Existing suites that must stay green (JVM/Robolectric, `app/src/test`): `Timelin
 `AlbumDetailsFragmentTest` is entirely commented out. S0 removals (Firebase/Donate/QR) have no direct
 test coverage; verify `testDebugUnitTest` still passes after S0.
 
-New tests to add (Robolectric is configured via `includeAndroidResources = true`):
+Tests added in v1 (Robolectric is configured via `includeAndroidResources = true`):
 
-- `NavFocusContractTest` — enter/exit mapping fires exactly once per transition and
-  `isNavChromeExpanded` gates the protected sites correctly. This protects leave-off.
-- `HomeNavViewModelTest` — tab order stays in lockstep with `HEADERS` indices; hiding sections keeps
-  indices stable (guards the `PageRowFragmentFactory` mapping).
+- `NavFocusContractTest` — the enter/exit signal fires exactly once per transition (a duplicate
+  enter re-captures resume state and clobbers leave-off) and `isTabBarFocused` mirrors the bar state.
+- `HomeNavViewModelTest` — tab selection, section order, monotonic content-focus requests.
 - `DesignTokenTest` — every token resolves, so typos fail in CI rather than on the TV.
 - `ArtworkCardPresenterTest` — an empty description never renders a raw filename; placeholder/error
   drawables are wired.
+
+Suite as of the v1 close: **153 tests across 32 classes, 0 failures.**
 
 ---
 
@@ -598,7 +641,7 @@ New tests to add (Robolectric is configured via `includeAndroidResources = true`
 | 1 | **Timeline leave-off regression** from the header-contract change | `NavFocusContract` 1:1 mapping; `TimelineLeaveOff` untouched; `NavFocusContractTest`; Plan B escape hatch; device pass |
 | 2 | `HEADERS_HIDDEN` layout/padding surprises | `VERIFY-ON-DEVICE` comments; `lb_browse_rows_margin_start → 0dp` fallback |
 | 3 | Tab activation leaves the remote seemingly dead | explicit `requestFocus()` into page content + checklist item |
-| 4 | Focus-scale change invalidates `MOSAIC_FOCUS_LOCK_RELEASE_MS = 160L` | re-verify constant vs. new duration |
+| 4 | Focus-scale change invalidates `MOSAIC_FOCUS_LOCK_RELEASE_MS` | re-verify constant vs. new duration (currently 250L against a 150ms scale) |
 | 5 | Single-pass scope produces one large diff | S0–S5 compilable steps, kept as separate commits |
 | 6 | S0 removals break a build that was previously green | remove each feature in its own commit; run full test suite after S0 (do not cherry-pick the stale F-Droid-no-Firebase branch) |
 | 7 | Image loading/memory (Glide registry swap, unbounded decodes) | leave `CustomGlideModule` untouched; deliberate `.override()`; watch jank while `TimelineFocusVideoPreview` decodes |

@@ -1,8 +1,8 @@
-# UI_UX_VALIDATION.md — Screenshot-review, interaction test matrix, and release gates
+# UI_UX_VALIDATION_v2.md — Screenshot-review, interaction test matrix, and release gates
 
 **Project:** Immich Cinema
-**Spec:** `UI_UX_SPEC.md` | **Checklist:** `UI_UX_COMPLETION_CHECKLIST.md`
-**Status:** Validation procedure only — no implementation yet
+**Spec:** `UI_UX_SPEC_v2.md` | **Checklist:** `UI_UX_COMPLETION_CHECKLIST_v2.md`
+**Status:** Procedure active; gates G-1..G-10 not yet all run against v1.
 
 ---
 
