@@ -163,8 +163,8 @@ class TimelineFragment : BrandedSupportFragment(), BrowseSupportFragment.MainFra
         recyclerView = view.findViewById(R.id.timeline_recycler)
         scrubberView = view.findViewById(R.id.timeline_scrubber)
 
-        gapPx = dp(6)
-        rowHeightPx = dp(180)
+        gapPx = resources.getDimensionPixelSize(R.dimen.timeline_row_gap)
+        rowHeightPx = resources.getDimensionPixelSize(R.dimen.timeline_row_height)
 
         scrubberView?.onCommit = { monthKey, exitToMosaic ->
             commitJumpFromScrubber(monthKey, exitToMosaic = exitToMosaic)
@@ -178,6 +178,9 @@ class TimelineFragment : BrandedSupportFragment(), BrowseSupportFragment.MainFra
 
         val adapter = TimelineMosaicAdapter(
             gapPx = gapPx,
+            focusScale = 1f + resources.getFraction(R.fraction.focus_scale, 1, 1),
+            motionUiMs = resources.getInteger(R.integer.motion_ui_ms).toLong(),
+            cellRadiusPx = resources.getDimension(R.dimen.radius_cell),
             onCellClick = { cell ->
                 viewModel.rememberSelection(cell.dayKey, cell.asset.id)
                 onItemClicked(cell.asset.id)
@@ -252,6 +255,9 @@ class TimelineFragment : BrandedSupportFragment(), BrowseSupportFragment.MainFra
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 maybeLoadMoreNearEnd()
                 updateScrubberFromVisibleMonth()
+                // Collapse the floating tab bar once scrolled past the top; expand at the top.
+                val atTop = !recyclerView.canScrollVertically(-1)
+                homeNavViewModel.setTabBarExpanded(atTop)
             }
         })
 
@@ -438,7 +444,7 @@ class TimelineFragment : BrandedSupportFragment(), BrowseSupportFragment.MainFra
             backgroundManager.attach(requireActivity().window)
         }
         backgroundManager.drawable = ColorDrawable(
-            ContextCompat.getColor(requireContext(), R.color.gray_dark)
+            ContextCompat.getColor(requireContext(), R.color.surface_base)
         )
     }
 

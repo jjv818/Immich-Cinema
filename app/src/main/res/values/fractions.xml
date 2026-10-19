@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Focus scale above 1.0 (5% => ~1.05x). Shared by the artwork + memory cards. -->
-    <item name="focus_scale" type="fraction">5%</item>
+    <!-- Focus scale above 1.0 (6% => ~1.06x). Shared by the artwork + memory cards. -->
+    <item name="focus_scale" type="fraction">6%</item>
 </resources>

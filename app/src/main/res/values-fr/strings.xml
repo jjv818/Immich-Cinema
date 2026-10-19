@@ -57,6 +57,9 @@
     <string name="seasonal">Saisonnier</string>
     <string name="folders">Dossiers</string>
     <string name="settings">Paramètres</string>
+    <string name="sections">Sections</string>
+    <string name="sections_desc">Choisissez les sections affichées dans la barre de navigation</string>
+    <string name="sections_show">Afficher dans la barre</string>
     <string name="edit">Modifier</string>
     <string name="photos">Photos</string>
     <string name="random">Aléatoire</string>

@@ -1,5 +1,6 @@
 package nl.giejay.android.tv.immich.timeline
 
+import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Outline
 import android.view.LayoutInflater
@@ -35,6 +36,8 @@ class MemoryPresenter(
 
     private val focusScale = 1f + context.resources.getFraction(R.fraction.focus_scale, 1, 1)
     private val motionUiMs = context.resources.getInteger(R.integer.motion_ui_ms).toLong()
+    private val scrimRestPx = context.resources.getDimensionPixelSize(R.dimen.memory_scrim_rest)
+    private val scrimFocusPx = context.resources.getDimensionPixelSize(R.dimen.memory_scrim_focus)
 
     override fun onCreateViewHolder(parent: ViewGroup): ViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.memory_card, parent, false)
@@ -54,9 +57,14 @@ class MemoryPresenter(
         val image = view.findViewById<ImageView>(R.id.memory_card_image)
         val title = view.findViewById<TextView>(R.id.memory_card_title)
         val date = view.findViewById<TextView>(R.id.memory_card_date)
+        val scrim = view.findViewById<View>(R.id.memory_card_scrim)
 
         title.text = yearsAgoLabel(context, memory)
         date.text = formatMemoryDate(memory.memoryAt)
+
+        // Recycled views keep their focused state; reset scrim to the resting look.
+        cancelScrimAnimator(scrim)
+        scrim.layoutParams.height = scrimRestPx
 
         val coverId = memory.assets.firstOrNull()?.id
         Glide.with(image)
@@ -75,6 +83,11 @@ class MemoryPresenter(
                 .start()
             v.elevation = if (hasFocus) 8f else 0f
             v.foreground = if (hasFocus) context.getDrawable(R.drawable.focus_hairline) else null
+
+            // Scrim grows on focus so the overlaid label stays legible over the photo; at rest it
+            // stays compact so it doesn't read as a heavy footer.
+            animateScrimHeight(scrim, if (hasFocus) scrimFocusPx else scrimRestPx)
+
             if (hasFocus) {
                 onMemoryFocused(memory)
             }
@@ -88,6 +101,32 @@ class MemoryPresenter(
 
     private fun formatMemoryDate(date: Date): String =
         SimpleDateFormat("MMM d, yyyy", Locale.getDefault(Locale.Category.FORMAT)).format(date)
+
+    /**
+     * Animate the scrim height between its resting and focused sizes. The scrim is bottom-anchored,
+     * so a plain layoutParams.height change would snap; animate the height and relayout each frame
+     * for a smooth expansion/contraction.
+     */
+    private fun animateScrimHeight(scrim: View, targetHeight: Int) {
+        cancelScrimAnimator(scrim)
+        val from = scrim.height.coerceAtLeast(1)
+        val animator = ValueAnimator.ofInt(from, targetHeight).apply {
+            duration = motionUiMs
+            addUpdateListener { a ->
+                scrim.layoutParams = scrim.layoutParams.apply {
+                    height = a.animatedValue as Int
+                }
+                scrim.requestLayout()
+            }
+        }
+        scrim.setTag(R.id.memory_card_scrim, animator)
+        animator.start()
+    }
+
+    private fun cancelScrimAnimator(scrim: View) {
+        (scrim.getTag(R.id.memory_card_scrim) as? ValueAnimator)?.cancel()
+        scrim.setTag(R.id.memory_card_scrim, null)
+    }
 
     companion object {
         fun yearsAgoLabel(context: Context, memory: Memory): String {

@@ -31,6 +31,10 @@ class HomeNavViewModel : ViewModel() {
     /** Incremented each time a tab is selected; page fragments request content focus in response. */
     val contentFocusRequest: StateFlow<Int> = _contentFocusRequest
 
+    private val _tabBarExpanded = MutableStateFlow(true)
+    /** True while the tab bar is on screen. Pages collapse it on scroll-down, expand on top. */
+    val tabBarExpanded: StateFlow<Boolean> = _tabBarExpanded
+
     fun setSections(titles: List<String>) {
         _sections.value = titles
     }
@@ -46,5 +50,10 @@ class HomeNavViewModel : ViewModel() {
     /** Signals the currently-shown page to take focus (after a tab selection). */
     fun requestContentFocus() {
         _contentFocusRequest.value += 1
+    }
+
+    /** Collapse/expand the floating tab bar (scrolled down / back to top). */
+    fun setTabBarExpanded(expanded: Boolean) {
+        _tabBarExpanded.value = expanded
     }
 }

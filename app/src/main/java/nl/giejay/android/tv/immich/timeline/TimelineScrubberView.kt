@@ -60,7 +60,7 @@ class TimelineScrubberView @JvmOverloads constructor(
     }
     private val badgePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         // Immich dark: bg-subtle/90
-        color = 0xE62A2A2A.toInt()
+        color = ContextCompat.getColor(context, R.color.scrubber_badge)
         style = Paint.Style.FILL
     }
     private val dotPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -69,19 +69,19 @@ class TimelineScrubberView @JvmOverloads constructor(
     }
     private val accentPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
         color = ContextCompat.getColor(context, R.color.timeline_scrubber_accent)
-        strokeWidth = dp(2f)
+        strokeWidth = dpRes(R.dimen.scrubber_accent_width)
         style = Paint.Style.STROKE
         strokeCap = Paint.Cap.BUTT
     }
 
-    private val paddingV = dp(16f)
-    private val labelEndPad = dp(20f)
-    private val dotEndPad = dp(10f)
+    private val paddingV = dpRes(R.dimen.scrubber_padding_v)
+    private val labelEndPad = dpRes(R.dimen.scrubber_label_end_pad)
+    private val dotEndPad = dpRes(R.dimen.scrubber_dot_end_pad)
     /** Immich scroll indicator `w-10` (~2.5rem). */
-    private val passiveLineWidth = dp(40f)
-    private val badgePadH = dp(10f)
-    private val badgePadV = dp(5f)
-    private val badgeRadius = dp(6f)
+    private val passiveLineWidth = dpRes(R.dimen.scrubber_passive_line_width)
+    private val badgePadH = dpRes(R.dimen.scrubber_badge_pad_h)
+    private val badgePadV = dpRes(R.dimen.scrubber_badge_pad_v)
+    private val badgeRadius = dpRes(R.dimen.scrubber_badge_radius)
     private val badgeRect = RectF()
 
     private val tvScale = 2.0f
@@ -272,6 +272,9 @@ class TimelineScrubberView @JvmOverloads constructor(
 
     private fun dp(value: Float): Float =
         TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, value, resources.displayMetrics)
+
+    private fun dpRes(resId: Int): Float =
+        resources.getDimension(resId)
 
     private fun sp(value: Float): Float =
         TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, value, resources.displayMetrics)

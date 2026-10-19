@@ -123,10 +123,10 @@ object TimelineLeaveOff {
     }
 
     /**
-     * Hold [TimelineMosaicLayoutManager.suppressFocusScroll] through cell focus scale (120ms)
-     * so Leanback cannot inch the page after unlock.
+     * Hold [TimelineMosaicLayoutManager.suppressFocusScroll] through cell focus scale
+     * ([R.integer.motion_ui_ms], 150ms) so Leanback cannot inch the page after unlock.
      */
-    const val MOSAIC_FOCUS_LOCK_RELEASE_MS = 160L
+    const val MOSAIC_FOCUS_LOCK_RELEASE_MS = 250L
 
     /**
      * While slider leave-off has the viewport pinned (`allowScrollAdjust == false`),

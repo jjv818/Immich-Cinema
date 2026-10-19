@@ -1,13 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Focus hairline: thin white (85%) rounded outline, inset so clipToOutline doesn't clip the
-     edge stroke away. -->
-<inset xmlns:android="http://schemas.android.com/apk/res/android"
-    android:inset="2dp">
-    <shape android:shape="rectangle">
-        <solid android:color="@android:color/transparent" />
-        <stroke
-            android:width="3dp"
-            android:color="@color/focus_hairline" />
-        <corners android:radius="@dimen/radius_card" />
-    </shape>
-</inset>
+<!-- Focus treatment: a crisp white (85%) hairline over a soft white glow. Two stacked strokes
+     (GPU-light, no RenderEffect blur — tv-focus-navigation-kit recipe). The glow stroke is
+     centred on the view edge so half is clipped by clipToOutline, leaving a ~4dp soft band; the
+     hairline is inset so the crisp edge is never clipped away. -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent" />
+            <stroke
+                android:width="@dimen/focus_glow_width"
+                android:color="@color/focus_glow" />
+            <corners android:radius="@dimen/radius_card" />
+        </shape>
+    </item>
+    <item android:inset="@dimen/focus_hairline_inset">
+        <shape android:shape="rectangle">
+            <solid android:color="@android:color/transparent" />
+            <stroke
+                android:width="@dimen/focus_hairline_width"
+                android:color="@color/focus_hairline" />
+            <corners android:radius="@dimen/radius_card" />
+        </shape>
+    </item>
+</layer-list>

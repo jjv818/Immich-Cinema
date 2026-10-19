@@ -17,8 +17,8 @@ import nl.giejay.android.tv.immich.R
  * Renders a grid card as image-only artwork: full-bleed cover, a bottom [R.drawable.scrim_bottom]
  * gradient, and a title + secondary line overlaid bottom-left. No footer bar.
  *
- * Focus is a restrained ~1.03 scale + 8dp lift + a white hairline ([R.drawable.focus_hairline]) —
- * colour is never the only cue.
+ * Focus is a restrained ~1.06 scale + 8dp lift + a white hairline with soft glow
+ * ([R.drawable.focus_hairline]) — colour is never the only cue.
  */
 class ArtworkCardPresenter(private val context: Context) : Presenter() {
 

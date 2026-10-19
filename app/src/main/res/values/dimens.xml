@@ -82,8 +82,13 @@
     <dimen name="card_width">192dp</dimen>
     <dimen name="card_height">96dp</dimen>
     <dimen name="memory_card_corner_radius">12dp</dimen>
-    <dimen name="memory_card_width">280dp</dimen>
-    <dimen name="memory_card_height">160dp</dimen>
+    <!-- Memory card: 3:2 (200 × 133dp) per AGENTS.md §5.1. -->
+    <dimen name="memory_card_width">200dp</dimen>
+    <dimen name="memory_card_height">133dp</dimen>
+    <!-- Bottom scrim over the memory-card cover. Compact at rest, expands on focus so the
+         title/date stays legible only when the card is the focus of attention. -->
+    <dimen name="memory_scrim_rest">60dp</dimen>
+    <dimen name="memory_scrim_focus">92dp</dimen>
     <!--
       Clears scrubber year labels for the rightmost visible resting card
       (scrubber 112dp − recycler paddingEnd 64dp, plus a little gap).
@@ -112,7 +117,40 @@
     <dimen name="artwork_card_width">206dp</dimen>
     <dimen name="artwork_card_height">155dp</dimen>
 
+    <!-- Focus treatment geometry (tv-focus-navigation-kit recipe: 3dp border + 8dp spread glow). -->
+    <dimen name="focus_hairline_width">3dp</dimen>
+    <dimen name="focus_glow_width">8dp</dimen>
+    <!-- Hairline inset so clipToOutline does not clip the crisp edge stroke. -->
+    <dimen name="focus_hairline_inset">2dp</dimen>
+
+    <!-- Timeline mosaic: larger rows and gaps per AGENTS.md §5.5. -->
+    <dimen name="timeline_row_height">200dp</dimen>
+    <dimen name="timeline_row_gap">8dp</dimen>
+
     <!-- Tab bar -->
     <dimen name="tab_bar_height">64dp</dimen>
     <dimen name="tab_bar_top_margin">28dp</dimen>
+
+    <!-- Cards: shared scrim + text padding (no per-component ad-hoc values). -->
+    <dimen name="card_scrim_height">72dp</dimen>
+    <dimen name="card_text_padding_horizontal">16dp</dimen>
+    <dimen name="card_text_padding_bottom">14dp</dimen>
+
+    <!-- Video badge on cards/mosaic cells. -->
+    <dimen name="video_badge_margin">8dp</dimen>
+    <dimen name="video_badge_size">26dp</dimen>
+    <dimen name="video_badge_gap">6dp</dimen>
+
+    <!-- Timeline day header: vertical padding clears focused mosaic cell scale overflow. -->
+    <dimen name="day_header_padding_vertical">24dp</dimen>
+
+    <!-- Timeline scrubber paint geometry. -->
+    <dimen name="scrubber_padding_v">16dp</dimen>
+    <dimen name="scrubber_label_end_pad">20dp</dimen>
+    <dimen name="scrubber_dot_end_pad">10dp</dimen>
+    <dimen name="scrubber_passive_line_width">40dp</dimen>
+    <dimen name="scrubber_badge_pad_h">10dp</dimen>
+    <dimen name="scrubber_badge_pad_v">5dp</dimen>
+    <dimen name="scrubber_badge_radius">6dp</dimen>
+    <dimen name="scrubber_accent_width">2dp</dimen>
 </resources>

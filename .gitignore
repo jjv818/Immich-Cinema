@@ -19,3 +19,5 @@ mediasliderold
 mediaslider2
 commits.txt
 service-account-key.json
+# Scratch screenshots captured during device verification (binary, machine-specific).
+.dev-screenshots/

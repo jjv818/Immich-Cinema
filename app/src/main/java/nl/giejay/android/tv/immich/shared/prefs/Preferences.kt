@@ -442,6 +442,75 @@ data object LOAD_BACKGROUND_IMAGE : BooleanPref(true,
 
 data object HIDDEN_HOME_ITEMS : StringSetPref(emptySet(), "", "")
 
+/**
+ * A checkbox that controls whether one home section is shown, backed by [HIDDEN_HOME_ITEMS]
+ * (inverted: checked == visible == not in the hidden set). Persisted through
+ * [PreferenceManager.save] so live observers (HomeFragment's tab bar) update immediately.
+ */
+class SectionVisiblePref(
+    private val sectionName: String,
+    title: String,
+    summary: String
+) : Pref<Boolean, androidx.preference.CheckBoxPreference, Boolean>(true, title, summary) {
+
+    override fun key() = "section_visible_$sectionName"
+
+    override fun getValue(sharedPreferences: SharedPreferences): Boolean =
+        !PreferenceManager.itemInStringSet(sectionName, HIDDEN_HOME_ITEMS)
+
+    override fun save(sharedPreferences: SharedPreferences, value: Boolean) {
+        val hidden = PreferenceManager.get(HIDDEN_HOME_ITEMS).toMutableSet()
+        if (value) hidden.remove(sectionName) else hidden.add(sectionName)
+        PreferenceManager.save(HIDDEN_HOME_ITEMS, hidden)
+    }
+
+    override fun createPref(context: Context): androidx.preference.CheckBoxPreference =
+        androidx.preference.CheckBoxPreference(context)
+
+    // Custom creation: a non-persistent CheckBoxPreference driven by the section set, so AndroidX
+    // never writes its own boolean key.
+    override fun createPreference(context: Context): androidx.preference.CheckBoxPreference {
+        val pref = androidx.preference.CheckBoxPreference(context)
+        pref.key = key()
+        pref.title = title
+        pref.summary = summary
+        pref.isPersistent = false
+        pref.isChecked = getValue(PreferenceManager.sharedPreference)
+        pref.setOnPreferenceChangeListener { _, newValue ->
+            save(PreferenceManager.sharedPreference, newValue as Boolean)
+            true
+        }
+        return pref
+    }
+}
+
+/** The eight content sections; Settings stays always reachable and Timeline is the start page. */
+data object SectionsPrefScreen : PrefScreen(
+    ImmichApplication.appContext!!.getString(R.string.sections),
+    "sections",
+    listOf(
+        PrefCategory("", listOf(
+            sectionPref(R.string.timeline),
+            sectionPref(R.string.albums),
+            sectionPref(R.string.photos),
+            sectionPref(R.string.random),
+            sectionPref(R.string.people),
+            sectionPref(R.string.recent),
+            sectionPref(R.string.seasonal),
+            sectionPref(R.string.folders)
+        ))
+    )
+)
+
+private fun sectionPref(@androidx.annotation.StringRes nameRes: Int): SectionVisiblePref {
+    val name = ImmichApplication.appContext!!.getString(nameRes)
+    return SectionVisiblePref(
+        sectionName = name,
+        title = name,
+        summary = ImmichApplication.appContext!!.getString(R.string.sections_show)
+    )
+}
+
 data object USER_ID : ActionPref(null, ImmichApplication.appContext!!.getString(R.string.user_id),
     ImmichApplication.appContext!!.getString(R.string.user_id_desc),
     { context, _ ->

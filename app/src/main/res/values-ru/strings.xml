@@ -57,6 +57,9 @@
     <string name="seasonal">Сезонное</string>
     <string name="folders">Папки</string>
     <string name="settings">Настройки</string>
+    <string name="sections">Разделы</string>
+    <string name="sections_desc">Выберите разделы для верхней панели навигации</string>
+    <string name="sections_show">Показывать в верхней панели</string>
     <string name="edit">Редактировать</string>
     <string name="photos">Фото</string>
     <string name="random">Случайные</string>

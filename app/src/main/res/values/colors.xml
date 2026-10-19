@@ -61,7 +61,26 @@
     <color name="text_secondary">#99FFFFFF</color>
     <color name="text_tertiary">#61FFFFFF</color>
     <color name="focus_hairline">#D9FFFFFF</color>
+    <!-- Soft white glow behind the focus hairline (tv-focus-navigation-kit recipe: 8dp spread @ ~28%). -->
+    <color name="focus_glow">#47FFFFFF</color>
     <color name="accent_brand">#4250AF</color>
     <color name="tab_scrim">#99000000</color>
+    <!-- Tab bar labels: active pill label is near-black (surface_base), idle labels stay near-white. -->
+    <color name="tab_text_active">#0A0A0B</color>
+    <color name="tab_text_idle">#E6FFFFFF</color>
+    <!-- Timeline scrubber focus badge fill (Immich dark bg-subtle/90). -->
+    <color name="scrubber_badge">#E62A2A2A</color>
+    <!-- Scrim gradient endpoints (top -> bottom). -->
+    <color name="scrim_bottom_start">#00000000</color>
+    <color name="scrim_bottom_end">#B3000000</color>
+    <color name="scrim_top_start">#73000000</color>
+    <color name="scrim_top_end">#00000000</color>
+    <!-- Card placeholder surface (shown only while artwork loads). -->
+    <color name="card_placeholder">#1A1A1A</color>
+    <!-- Legacy playback/popup chrome (kept as named tokens pending a deeper viewer pass). -->
+    <color name="playback_header">#282248</color>
+    <color name="playback_item_regular">#FF6255</color>
+    <color name="playback_item_favorite">#FF6E40</color>
+    <color name="popup_background">#0F213F</color>
 
 </resources>
