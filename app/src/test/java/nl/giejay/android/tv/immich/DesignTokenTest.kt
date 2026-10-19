@@ -46,7 +46,7 @@ class DesignTokenTest {
             R.dimen.timeline_row_height, R.dimen.timeline_row_gap,
             R.dimen.card_scrim_height, R.dimen.card_text_padding_horizontal,
             R.dimen.card_text_padding_bottom, R.dimen.video_badge_margin,
-            R.dimen.video_badge_size, R.dimen.video_badge_gap,
+            R.dimen.video_badge_size,
             R.dimen.day_header_padding_vertical, R.dimen.scrubber_padding_v,
             R.dimen.scrubber_label_end_pad, R.dimen.scrubber_dot_end_pad,
             R.dimen.scrubber_passive_line_width, R.dimen.scrubber_badge_pad_h,

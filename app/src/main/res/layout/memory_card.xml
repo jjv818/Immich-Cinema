@@ -14,10 +14,12 @@
         android:contentDescription="@null"
         android:scaleType="centerCrop" />
 
+    <!-- Laid out at the focused height; the presenter shrinks it with scaleY when unfocused so
+         focus never animates a layout property (MOTION-003). -->
     <View
         android:id="@+id/memory_card_scrim"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/memory_scrim_rest"
+        android:layout_height="@dimen/memory_scrim_focus"
         android:layout_gravity="bottom"
         android:background="@drawable/scrim_bottom" />
 

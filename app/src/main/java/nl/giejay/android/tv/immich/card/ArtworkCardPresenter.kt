@@ -12,6 +12,7 @@ import androidx.leanback.widget.Presenter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import nl.giejay.android.tv.immich.R
+import nl.giejay.android.tv.immich.shared.motion.Motion
 
 /**
  * Renders a grid card as image-only artwork: full-bleed cover, a bottom [R.drawable.scrim_bottom]
@@ -77,7 +78,7 @@ class ArtworkCardPresenter(private val context: Context) : Presenter() {
             v.animate()
                 .scaleX(if (hasFocus) focusScale else 1f)
                 .scaleY(if (hasFocus) focusScale else 1f)
-                .setDuration(motionUiMs.toLong())
+                .setDuration(Motion.durationMs(v.context, motionUiMs))
                 .start()
             v.elevation = if (hasFocus) 8f else 0f
         }

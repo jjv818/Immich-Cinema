@@ -24,6 +24,7 @@ import nl.giejay.android.tv.immich.home.nav.HomeNavViewModel
 import nl.giejay.android.tv.immich.home.nav.HomeTabBarView
 import nl.giejay.android.tv.immich.homescreenchannels.ChannelDeepLinks
 import nl.giejay.android.tv.immich.homescreenchannels.DeepLinkTarget
+import nl.giejay.android.tv.immich.shared.motion.Motion
 import nl.giejay.android.tv.immich.shared.prefs.MetaDataScreen
 import nl.giejay.android.tv.immich.shared.prefs.PreferenceManager
 import nl.giejay.android.tv.immich.shared.prefs.SCREENSAVER_ANIMATE_ASSET_SLIDE
@@ -112,7 +113,7 @@ class MainActivity : FragmentActivity() {
                 val slideOut = -(tabBar.height + tabBar.top).toFloat()
                 tabBar.animate()
                     .translationY(if (expanded) 0f else slideOut)
-                    .setDuration(150L)
+                    .setDuration(Motion.durationMs(this@MainActivity, resources.getInteger(R.integer.motion_ui_ms)))
                     .start()
             }
         }

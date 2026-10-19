@@ -17,6 +17,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,14 +32,17 @@ import androidx.leanback.widget.OnChildLaidOutListener
 import androidx.leanback.widget.OnItemViewClickedListener
 import androidx.leanback.widget.OnItemViewSelectedListener
 import androidx.leanback.widget.VerticalGridPresenter
+import androidx.leanback.widget.VerticalGridView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.launch
 import nl.giejay.android.tv.immich.R
 import nl.giejay.android.tv.immich.home.nav.HomeNavViewModel
+import nl.giejay.android.tv.immich.shared.grid.GridPaging
 import timber.log.Timber
 
 /**
@@ -165,6 +169,12 @@ open class GridFragment(val hideProgressBar: Boolean = false) : BrandedSupportFr
         mGridViewHolder?.view?.apply { gridDock.addView(this) }
         mGridViewHolder?.gridView?.setOnChildLaidOutListener(mChildLaidOutListener)
 
+        // GRID-007: Leanback's BaseGridView has no page navigation, so PAGE_UP/PAGE_DOWN (and the
+        // channel up/down variants) did nothing on the asset grids. Intercept them here and jump a
+        // screenful using the pure GridPaging helper. Only ACTION_DOWN is consumed so the matching
+        // ACTION_UP still reaches the system.
+        mGridViewHolder?.gridView?.setOnKeyInterceptListener { event -> handleGridPageKey(event) }
+
         // UP from the top grid row hands focus to the top tab bar (which lives in the activity
         // layout, outside this fragment's focus hierarchy).
         val frame = view.findViewById<BrowseFrameLayout>(R.id.grid_frame)
@@ -218,6 +228,71 @@ open class GridFragment(val hideProgressBar: Boolean = false) : BrandedSupportFr
         super.onDestroyView()
         Timber.i("${this.javaClass.simpleName} got destroyed")
         mGridViewHolder = null
+    }
+
+    /**
+     * GRID-007: handles the remote's page keys on the asset grids. Returns true when the key was
+     * consumed by the grid (so the default DPAD handling never sees it).
+     */
+    private fun handleGridPageKey(event: KeyEvent): Boolean {
+        if (event.action != KeyEvent.ACTION_DOWN) {
+            return false
+        }
+        val forward = when (event.keyCode) {
+            KeyEvent.KEYCODE_PAGE_DOWN, KeyEvent.KEYCODE_CHANNEL_DOWN -> true
+            KeyEvent.KEYCODE_PAGE_UP, KeyEvent.KEYCODE_CHANNEL_UP -> false
+            else -> return false
+        }
+        val gridView = mGridViewHolder?.gridView ?: return false
+        val itemCount = gridView.adapter?.itemCount ?: 0
+        if (itemCount <= 0) {
+            return false
+        }
+        val selected = gridView.selectedPosition
+        val target = GridPaging.pageTargetPosition(
+            selected = selected,
+            columns = gridColumns(gridView),
+            rowsPerPage = visibleRowCount(gridView),
+            itemCount = itemCount,
+            forward = forward
+        )
+        if (target != selected) {
+            gridView.setSelectedPositionSmooth(target)
+        }
+        if (!gridView.hasFocus()) {
+            gridView.requestFocus()
+        }
+        return true
+    }
+
+    /**
+     * Columns are read from the layout rather than hard-coded: [VerticalGridPresenter] installs a
+     * [GridLayoutManager] whose span count is the real column count. Falls back to the presenter's
+     * configured column count, then to 1, if the grid has not been laid out yet.
+     */
+    private fun gridColumns(gridView: VerticalGridView): Int {
+        val spanCount = (gridView.layoutManager as? GridLayoutManager)?.spanCount ?: 0
+        if (spanCount > 0) {
+            return spanCount
+        }
+        val presenterColumns = mGridPresenter?.numberOfColumns ?: 0
+        return presenterColumns.coerceAtLeast(1)
+    }
+
+    /**
+     * Rows per page = fully visible rows in the grid viewport. Derived from the first laid-out
+     * child's height so it adapts to the current card size and window height.
+     */
+    private fun visibleRowCount(gridView: VerticalGridView): Int {
+        val childHeight = gridView.getChildAt(0)?.height ?: 0
+        if (childHeight <= 0) {
+            return 1
+        }
+        val viewport = gridView.height - gridView.paddingTop - gridView.paddingBottom
+        if (viewport <= 0) {
+            return 1
+        }
+        return (viewport / childHeight).coerceAtLeast(1)
     }
 
     override fun getMainFragmentAdapter(): BrowseSupportFragment.MainFragmentAdapter<*> {

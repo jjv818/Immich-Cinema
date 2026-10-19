@@ -15,31 +15,18 @@
         android:contentDescription="@null"
         android:scaleType="centerCrop" />
 
+    <!-- Single monochrome play/pause glyph, bottom-right (AGENTS.md §5.3). No duration text. -->
     <LinearLayout
         android:id="@+id/timeline_mosaic_video_badge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="top|end"
+        android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/video_badge_margin"
         android:elevation="8dp"
         android:gravity="center_vertical"
         android:importantForAccessibility="noHideDescendants"
         android:orientation="horizontal"
         android:visibility="gone">
-
-        <TextView
-            android:id="@+id/timeline_mosaic_video_duration"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/video_badge_gap"
-            android:includeFontPadding="false"
-            android:shadowColor="#CC000000"
-            android:shadowDx="0"
-            android:shadowDy="0"
-            android:shadowRadius="4"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/text_meta"
-            android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/timeline_mosaic_video_play_pause"
