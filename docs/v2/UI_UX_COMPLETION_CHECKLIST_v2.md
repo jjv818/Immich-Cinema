@@ -201,15 +201,20 @@ each verified on the Sony TV:
   this checklist still carries the original numbers.
 - **BUILD-005** — deep links, playback entry and the screensaver preview path are intact, but the
   real daydream, TalkBack and the sign-in GuidedStep screen were not exercised.
-- **NEW P0 — grid pages render at ~40% opacity (blocks VIS-002 / A11Y-001 measurement).**
-  Measured on the Sony TV: a card title forced to pure green renders `(0,102,0)`; every card caps at
-  97 luminance while the tab bar is 230 and Timeline memory titles are 242. Not app code — there is
-  no `alpha` in any Kotlin file or resource — and it is not the card root, the fragment root, or the
-  grid view (each forced to `1f` with no effect). Leanback's `VerticalGridPresenter.setEntranceTransitionState`
-  only toggles child *visibility*, so that is not it either. Timeline is unaffected; both the Albums
-  page and album-detail grids are. The alpha must sit on an ancestor above the page fragment — most
-  likely Leanback's page-transition container. Until this is fixed, every grid screenshot under-reports
-  contrast and the grid reads as disabled.
+- **NEW P0 — grid card titles render at 40% opacity (blocks VIS-002 / A11Y-001 measurement).**
+  Measured on the Sony TV: a card title forced to pure green renders `(0,102,0)`; the B/R channel
+  ratio of the rendered glyphs matches `text_primary` at exactly 0.40 alpha. Every other element is
+  fine — the subtitle in the same LinearLayout renders bright, memory-card titles render bright.
+  **Ruled out by experiment:** view alpha (whole ancestor chain probes 1.0, incl. transitionAlpha),
+  paint colour/alpha (probed at bind and +4s: #FFF2F2F7 / 255), layer type (title and whole card
+  forced to software rendering — no change), `clipToOutline` + `elevation` (disabled at runtime — no
+  change), item animator (nulled — no change), text attributes (style/size/colour swapped — dim
+  follows the title *instance*, not the attributes), spans (none in the codebase), stuck transitions
+  (`setEntranceTransitionState` only toggles child visibility), app-side `setAlpha` (none exists).
+  Hiding the title view removes the dim text, so the title view *does* draw it. Remaining suspect:
+  a native RenderNode / HWUI text-layer desync on API 31 that Java-side probes cannot read. Needs
+  RenderNode-level tooling (systrace/HWUI inspector or a minimal repro outside the app). The grid is
+  otherwise fully functional; titles are legible but measure ~2.9:1.
 - **SET-002 / SET-003** — resolved on device: hub, "View Settings" index and nested
   `PreferenceScreen`s now share one raised-chip row with hairline focus; `ListPreference` rows were
   falling back to Leanback's flat default because `dialogPreferenceStyle` was missing from the
