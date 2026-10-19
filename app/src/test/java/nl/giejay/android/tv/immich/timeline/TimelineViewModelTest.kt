@@ -20,8 +20,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import java.time.OffsetDateTime
-import java.util.concurrent.CountDownLatch
-import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -335,7 +333,7 @@ class TimelineViewModelTest {
         vm.loadBucket("2005-03-01")
         advanceUntilIdle()
 
-        // Global gap is still June; slider at historic island must continue to May (via after Jul? No —
+        // Global gap is still June; slider at historic island must continue to May (via after Jul? No ??
         // after 2005-03 there is nothing). After June when only Jul loaded: May is not next after Jul.
         assertEquals("2026-06-01", vm.nextBucketAfter("2026-07-01")?.timeBucket)
         assertEquals("2026-05-01", vm.nextBucketAfter("2026-06-01")?.timeBucket)
@@ -433,8 +431,6 @@ class TimelineViewModelTest {
     @Test
     fun `prefetchAroundDay loads focus month plus neighbors`() = runTest {
         val fetches = AtomicInteger(0)
-        // Debouncer + Dispatchers.IO are real threads; wait for the 3 neighbor fetches.
-        val fetchLatch = CountDownLatch(3)
         val vm = TimelineViewModel(
             fetchBuckets = {
                 Either.Right(
@@ -448,11 +444,7 @@ class TimelineViewModelTest {
             },
             fetchBucket = { key ->
                 fetches.incrementAndGet()
-                try {
-                    Either.Right(listOf(asset("$key-a", createdAt = "${key.take(8)}15T12:00:00Z")))
-                } finally {
-                    fetchLatch.countDown()
-                }
+                Either.Right(listOf(asset("$key-a", createdAt = "${key.take(8)}15T12:00:00Z")))
             },
             prefetchDebounceMs = 0
         )
@@ -464,9 +456,17 @@ class TimelineViewModelTest {
         assertEquals(0, fetches.get())
 
         vm.prefetchAroundDay("2026-06-15")
-        // 2s was tight enough to flake on loaded/shared CI runners (real Debouncer + Dispatchers.IO
-        // threads, not virtual time) even though the fetches themselves are effectively instant.
-        assertTrue(fetchLatch.await(10, TimeUnit.SECONDS))
+        // The debouncer and Dispatchers.IO are real threads, so virtual time cannot drive this.
+        // Poll the observable end state rather than counting fetch calls: a fixed latch made this
+        // flake on loaded CI runners (it passed on rerun) and coupled the test to batching details.
+        val expectedNeighbours = listOf("2026-06-01", "2026-07-01", "2026-05-01")
+        val deadline = System.currentTimeMillis() + 20_000
+        while (System.currentTimeMillis() < deadline &&
+            !vm.bucketAssets.value.keys.containsAll(expectedNeighbours)
+        ) {
+            advanceUntilIdle()
+            Thread.sleep(25)
+        }
         advanceUntilIdle()
 
         assertTrue(vm.bucketAssets.value.containsKey("2026-06-01"))
@@ -565,7 +565,7 @@ class TimelineViewModelTest {
                 Either.Right(listOf(TimeBucketSummary("2022-01-01", 1)))
             },
             fetchBucket = {
-                // UTC Jan 1 05:00 with UTC-8 → local Dec 31 2021 — common scrubber miss.
+                // UTC Jan 1 05:00 with UTC-8 ??local Dec 31 2021 ??common scrubber miss.
                 Either.Right(
                     listOf(
                         asset(
