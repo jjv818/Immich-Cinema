@@ -112,7 +112,7 @@ class TimelineMosaicAdapter(
             ?.asset
             ?.id
 
-    /** Right-most cell in the first row for [dayKey] — natural entry from the scrubber. */
+    /** Right-most cell in the first row for [dayKey] ??natural entry from the scrubber. */
     fun rightmostAssetIdForDay(dayKey: String): String? =
         TimelineMosaicIndex.rightmostAssetIdForDay(itemsSnapshot, dayKey)
 
@@ -148,7 +148,7 @@ class TimelineMosaicAdapter(
      *
      * Prefer [preferredDayKey] (a local day that actually came from the Immich UTC month
      * bucket). Fall back to the first header whose day sits in the same YYYY-MM as
-     * [monthKey] — which can miss when local dates straddle the UTC month boundary.
+     * [monthKey] ??which can miss when local dates straddle the UTC month boundary.
      */
     fun positionForScrubberMonth(monthKey: String, preferredDayKey: String?): Int =
         TimelineMosaicIndex.positionForScrubberMonth(itemsSnapshot, monthKey, preferredDayKey)
@@ -244,7 +244,7 @@ class TimelineMosaicAdapter(
                         .scaleY(if (hasFocus) focusScale else 1f)
                         .setDuration(Motion.durationMs(v.context, motionUiMs.toInt()))
                         .start()
-                    v.elevation = if (hasFocus) 24f else 0f
+                    v.elevation = if (hasFocus) 8f * v.context.resources.displayMetrics.density else 0f
                     if (hasFocus) v.setBackgroundResource(R.drawable.focus_hairline_cell) else v.setBackgroundResource(0)
                     if (!cell.asset.isImage) {
                         videoPlayPause.setImageResource(

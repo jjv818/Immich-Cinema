@@ -36,13 +36,15 @@ class MemoryPresenter(
 
     private val focusScale = 1f + context.resources.getFraction(R.fraction.focus_scale, 1, 1)
     private val motionUiMs = context.resources.getInteger(R.integer.motion_ui_ms)
+    /** 8dp focus lift, expressed in px (elevation takes pixels, not dp). */
+    private val liftPx = 8f * context.resources.displayMetrics.density
     private val scrimRestPx = context.resources.getDimensionPixelSize(R.dimen.memory_scrim_rest)
     private val scrimFocusPx = context.resources.getDimensionPixelSize(R.dimen.memory_scrim_focus)
 
     /**
      * The scrim is laid out at its focused height and shrunk to the resting look with [View.setScaleY],
      * so focus never animates a layout property (MOTION-003, AGENTS.md §5.7). Rest ratio =
-     * `memory_scrim_rest / memory_scrim_focus` (60dp / 92dp ≈ 0.652).
+     * `memory_scrim_rest / memory_scrim_focus` (60dp / 92dp ??0.652).
      */
     private val scrimRestScale = scrimRestPx.toFloat() / scrimFocusPx.coerceAtLeast(1).toFloat()
 
@@ -91,12 +93,12 @@ class MemoryPresenter(
                 .scaleY(if (hasFocus) focusScale else 1f)
                 .setDuration(durationMs)
                 .start()
-            v.elevation = if (hasFocus) 8f else 0f
+            v.elevation = if (hasFocus) liftPx else 0f
             v.foreground = if (hasFocus) context.getDrawable(R.drawable.focus_hairline) else null
 
             // Scrim grows on focus so the overlaid label stays legible over the photo; at rest it
             // stays compact so it doesn't read as a heavy footer. scaleY keeps the animation on the
-            // render thread — no layout pass per frame (MOTION-003).
+            // render thread ??no layout pass per frame (MOTION-003).
             scrim.animate()
                 .scaleY(if (hasFocus) 1f else scrimRestScale)
                 .setDuration(durationMs)
