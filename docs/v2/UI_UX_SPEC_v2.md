@@ -1,28 +1,27 @@
-# UI_UX_SPEC.md — Immich Cinema UI/UX Completion Specification
+# UI_UX_SPEC_v2.md — Immich Cinema UI/UX Completion Specification
 
 **Project:** Immich Cinema (fork of `giejay/Immich-Android-TV`, baseline commit `037cb7c` / `6.2.0 (148)`)
 **Branch:** `redesign`
-**Status:** Specification only — no implementation yet
+**Status:** Specification for the next iteration; v1 shipped against `AGENTS.md`. Checklist statuses reconciled 2026-10-19.
 **Authoritative source:** `AGENTS.md` (v2, post-grilling) governs all locked decisions; this spec operationalizes them.
 
 ---
 
 ## 1. Purpose and scope
 
-This document is the authoritative UI/UX design specification for evolving the existing Immich Android TV application (Version 1) into a premium, polished photo-gallery experience. It is **specification and documentation only**:
+This document is the UI/UX design specification for the Immich Cinema redesign, **v1 implemented and device-verified** (S0–S5 complete on the `redesign` branch; build green, 153 tests / 32 classes, 0 failures; lint baselined and passing; P0 interaction paths exercised on the Sony Bravia, Android 12 / API 31, 1920×1080 @ 320dpi). It now serves as the **as-built design record** and the acceptance baseline for any future work.
 
-- Do **not** implement the redesign yet.
-- Do **not** modify application behaviour, refactor source code, or introduce dependencies.
-- Do **not** rewrite working screens or components; refine them in place.
-- Reuse the current technology stack: Leanback (`BrowseSupportFragment` + `PageRow`), View Binding, XML resources, Glide, Media3/ExoPlayer, vendored `mediaslider/`.
+It is **not** a rewrite. It preserves the Leanback (`BrowseSupportFragment` + `PageRow`) host, the `mediaslider/` module, Glide, Media3/ExoPlayer, and all API contracts. Refinements were applied in place to existing screens and components.
 
-**Out of scope:** new product features, Compose, DataStore/Hilt/paging-library, renaming `ApiClient`/`ApiService`/DTOs/`ApiUtil` contracts, renaming `PreferenceManager` keys or `MetaDataScreen` values, replacing `MediaSliderView`/ExoPlayer/`mediaslider`, new dependencies.
+**Still unverified** (per AGENTS.md v1 close): screensaver daydream, TalkBack, the sign-in GuidedStep screen, and the sign-in flow visually. Treat those as open, not done.
+
+Out of scope: new product features, Compose, DataStore/Hilt/paging-library, renaming `ApiClient`/`ApiService`/DTOs/`ApiUtil` contracts, renaming `PreferenceManager` keys or `MetaDataScreen` values, replacing `MediaSliderView`/ExoPlayer/`mediaslider`, new dependencies.
 
 ## 2. Reference analysis
 
 | Reference | Role | What to adopt | What to adapt (not copy) |
 |---|---|---|---|
-| **Apple tvOS Photos** (primary visual benchmark) — https://developer.apple.com/documentation/swiftui/creating-a-tvos-media-catalog-app-in-swiftui | Cinematic composition, hero imagery, typography, spacing, materials, focus treatments, navigation, transitions | Full-bleed photography as the interface; resting background = focused item's photo; floating centred tab capsule; bottom-left overlaid text on a bottom scrim; sentence-case/uppercase title + meta date; focus ≈ subtle lift + hairline, background cross-fade as primary cue; persistent chrome; restraint | Scale: tvOS 1920×1080 pt canvas → Android TV 960×540 dp; text floor ~18sp at 10-foot viewing distance; do not copy Apple proportions literally, do not copy Apple assets/fonts/iconography/branding |
+| **Apple tvOS Photos** (primary visual benchmark) — https://developer.apple.com/documentation/swiftui/creating-a-tvos-media-catalog-app-in-swiftui | Cinematic composition, hero imagery, typography, spacing, materials, focus treatments, navigation, transitions | Full-bleed photography as the interface; resting background = focused item's photo; tab bar across the top for section access; content lockups with gently rounded corners that lift on focus; shelves flowing horizontally aligned to safe areas with offscreen content peeking from edges; background masks/fades behind controls; titles moving aside on focus; focus scale + glow + hairline; background cross-fade as primary cue | Scale: tvOS 1920×1080 pt canvas → Android TV 960×540 dp; text floor ~18sp at 10-foot viewing distance; do not copy Apple proportions literally, do not copy Apple assets/fonts/iconography/branding; text-over-image card layout (AGENTS §2.2 restraint) rather than Apple's image-above-text vertical lockup; no tilt/specular effects (AGENTS §2.2 restraint) |
 | **Android TV JetStream** (android/tv-samples) | Remote-control interaction patterns, D-pad navigation, Leanback implementation patterns | D-pad navigation model, focus continuity, Leanback presenter/adapter patterns | JetStream is Compose; translate to Leanback/XML |
 | **Google Photos** (react-grid-gallery) | Photo-browsing density, grid proportions, date grouping | Grid browsing feel, thumbnail density | Translate to Leanback grid cells; no web component copying |
 | **Compose TV Rails** (compose-tv-rails) | Rail/row interaction, focus handling | Rail semantics | Translate to Leanback `ListRow`/`Presenters` |
@@ -91,7 +90,8 @@ Platform default font (AGENTS.md §4 Design). 18sp text floor at 10-foot viewing
 | Element | Duration | Easing | Notes |
 |---|---|---|---|
 | UI state change (focus scale/lift) | 150ms | decelerate on arrival | shared token |
-| Background cross-fade | 250ms | linear | unconditional primary focus cue |
+| Background cross-fade | 250ms | linear | unconditional primary focus cue on surfaces that animate themselves |
+| `BackgroundManager` grid-page cross-fade | 500ms | internal cadence | `BackgroundManager` runs its own 500ms cadence on grid pages; do not override |
 | Leanback page transitions | retained | tuned, not replaced | |
 
 Animate 1–2 key elements per view maximum (background cross-fade + focus lift). No bouncing, no staggered entries, no decorative animation. Use `transform`/`opacity` (scale/alpha) for animation; avoid animating `width`/`height`/`top`/`left`. Respect reduced motion where practical (P1).
@@ -115,11 +115,14 @@ Animate 1–2 key elements per view maximum (background cross-fade + focus lift)
 
 ### 5.4 Tab bar
 - App-owned overlay in `activity_main.xml` (sibling of `NavHostFragment`), not Leanback title slot.
-- Centred, content-sized floating capsule near the top edge; if it doesn't fit at 20sp, fall back to a left-aligned scrollable strip and **report which one landed**.
+- Centred, content-sized floating capsule near the top edge, capped at 90% of screen width. With 9 labels (8 content + Settings) it exceeds that cap and scrolls internally — **Settings sits off-screen at rest and is reached by scrolling the bar right** (neither documented outcome; report which one landed).
 - Height 64dp, fully rounded ends, `tab_scrim` fill, 28dp top margin.
+- **Auto-hide** (supersedes "persistent"): the bar translates up when page content scrolls down and returns when focus moves up into it or content scrolls back to the top. DOWN while the bar owns focus hands focus into the page.
 - Selected tab: solid white pill, near-black `Body` label. Unselected: `text_primary` at ~90% (not faded).
-- Persistent (no auto-hide) this milestone. Hidden on non-home destinations (auth, viewer, screensaver).
+- Hidden on non-home destinations (auth, viewer, screensaver).
 - 8 content tabs (Timeline, Albums, Photos, Random, People, Recent, Seasonal, Folders) + Settings gear; no Edit tab.
+- Focus entry follows a documented chain (§6.4) — resolve the UP-chain collision with the memories rail explicitly.
+- Realised as activity-scoped `HomeNavViewModel.isTabBarFocused` (a `StateFlow`), with `HomeTabBarView.onTabBarFocusChanged` publishing it; `TimelineFragment` collects it as the enter/exit signal. The signal must fire **exactly once per transition** (a duplicate enter re-captures resume state and clobbers leave-off).
 
 ### 5.5 Timeline (hero surface)
 - Full-bleed justified mosaic, uncropped.
@@ -132,13 +135,15 @@ Animate 1–2 key elements per view maximum (background cross-fade + focus lift)
 
 | Surface | Scale | Lift | Marker | Duration |
 |---|---|---|---|---|
-| Mosaic cell | 1.05 | 8dp | `focus_hairline` | 150ms |
-| Memory / rail card | 1.03 | 8dp | `focus_hairline` | 150ms |
+| Mosaic cell | 1.06 | 8dp | `focus_hairline` + glow | 150ms |
+| Memory / rail card | 1.06 | 8dp | `focus_hairline` + glow | 150ms |
 | Grid card | small (Leanback) | small | `focus_hairline` | 150ms |
 | Rail/tab item | 1.03 | — | brightness + hairline | 150ms |
 | Background | — | — | cross-fade to focused artwork | 250ms |
 
-Replace coloured rings (`#4250AF`, `#03A9F4`) with `focus_hairline`. Extract hard-coded focus constants into `res/values/integers.xml` + a `type="fraction"` item. **If focus animation duration changes, re-verify `MOSAIC_FOCUS_LOCK_RELEASE_MS = 160L` still exceeds it.**
+Scale is `@fraction/focus_scale` (6%) applied to mosaic cells and memory cards. `BackgroundManager` cross-fades at its own internal cadence (500ms) on grid pages; the 250ms figure above applies to surfaces that animate themselves.
+
+Replace coloured rings (`#4250AF`, `#03A9F4`) with `focus_hairline`. Extract hard-coded focus constants into `res/values/integers.xml` + a `type="fraction"` item. `MOSAIC_FOCUS_LOCK_RELEASE_MS = 250L` is tuned against the cell focus-scale duration — re-verify this constant still exceeds the scale animation, or the lock clears mid-move.
 
 ### 5.7 Viewer, settings, auth, screensaver
 - Viewer: restyle chrome (scrims, type, radii, button sizing). **Do not** rename view IDs or change `exo_player_control_view.xml` nextFocus wiring, `surface_view` type, or key handling in `MediaSliderController`.
@@ -216,4 +221,4 @@ Replace coloured rings (`#4250AF`, `#03A9F4`) with `focus_hairline`. Extract har
 
 ---
 
-**Next document:** `UI_UX_COMPLETION_CHECKLIST.md` — the testable acceptance checklist derived from this spec.
+**Next document:** `UI_UX_COMPLETION_CHECKLIST_v2.md` — the testable acceptance checklist derived from this spec.
