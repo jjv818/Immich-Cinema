@@ -19,12 +19,15 @@ import nl.giejay.android.tv.immich.shared.motion.Motion
  * gradient, and a title + secondary line overlaid bottom-left. No footer bar.
  *
  * Focus is a restrained ~1.06 scale + 8dp lift + a white hairline with soft glow
- * ([R.drawable.focus_hairline]) — colour is never the only cue.
+ * ([R.drawable.focus_hairline]) ??colour is never the only cue.
  */
 class ArtworkCardPresenter(private val context: Context) : Presenter() {
 
     private val cornerRadiusPx = context.resources.getDimension(R.dimen.radius_card)
     private val cardWidthPx = context.resources.getDimension(R.dimen.artwork_card_width).toInt()
+    private val cardHeightPx = context.resources.getDimension(R.dimen.artwork_card_height).toInt()
+    /** 8dp focus lift, expressed in px (elevation takes pixels, not dp). */
+    private val liftPx = 8f * context.resources.displayMetrics.density
     private val motionUiMs = context.resources.getInteger(R.integer.motion_ui_ms)
     private val focusScale = 1f + context.resources.getFraction(R.fraction.focus_scale, 1, 1)
 
@@ -61,7 +64,7 @@ class ArtworkCardPresenter(private val context: Context) : Presenter() {
                     .apply(
                         RequestOptions()
                             .centerCrop()
-                            .override(cardWidthPx)
+                            .override(cardWidthPx, cardHeightPx)
                             .placeholder(R.drawable.image_placeholder)
                             .error(R.drawable.image_placeholder)
                     )
@@ -80,7 +83,7 @@ class ArtworkCardPresenter(private val context: Context) : Presenter() {
                 .scaleY(if (hasFocus) focusScale else 1f)
                 .setDuration(Motion.durationMs(v.context, motionUiMs))
                 .start()
-            v.elevation = if (hasFocus) 8f else 0f
+            v.elevation = if (hasFocus) liftPx else 0f
         }
     }
 

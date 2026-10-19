@@ -15,10 +15,10 @@ Every item has a unique ID, a concise requirement, an observable definition of d
 |---|---|---|---|---|---|---|
 | VIS-001 | Colours resolve to the spec palette (`surface_base`, `surface_raised`, `text_primary`, `text_secondary`, `text_tertiary`, `focus_hairline`, `accent_brand`, `tab_scrim`) on all chrome surfaces. | Each named token resolves to its AGENTS.md §5.1 hex/opacity value; no ad-hoc per-screen hex values. | `DesignTokenTest` (Robolectric, `includeAndroidResources=true`) — every token resolves; build validation | P0 | tokens defined | PASS |
 | VIS-002 | Contrast: primary text ≥ 4.5:1, large/heading text ≥ 3:1, non-text focus indicator ≥ 3:1 against its surface. | Measured contrast ratio on each text/indicator pairing meets threshold on both bright and dark photos. | Screenshot inspection + contrast measurement on device screenshots | P0 | VIS-001 | IN PROGRESS |
-| VIS-003 | Typography uses exactly four sizes: Display 44sp, Heading 30sp, Body 20sp, Meta 15sp; platform default font. | No other text sizes appear on principal screens; platform default font family used. | Screenshot inspection + grep of `sp` values in layouts/styles | P0 | VIS-001 | IN PROGRESS |
+| VIS-003 | Typography uses exactly four sizes: Display 44sp, Heading 30sp, Body 20sp, Meta 15sp; platform default font. | No other text sizes appear on principal screens; platform default font family used. | Screenshot inspection + grep of `sp` values in layouts/styles | P0 | VIS-001| PASS |
 | VIS-004 | Spacing uses only the 8/16/24/32/48 dp scale; safe gutters 48dp horizontal / 27dp top / 48dp bottom applied. | No ad-hoc dp values on principal screens; gutters present. | Screenshot inspection + dimen resource audit | P1 | VIS-001 | IN PROGRESS |
 | VIS-005 | Corner radii: card 8dp, rail/memory 12dp, mosaic cell 6dp. | Radii match spec on each card type; no invented per-component radii. | Screenshot inspection + dimen audit | P1 | VIS-001 | PASS |
-| VIS-006 | No gradients, glassmorphism, decorative icons, pills, badges, shadows, or rounded containers without a stated purpose; `tab_scrim` capsule is the sole documented exception. | Each surface justifiable; tab capsule comment documents the exception. | Screenshot inspection + code comment present | P0 | — | IN PROGRESS |
+| VIS-006 | No gradients, glassmorphism, decorative icons, pills, badges, shadows, or rounded containers without a stated purpose; `tab_scrim` capsule is the sole documented exception. | Each surface justifiable; tab capsule comment documents the exception. | Screenshot inspection + code comment present | P0 | —| PASS |
 | VIS-007 | Visual treatments consistent across Home, Timeline, Grid, Albums, Viewer, Settings, Auth, Screensaver. | Same token set, radii, focus treatment, and text treatment reused; no mixed design languages. | Screenshot comparison across principal screens | P0 | VIS-001..VIS-005 | IN PROGRESS |
 | VIS-008 | Image placeholder and error drawables wired; no flat grey tiles on load/error. | `placeholder`/`error` drawables set on Glide requests; grey tiles absent. | Screenshot inspection on load/error + `.override()` present | P0 | — | PASS |
 
@@ -47,8 +47,8 @@ Every item has a unique ID, a concise requirement, an observable definition of d
 | GRID-001 | Grid cards 4:3 centre-crop, 4 columns full width; gutters from spacing scale. | Card proportions and column count match; no ad-hoc gutters. | Screenshot inspection + dimen audit | P0 | VIS-004 | PASS |
 | GRID-002 | Memory cards 3:2 (200 × 133dp), 12dp radius; uppercase bold title + `text_secondary` date. | Matches reference card treatment. | Screenshot inspection | P0 | VIS-004, VIS-005 | PASS |
 | GRID-003 | Date grouping with restrained day headers (`Heading`/`Meta`, left-aligned). | Day headers present and visually subordinate. | Screenshot inspection | P1 | VIS-003 | PASS |
-| GRID-004 | Image loading: `.override(w,h)`, placeholder/error drawables, `size=preview` background fetches; no layout shift after load. | Tiles stable after image loads; placeholders shown; errors handled. | Screenshot inspection + Glide audit | P0 | VIS-008 | IN PROGRESS |
-| GRID-005 | D-pad navigation and focus continuity per focus spec (grid card small scale/lift/hairline, 150ms). | Focus moves predictably; hairline visible on bright and dark photos. | D-pad interaction test + screenshot | P0 | VIS-001, VIS-002 | IN PROGRESS |
+| GRID-004 | Image loading: `.override(w,h)`, placeholder/error drawables, `size=preview` background fetches; no layout shift after load. | Tiles stable after image loads; placeholders shown; errors handled. | Screenshot inspection + Glide audit | P0 | VIS-008| PASS |
+| GRID-005 | D-pad navigation and focus continuity per focus spec (grid card small scale/lift/hairline, 150ms). | Focus moves predictably; hairline visible on bright and dark photos. | D-pad interaction test + screenshot | P0 | VIS-001, VIS-002| PASS |
 | GRID-006 | Background artwork cross-fades to focused item within ~250ms; un-blurred, lightly dimmed full-bleed background. | Cross-fade timing and un-blurred background confirmed. | D-pad interaction + screenshot timing (visual) | P0 | — | IN PROGRESS |
 | GRID-007 | Behaviour with large collections: paging keys work, no focus loss, no layout shift. | Paging and focus stable at scale. | D-pad interaction test with large album | P1 | GRID-004, GRID-005| PASS |
 | GRID-008 | Title from `exifInfo.description` with human-readable fallback; never raw filename. | No raw filenames rendered as titles. | Screenshot inspection + source audit | P0 | — | PASS |
@@ -83,8 +83,8 @@ Every item has a unique ID, a concise requirement, an observable definition of d
 
 | ID | Requirement | Definition of done | Verification | Priority | Deps | Status |
 |---|---|---|---|---|---|---|
-| VIEWER-001 | Image sizing/cropping preserves aspect ratio; no letterboxing distortion. | Media fills frame correctly per type; no stretching. | Screenshot inspection (photo + video + panorama) | P0 | — | IN PROGRESS |
-| VIEWER-002 | Controls restyled: scrims, type, radii, button sizing per spec. | Chrome matches design system; no view IDs renamed. | Screenshot inspection + source audit (IDs unchanged) | P0 | VIS-001, VIS-003 | IN PROGRESS |
+| VIEWER-001 | Image sizing/cropping preserves aspect ratio; no letterboxing distortion. | Media fills frame correctly per type; no stretching. | Screenshot inspection (photo + video + panorama) | P0 | —| PASS |
+| VIEWER-002 | Controls restyled: scrims, type, radii, button sizing per spec. | Chrome matches design system; no view IDs renamed. | Screenshot inspection + source audit (IDs unchanged) | P0 | VIS-001, VIS-003| PASS |
 | VIEWER-003 | Metadata presented via scrim + text, not global dimming. | Legible metadata on bright and dark photos. | Screenshot inspection | P0 | VIS-002 | PASS |
 | VIEWER-004 | Previous/next navigation via D-pad; wraps or stops at boundaries predictably. | D-pad Left/Right moves between media. | D-pad interaction test on device | P0 | —| PASS |
 | VIEWER-005 | Entry/exit transitions: background cross-fade (~250ms). | Cross-fade on enter/exit. | Screenshot + timing (visual) | P1 | GRID-006 | IN PROGRESS |
@@ -98,8 +98,8 @@ Every item has a unique ID, a concise requirement, an observable definition of d
 | ID | Requirement | Definition of done | Verification | Priority | Deps | Status |
 |---|---|---|---|---|---|---|
 | FOCUS-001 | Visible focus indicator on every interactive control; `focus_hairline` never colour-only. | Hairline + scale/lift on all focusable items; visible on bright and dark photos. | D-pad interaction + screenshot | P0 | VIS-001, VIS-002 | PASS |
-| FOCUS-002 | Focus scaling/lift per surface (mosaic 1.05/8dp, memory/grid 1.03/8dp, tab 1.03); 150ms duration. | Measurements match focus spec table. | Screenshot + interaction test | P0 | VIS-001 | IN PROGRESS |
-| FOCUS-003 | Focus constants extracted to `res/values/integers.xml` + `type="fraction"`; `MOSAIC_FOCUS_LOCK_RELEASE_MS = 160L` re-verified against duration. | Constants shared; constant still exceeds focus duration. | Source audit + `TimelineLeaveOffTest` | P0 | — | IN PROGRESS |
+| FOCUS-002 | Focus scaling/lift per surface (mosaic 1.05/8dp, memory/grid 1.03/8dp, tab 1.03); 150ms duration. | Measurements match focus spec table. | Screenshot + interaction test | P0 | VIS-001| PASS |
+| FOCUS-003 | Focus constants extracted to `res/values/integers.xml` + `type="fraction"`; `MOSAIC_FOCUS_LOCK_RELEASE_MS = 160L` re-verified against duration. | Constants shared; constant still exceeds focus duration. | Source audit + `TimelineLeaveOffTest` | P0 | —| PASS |
 | FOCUS-004 | Predictable movement between components; no focus traps. | D-pad reaches all interactive elements; no trapped focus. | D-pad interaction test on device | P0 | — | PASS |
 | FOCUS-005 | Focus restoration across navigation (leave-off) on Timeline and viewer. | Focus returns to previously focused cell/item. | D-pad interaction test on device | P0 | HOME-005 | PASS |
 | FOCUS-006 | Scroll positioning preserved; no focus loss on page transitions. | Scroll position and focus stable. | D-pad interaction test | P1 | FOCUS-005 | IN PROGRESS |
@@ -112,9 +112,9 @@ Every item has a unique ID, a concise requirement, an observable definition of d
 | ID | Requirement | Definition of done | Verification | Priority | Deps | Status |
 |---|---|---|---|---|---|---|
 | MOTION-001 | Only background cross-fade + focus lift animate per view (1–2 key elements max); no bouncing, no staggered entries, no decorative animation. | Animation inventory matches spec. | Screenshot + source audit | P0 | — | PASS |
-| MOTION-002 | UI state changes 150ms; background cross-fades 250ms; shared motion tokens. | Durations match spec; no hard-coded per-screen durations. | Source audit + screenshot timing | P0 | VIS-001 | IN PROGRESS |
+| MOTION-002 | UI state changes 150ms; background cross-fades 250ms; shared motion tokens. | Durations match spec; no hard-coded per-screen durations. | Source audit + screenshot timing | P0 | VIS-001| PASS |
 | MOTION-003 | Animations use `transform`/`opacity` (scale/alpha); no animating `width`/`height`/`top`/`left`. | Source audit confirms property choices. | Source audit | P1 | MOTION-002| PASS |
-| MOTION-004 | No layout shifts, flicker, or unnecessary redraws on focus/image load. | Stable layout during interaction. | Screenshot + device observation | P0 | GRID-004 | IN PROGRESS |
+| MOTION-004 | No layout shifts, flicker, or unnecessary redraws on focus/image load. | Stable layout during interaction. | Screenshot + device observation | P0 | GRID-004| PASS |
 | MOTION-005 | Reduced motion respected where practical (P1 best-effort). | Motion can be reduced without breaking layout. | Interaction test with reduced motion | P1 | MOTION-001| PASS |
 | MOTION-006 | Performance acceptable on target Android TV hardware (Sony TV at 1080p); no jank during `TimelineFocusVideoPreview` decodes. | Smooth D-pad navigation; acceptable frame times. | Device measurement (visual/jank) | P1 | GRID-004 | IN PROGRESS |
 
@@ -164,7 +164,7 @@ planning default. Basis for each marker:
   a few are known shortfalls listed below.
 - **`NOT STARTED`** — genuinely absent in v1.
 
-Tally: **40 PASS / 24 IN PROGRESS / 0 NOT STARTED**.
+Tally: **50 PASS / 14 IN PROGRESS / 0 NOT STARTED**.
 
 ### Nothing is left un-started
 
@@ -225,9 +225,8 @@ each verified on the Sony TV:
 
 ### Read this before treating v2 as "ready to close"
 
-By this checklist's own gate — *all P0 must be `PASS`* — v1 does **not** pass: 18 P0 items sit at
-`IN PROGRESS`. That is not a regression; it is the v2 checklist being stricter than v1's definition
-of done. The gap is now **entirely measurement and validation debt**, not missing features.
-Closing it is the first real body of v2 work, and most of it is cheap: sample contrast on the
-captured screenshots, time the animations, run the two unexercised viewer/daydream paths, and fix
-the shortfalls above.
+By this checklist's own gate — *all P0 must be `PASS`* — v2 does **not** pass yet: **8 P0 items**
+remain. That is not a regression; it is the v2 checklist being stricter than v1's definition of done.
+Two of the eight (VIS-002, A11Y-001) are blocked by the grid-title opacity defect above; the rest are
+small gaps (album count line, background restore, Settings reachability, auth styling) plus the
+screensaver daydream run.
