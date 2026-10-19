@@ -16,7 +16,7 @@
 | Background / hero | tvOS Photos (full-bleed, un-blurred, lightly dimmed photograph; background = focused item) | Composition, restraint, background cross-fade as primary focus cue | Android TV 960×540 dp canvas; text floor ~18sp |
 | Card text overlay | tvOS Photos (bottom-left text over bottom scrim; uppercase bold title + lighter date) | Text placement, scrim, case treatment | Sentence-case for asset cards; uppercase for memory cards |
 | Grid browsing | Google Photos (density, proportions, date grouping) | Thumbnail density, ratios, grouping | Leanback 4:3 grid cells; not a web component |
-| Focus | tvOS Photos (subtle lift + hairline; background change is the real cue) | Scale ~1.03–1.05, hairline, 150ms, cross-fade | Android TV D-pad, not Siri Remote |
+| Focus | tvOS Photos (subtle lift + hairline; background change is the real cue) | Scale 1.06, hairline + glow, 150ms, cross-fade | Android TV D-pad, not Siri Remote |
 | Viewer | DK Media Viewer / existing `MediaSliderView` | Chrome, transitions, leave-off | Do not rename view IDs; no new player framework |
 
 **Do not require pixel-perfect duplication of Apple's application.** Match structure, hierarchy, motion, and restraint; adapt scale and ratios to Android TV.
@@ -50,7 +50,7 @@ Signs of overuse of effects: more than 1–2 animated elements per view, bouncin
 - Verify focus hairline + scale/lift is visible on **both** a bright and a dark photo.
 - Confirm typography uses exactly the four sizes; text meets contrast targets on dark photos.
 - Confirm spacing/radii come from the scale; no per-component bespoke values.
-- Confirm background cross-fade (~250ms) is the primary focus cue, not a coloured ring.
+- Confirm background cross-fade (~250ms on self-animated surfaces; 500ms via `BackgroundManager` on grid pages) is the primary focus cue, not a coloured ring.
 
 ---
 
@@ -67,12 +67,13 @@ Inspect each screenshot — not the source — for:
 
 | Screen | Check for |
 |---|---|
-| **Home / tab bar** | Centred capsule (or reported left-aligned fallback), 64dp height, 28dp top margin, selected white pill / near-black label, unselected ~90% opacity (not faded), persistent, hidden on non-home destinations |
+| **Home / tab bar** | Centred capsule capped at 90% width (scrolls internally; Settings off-screen at rest), 64dp height, 28dp top margin, selected white pill / near-black label, unselected ~90% opacity (not faded), auto-hide (translates up on scroll, returns on focus-up), hidden on non-home destinations |
 | **Timeline** | Full-bleed un-blurred lightly-dimmmed background, justified mosaic uncropped, 200dp rows / 8dp gaps / 6dp radius, day headers `Heading`/`Meta` left-aligned, memories rail at top with reference card treatment, scrubber paints only |
 | **Grid** | 4:3 centre-crop cards, 4 columns full width, bottom scrim + bottom-left text, title never raw filename, placeholder/error drawables, hairline visible on bright and dark photos, background cross-fades on focus |
 | **Albums** | Album cover matches grid card treatment, metadata titles (no filenames), focus states consistent |
 | **Viewer** | Aspect-ratio preservation (no stretch), scrim + text metadata (no global dim), D-pad prev/next, Back returns to same cell, view IDs unchanged |
-| **Settings / Auth / Screensaver** | Text-first rows, `surface_raised`, guided step theme, screensaver tokens, DPAD_CENTER exits |
+| **Settings** | No outdated right-tab ("View Settings" panel); iOS-style grouped sections with toggle switches for booleans and chevrons for drill-in; text-first rows, `surface_raised`, larger D-pad targets; floats over full-bleed background with scrims |
+| **Auth / Screensaver** | Guided step theme, screensaver tokens, DPAD_CENTER exits |
 
 For each screen record: PASS / FAIL / BLOCKED, plus a one-line note on any deviation.
 
@@ -91,7 +92,7 @@ Perform on the Sony Android TV at 1080p (or adb keyevent simulation):
 | I-5 | UP-chain: mosaic row 1 → memories rail → tab bar → stop | Chain stops at tab bar | HOME-009 |
 | I-6 | BACK on non-Timeline tab → Timeline; BACK on Timeline → exit | Correct back semantics | HOME-008 |
 | I-7 | Grid: DPAD_RIGHT on last card opens settings popup; paging keys work | Paging and popup behave | GRID-007 |
-| I-8 | Grid page: background cross-fades on focus within ~250ms | Cross-fade timing | GRID-006, MOTION-002 |
+| I-8 | Grid page: background cross-fades on focus (BackgroundManager 500ms cadence on grid pages; 250ms on self-animated surfaces) | Cross-fade timing | GRID-006, MOTION-002 |
 | I-9 | Viewer: photo pan/zoom, panorama, video play/pause/seek/mute, favourite toggle | Controls respond | VIEWER-004 |
 | I-10 | Viewer: metadata overlay, slideshow forward/reverse | Metadata legible | VIEWER-003 |
 | I-11 | Viewer: Back returns to the same cell (leave-off) | Focus restored | VIEWER-006, FOCUS-005 |
