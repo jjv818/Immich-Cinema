@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide
 import nl.giejay.android.tv.immich.R
 import nl.giejay.android.tv.immich.api.model.Memory
 import nl.giejay.android.tv.immich.api.util.ApiUtil
+import nl.giejay.android.tv.immich.shared.motion.Motion
 import java.time.LocalDate
 
 class TimelineMosaicAdapter(
@@ -219,7 +220,6 @@ class TimelineMosaicAdapter(
                 val cellRoot = inflater.inflate(R.layout.timeline_mosaic_cell, row, false)
                 val image = cellRoot.findViewById<ImageView>(R.id.timeline_mosaic_image)
                 val videoBadge = cellRoot.findViewById<View>(R.id.timeline_mosaic_video_badge)
-                val videoDuration = cellRoot.findViewById<TextView>(R.id.timeline_mosaic_video_duration)
                 val videoPlayPause = cellRoot.findViewById<ImageView>(R.id.timeline_mosaic_video_play_pause)
                 val lp = LinearLayout.LayoutParams(cell.widthPx, cell.heightPx)
                 if (index > 0) lp.marginStart = gapPx
@@ -242,7 +242,7 @@ class TimelineMosaicAdapter(
                     // aspect rows (e.g. 4:3 video at full row height) don't cover the date.
                     v.animate().scaleX(if (hasFocus) focusScale else 1f)
                         .scaleY(if (hasFocus) focusScale else 1f)
-                        .setDuration(motionUiMs)
+                        .setDuration(Motion.durationMs(v.context, motionUiMs.toInt()))
                         .start()
                     v.elevation = if (hasFocus) 24f else 0f
                     if (hasFocus) v.setBackgroundResource(R.drawable.focus_hairline_cell) else v.setBackgroundResource(0)
@@ -259,8 +259,6 @@ class TimelineMosaicAdapter(
                     videoBadge.visibility = View.GONE
                 } else {
                     videoBadge.visibility = View.VISIBLE
-                    val totalSeconds = TimelineVideoDuration.parseSeconds(cell.asset.duration) ?: 0L
-                    videoDuration.text = TimelineVideoDuration.format(totalSeconds)
                     videoPlayPause.setImageResource(R.drawable.ic_video_badge_play)
                 }
 

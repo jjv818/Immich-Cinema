@@ -4,13 +4,10 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
 import android.net.Uri
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
@@ -32,40 +29,23 @@ import timber.log.Timber
  * [PlayerView] until [Player.Listener.onRenderedFirstFrame], then the video is brought
  * on top — no grey flash, and the TextureView still gets a live surface to decode into.
  *
- * While playing, the cell's duration badge counts down from the full length to 0
- * (Immich-style), then resets to the full duration when focus leaves.
+ * The cell shows a single play/pause glyph (no duration text, AGENTS.md §5.3); the adapter
+ * swaps it between play and pause.
  */
 @SuppressLint("UnsafeOptInUsageError")
 class TimelineFocusVideoPreview(context: Context) {
 
     private val appContext = context.applicationContext
-    private val handler = Handler(Looper.getMainLooper())
 
     private var player: ExoPlayer? = null
     private var playerView: PlayerView? = null
     private var host: ViewGroup? = null
     private var poster: ImageView? = null
-    private var durationText: TextView? = null
-    private var totalDurationSeconds: Long = 0L
     private var currentAssetId: String? = null
 
     private val dataSourceFactory: DefaultHttpDataSource.Factory by lazy {
         DefaultHttpDataSource.Factory()
             .setDefaultRequestProperties(mapOf("x-api-key" to PreferenceManager.get(API_KEY)))
-    }
-
-    private val countdownTicker = object : Runnable {
-        override fun run() {
-            val exo = player
-            val text = durationText
-            if (exo != null && text != null) {
-                if (exo.isPlaying) {
-                    val remaining = totalDurationSeconds - exo.currentPosition / 1000
-                    text.text = TimelineVideoDuration.format(remaining)
-                }
-                handler.postDelayed(this, COUNTDOWN_INTERVAL_MS)
-            }
-        }
     }
 
     private val playerListener = object : Player.Listener {
@@ -143,8 +123,6 @@ class TimelineFocusVideoPreview(context: Context) {
         playerView = preview
         host = hostView
         poster = image
-        durationText = hostView.findViewById(R.id.timeline_mosaic_video_duration)
-        totalDurationSeconds = TimelineVideoDuration.parseSeconds(cell.asset.duration) ?: 0L
         currentAssetId = cell.asset.id
 
         val mediaSource = ProgressiveMediaSource.Factory(dataSourceFactory)
@@ -152,9 +130,6 @@ class TimelineFocusVideoPreview(context: Context) {
         exo.setMediaSource(mediaSource, /* startPositionMs = */ 0L)
         exo.prepare()
         exo.playWhenReady = true
-
-        handler.removeCallbacks(countdownTicker)
-        handler.post(countdownTicker)
     }
 
     private fun revealVideoOverPoster() {
@@ -177,15 +152,12 @@ class TimelineFocusVideoPreview(context: Context) {
     }
 
     private fun stop() {
-        handler.removeCallbacks(countdownTicker)
         player?.run {
             playWhenReady = false
             stop()
             clearMediaItems()
         }
         poster?.elevation = 0f
-        // Restore the full duration for the next time this cell is (un)focused.
-        durationText?.text = TimelineVideoDuration.format(totalDurationSeconds)
         detachViewOnly()
         currentAssetId = null
     }
@@ -198,10 +170,5 @@ class TimelineFocusVideoPreview(context: Context) {
         playerView = null
         host = null
         poster = null
-        durationText = null
-    }
-
-    companion object {
-        private const val COUNTDOWN_INTERVAL_MS = 250L
     }
 }

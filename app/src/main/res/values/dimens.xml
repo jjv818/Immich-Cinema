@@ -133,10 +133,9 @@
     <dimen name="card_text_padding_horizontal">16dp</dimen>
     <dimen name="card_text_padding_bottom">14dp</dimen>
 
-    <!-- Video badge on cards/mosaic cells. -->
+    <!-- Video badge on cards/mosaic cells: one monochrome play/pause glyph, no duration text. -->
     <dimen name="video_badge_margin">8dp</dimen>
     <dimen name="video_badge_size">26dp</dimen>
-    <dimen name="video_badge_gap">6dp</dimen>
 
     <!-- Timeline day header: vertical padding clears focused mosaic cell scale overflow. -->
     <dimen name="day_header_padding_vertical">24dp</dimen>

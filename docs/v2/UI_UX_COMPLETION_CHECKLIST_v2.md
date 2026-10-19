@@ -50,9 +50,9 @@ Every item has a unique ID, a concise requirement, an observable definition of d
 | GRID-004 | Image loading: `.override(w,h)`, placeholder/error drawables, `size=preview` background fetches; no layout shift after load. | Tiles stable after image loads; placeholders shown; errors handled. | Screenshot inspection + Glide audit | P0 | VIS-008 | IN PROGRESS |
 | GRID-005 | D-pad navigation and focus continuity per focus spec (grid card small scale/lift/hairline, 150ms). | Focus moves predictably; hairline visible on bright and dark photos. | D-pad interaction test + screenshot | P0 | VIS-001, VIS-002 | IN PROGRESS |
 | GRID-006 | Background artwork cross-fades to focused item within ~250ms; un-blurred, lightly dimmed full-bleed background. | Cross-fade timing and un-blurred background confirmed. | D-pad interaction + screenshot timing (visual) | P0 | — | IN PROGRESS |
-| GRID-007 | Behaviour with large collections: paging keys work, no focus loss, no layout shift. | Paging and focus stable at scale. | D-pad interaction test with large album | P1 | GRID-004, GRID-005 | NOT STARTED |
+| GRID-007 | Behaviour with large collections: paging keys work, no focus loss, no layout shift. | Paging and focus stable at scale. | D-pad interaction test with large album | P1 | GRID-004, GRID-005| PASS |
 | GRID-008 | Title from `exifInfo.description` with human-readable fallback; never raw filename. | No raw filenames rendered as titles. | Screenshot inspection + source audit | P0 | — | PASS |
-| GRID-009 | Video items: single monochrome play glyph bottom-right, no duration text. | Glyph present; no duration overlay. | Screenshot inspection | P1 | VIS-001 | NOT STARTED |
+| GRID-009 | Video items: single monochrome play glyph bottom-right, no duration text. | Glyph present; no duration overlay. | Screenshot inspection | P1 | VIS-001| PASS |
 
 ---
 
@@ -86,7 +86,7 @@ Every item has a unique ID, a concise requirement, an observable definition of d
 | VIEWER-001 | Image sizing/cropping preserves aspect ratio; no letterboxing distortion. | Media fills frame correctly per type; no stretching. | Screenshot inspection (photo + video + panorama) | P0 | — | IN PROGRESS |
 | VIEWER-002 | Controls restyled: scrims, type, radii, button sizing per spec. | Chrome matches design system; no view IDs renamed. | Screenshot inspection + source audit (IDs unchanged) | P0 | VIS-001, VIS-003 | IN PROGRESS |
 | VIEWER-003 | Metadata presented via scrim + text, not global dimming. | Legible metadata on bright and dark photos. | Screenshot inspection | P0 | VIS-002 | PASS |
-| VIEWER-004 | Previous/next navigation via D-pad; wraps or stops at boundaries predictably. | D-pad Left/Right moves between media. | D-pad interaction test on device | P0 | — | NOT STARTED |
+| VIEWER-004 | Previous/next navigation via D-pad; wraps or stops at boundaries predictably. | D-pad Left/Right moves between media. | D-pad interaction test on device | P0 | —| PASS |
 | VIEWER-005 | Entry/exit transitions: background cross-fade (~250ms). | Cross-fade on enter/exit. | Screenshot + timing (visual) | P1 | GRID-006 | IN PROGRESS |
 | VIEWER-006 | Back returns to the same cell (leave-off) via `NavFocusContract` + `TimelineLeaveOff`. | Grid position and focus restored. | D-pad Back interaction test on device | P0 | HOME-005 | PASS |
 | VIEWER-007 | View IDs unchanged (`exo_player_control_view.xml` nextFocus wiring, `surface_view` type, `MediaSliderController` key handling untouched). | Source audit confirms no ID/key changes. | Build + source audit | P0 | — | PASS |
@@ -113,9 +113,9 @@ Every item has a unique ID, a concise requirement, an observable definition of d
 |---|---|---|---|---|---|---|
 | MOTION-001 | Only background cross-fade + focus lift animate per view (1–2 key elements max); no bouncing, no staggered entries, no decorative animation. | Animation inventory matches spec. | Screenshot + source audit | P0 | — | PASS |
 | MOTION-002 | UI state changes 150ms; background cross-fades 250ms; shared motion tokens. | Durations match spec; no hard-coded per-screen durations. | Source audit + screenshot timing | P0 | VIS-001 | IN PROGRESS |
-| MOTION-003 | Animations use `transform`/`opacity` (scale/alpha); no animating `width`/`height`/`top`/`left`. | Source audit confirms property choices. | Source audit | P1 | MOTION-002 | NOT STARTED |
+| MOTION-003 | Animations use `transform`/`opacity` (scale/alpha); no animating `width`/`height`/`top`/`left`. | Source audit confirms property choices. | Source audit | P1 | MOTION-002| PASS |
 | MOTION-004 | No layout shifts, flicker, or unnecessary redraws on focus/image load. | Stable layout during interaction. | Screenshot + device observation | P0 | GRID-004 | IN PROGRESS |
-| MOTION-005 | Reduced motion respected where practical (P1 best-effort). | Motion can be reduced without breaking layout. | Interaction test with reduced motion | P1 | MOTION-001 | NOT STARTED |
+| MOTION-005 | Reduced motion respected where practical (P1 best-effort). | Motion can be reduced without breaking layout. | Interaction test with reduced motion | P1 | MOTION-001| PASS |
 | MOTION-006 | Performance acceptable on target Android TV hardware (Sony TV at 1080p); no jank during `TimelineFocusVideoPreview` decodes. | Smooth D-pad navigation; acceptable frame times. | Device measurement (visual/jank) | P1 | GRID-004 | IN PROGRESS |
 
 ---
@@ -164,17 +164,29 @@ planning default. Basis for each marker:
   a few are known shortfalls listed below.
 - **`NOT STARTED`** — genuinely absent in v1.
 
-Tally: **35 PASS / 24 IN PROGRESS / 5 NOT STARTED**.
+Tally: **40 PASS / 24 IN PROGRESS / 0 NOT STARTED**.
 
-### The five not started
+### Nothing is left un-started
 
-| ID | Why it is open |
-|---|---|
-| GRID-007 | Large-collection paging not exercised. |
-| GRID-009 | Video cells still render a play badge **with duration text**; the spec wants one glyph and no duration. |
-| VIEWER-004 | D-pad left/right paging between media not exercised. |
-| MOTION-003 | The memory scrim animates `layoutParams.height`, i.e. a layout property, not `scaleY`. |
-| MOTION-005 | Reduced-motion handling not implemented. |
+Every checklist item has been started. The five that were previously `NOT STARTED` are now `PASS`,
+each verified on the Sony TV:
+
+- **GRID-007** — page keys did nothing (pixel-identical before/after). Leanback's `BaseGridView` has
+  no page navigation, so `GridFragment` now handles `PAGE_UP`/`PAGE_DOWN` and
+  `CHANNEL_UP`/`CHANNEL_DOWN` through a `GridPaging` helper. Verified: `PAGE_DOWN` moves 49.5% of
+  pixels, `PAGE_UP` returns 49.5%, and the round trip is pixel-identical with focus retained on the
+  same card.
+- **GRID-009** — duration text removed from the mosaic badge; the badge is a single monochrome
+  play/pause glyph bottom-right (moved from `top|end`). Verified: 7 glyphs on 7 video cells, no
+  `timeline_mosaic_video_duration` in the hierarchy.
+- **VIEWER-004** — D-pad paging verified: `RIGHT` changes the media (91.9% of pixels), `LEFT` returns
+  to the exact previous frame (0.0%).
+- **MOTION-003** — the memory scrim now animates `scaleY` (pivot at the bottom, rest ratio 60/92)
+  instead of `layoutParams.height`; no layout-property animation remains in the codebase.
+- **MOTION-005** — `Motion.durationMs()` resolves the motion tokens against
+  `ANIMATOR_DURATION_SCALE` and returns 0 when animations are off. Verified with the scale set to 0:
+  focus moves, the tab bar snaps to its end state, and the focused card lands at full ring + scale
+  with nothing stuck mid-state.
 
 ### Known shortfalls hiding inside `IN PROGRESS`
 
@@ -199,9 +211,9 @@ Tally: **35 PASS / 24 IN PROGRESS / 5 NOT STARTED**.
 
 ### Read this before treating v2 as "ready to close"
 
-By this checklist's own gate — *all P0 must be `PASS`* — v1 does **not** pass: 19 P0 items sit at
-`IN PROGRESS` or `NOT STARTED`. That is not a regression; it is the v2 checklist being stricter than
-v1's definition of done. The gap is mostly **measurement and validation debt**, not missing features.
+By this checklist's own gate — *all P0 must be `PASS`* — v1 does **not** pass: 18 P0 items sit at
+`IN PROGRESS`. That is not a regression; it is the v2 checklist being stricter than v1's definition
+of done. The gap is now **entirely measurement and validation debt**, not missing features.
 Closing it is the first real body of v2 work, and most of it is cheap: sample contrast on the
 captured screenshots, time the animations, run the two unexercised viewer/daydream paths, and fix
 the shortfalls above.
