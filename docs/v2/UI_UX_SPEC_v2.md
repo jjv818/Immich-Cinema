@@ -29,6 +29,31 @@ Out of scope: new product features, Compose, DataStore/Hilt/paging-library, rena
 
 **Do not require pixel-perfect duplication of Apple's application.** Match structure, hierarchy, motion, and restraint; adapt scale and ratios to Android TV legibility.
 
+### 2.1 Reference reconciliation — Apple tvOS (fetched 2026-10-19)
+
+The Apple page is JS-gated and returned no body, but the WWDC24 session "Migrate your TVML app to SwiftUI" and Apple's tvOS media-catalog documentation surface the same design language AGENTS.md §2.3 records:
+
+| Apple tvOS pattern (WWDC24 / docs) | AGENTS.md position | Applicable? |
+|---|---|---|
+| Tab bar across the top for section access | §2.3 — tab bar near top edge | Yes — consistent |
+| Full-bleed background to screen edges; gradient mask fades behind controls | §2.3 — full-bleed, un-blurred, barely-dimmed photo | Yes — consistent |
+| Content lockup: image + gently rounded corners; lifts on focus; text moves aside | §2.3 — bottom-left overlaid text over scrim | Adapted — AGENTS uses text-over-image (horizontal card) per §2.2 restraint, not Apple's image-above-text vertical lockup |
+| Focus: lift + specular highlight + hairline | §2.3 — subtle lift/brighten + hairline; background cross-fade is primary cue | Yes — consistent (AGENTS more restrained, no tilt/specular) |
+| Shelves flow horizontally, aligned to safe areas, offscreen content peeks | §5 — 4 columns full width, gutters from spacing scale | Yes — consistent |
+
+No contradictions with AGENTS.md §2.3 were found. The one layout difference (text-over-image vs image-above-text) is an intentional, documented adaptation consistent with AGENTS §2.2 restraint.
+
+### 2.2 UI/UX Pro Max rejection rationale
+
+The `--design-system` output for "premium photo gallery television media catalog dark mode content-first immersive" returned a marketing-site design system ("Vibrant & Block-based": rose `#E11D48`/blue `#2563EB` palette, Inter typography, sticky hero CTAs, feature grids, social-proof sections). It was correctly rejected as inapplicable because:
+
+- It targets web/landing pages, not native TV Leanback.
+- It presumes sticky hero CTAs and feature sections irrelevant to a photo gallery.
+- Its colour palette and typography are branding decisions that conflict with AGENTS.md §5.1 tokens and the "no Apple fonts" rule.
+- It offers no remote-control / D-pad / focus-machinery guidance, which is the fragile part of this codebase (§3.5).
+
+AGENTS.md §5.1 tokens remain authoritative; no Pro Max tokens were adopted.
+
 ## 3. Design principles (locked, from AGENTS.md §2)
 
 1. **Photography is the interface.** Actual user photographs get visual priority. Avoid surrounding every image with unnecessary cards, labels, borders and controls.
@@ -103,7 +128,7 @@ Animate 1–2 key elements per view maximum (background cross-fade + focus lift)
 - Title from `exifInfo.description`, with a human-readable fallback — **never a raw filename**.
 - Video items: one small monochrome play glyph bottom-right, no duration text.
 - Glide `.override(w, h)` plus real `placeholder` / `error` drawables (kills grey-tile defect).
-- Focus: scale ~1.03, small lift (8dp), `focus_hairline`. Colour is never the only cue.
+- Focus: scale 1.06, small lift (8dp), `focus_hairline` + soft glow. Colour is never the only cue.
 
 ### 5.2 Grid asset cards
 - 4:3 centre-crop, 4 columns full width.
@@ -147,7 +172,10 @@ Replace coloured rings (`#4250AF`, `#03A9F4`) with `focus_hairline`. Extract har
 
 ### 5.7 Viewer, settings, auth, screensaver
 - Viewer: restyle chrome (scrims, type, radii, button sizing). **Do not** rename view IDs or change `exo_player_control_view.xml` nextFocus wiring, `surface_view` type, or key handling in `MediaSliderController`.
-- Settings: text-first rows (no icon tiles), `surface_raised`, larger.
+- Settings: **redesign the entire settings page** (not incremental patching).
+  - Replace the outdated right-tab ("View Settings" panel) with an iOS-style toggle-based settings surface: grouped sections, row-per-setting layout, toggle switches for boolean settings, chevrons for drill-in, text-first rows (no icon tiles), `surface_raised`, larger touch targets for D-pad.
+  - Keep the same `PrefScreen` declarative schema and `HIDDEN_HOME_ITEMS` key; restyle the presentation layer only.
+  - Full-bleed background artwork consistent with other screens, un-blurred and lightly dimmed; settings panel floats over it with scrims.
 - Auth Guided Step: supply a `guidedStepTheme` derived from new tokens.
 - Screensaver: inherits viewer styling (reuses `MediaSliderView`); tokens flow through, behaviour unchanged. Verify preview and real daydream.
 
