@@ -1,8 +1,10 @@
 package nl.giejay.android.tv.immich.timeline
 
+import android.graphics.Outline
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewOutlineProvider
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -19,6 +21,9 @@ import nl.giejay.android.tv.immich.api.util.ApiUtil
 
 class TimelineMosaicAdapter(
     private val gapPx: Int,
+    private val focusScale: Float,
+    private val motionUiMs: Long,
+    private val cellRadiusPx: Float,
     private val onCellClick: (TimelineMosaicCell) -> Unit,
     private val onCellFocus: (TimelineMosaicCell, View) -> Unit,
     private val onCellBlur: (TimelineMosaicCell, View) -> Unit,
@@ -205,6 +210,13 @@ class TimelineMosaicAdapter(
                 val lp = LinearLayout.LayoutParams(cell.widthPx, cell.heightPx)
                 if (index > 0) lp.marginStart = gapPx
                 cellRoot.layoutParams = lp
+                // Slight rounded corners on every photo (matches grid + memory cards).
+                cellRoot.outlineProvider = object : ViewOutlineProvider() {
+                    override fun getOutline(view: View, outline: Outline) {
+                        outline.setRoundRect(0, 0, view.width, view.height, cellRadiusPx)
+                    }
+                }
+                cellRoot.clipToOutline = true
                 cellRoot.setTag(R.id.timeline_mosaic_cell_asset_id, cell.asset.id)
                 cellRoot.setTag(R.id.timeline_mosaic_cell_day_key, cell.dayKey)
                 cellRoot.isFocusable = true
@@ -213,12 +225,12 @@ class TimelineMosaicAdapter(
                 cellRoot.setOnFocusChangeListener { v, hasFocus ->
                     // Scale from the cell center; headers/rows keep padding so taller
                     // aspect rows (e.g. 4:3 video at full row height) don't cover the date.
-                    v.animate().scaleX(if (hasFocus) FOCUS_SCALE else 1f)
-                        .scaleY(if (hasFocus) FOCUS_SCALE else 1f)
-                        .setDuration(120)
+                    v.animate().scaleX(if (hasFocus) focusScale else 1f)
+                        .scaleY(if (hasFocus) focusScale else 1f)
+                        .setDuration(motionUiMs)
                         .start()
                     v.elevation = if (hasFocus) 24f else 0f
-                    if (hasFocus) v.setBackgroundResource(R.drawable.border_timeline_cell) else v.setBackgroundResource(0)
+                    if (hasFocus) v.setBackgroundResource(R.drawable.focus_hairline_cell) else v.setBackgroundResource(0)
                     if (!cell.asset.isImage) {
                         videoPlayPause.setImageResource(
                             if (hasFocus) R.drawable.ic_video_badge_pause else R.drawable.ic_video_badge_play
@@ -300,7 +312,5 @@ class TimelineMosaicAdapter(
         private const val VIEW_TYPE_HEADER = 1
         private const val VIEW_TYPE_ROW = 2
         private const val VIEW_TYPE_MEMORIES = 3
-        /** Must stay in sync with header/row padding that clears focus overflow. */
-        private const val FOCUS_SCALE = 1.14f
     }
 }

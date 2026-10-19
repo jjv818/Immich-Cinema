@@ -7,4 +7,13 @@
     <color name="transparentWhite">#33FFFFFF</color>
     <color name="transparent_clear">#00000000</color>
     <color name="details_text">#cccccc</color>
+
+    <!-- Viewer/media chrome tokens (mirror the app design system so the vendored module can use
+         them without depending on app resources). -->
+    <color name="media_control_text">#FFBEBEBE</color>
+    <color name="media_control_hairline">#D9FFFFFF</color>
+    <color name="media_control_pressed">#33FFFFFF</color>
+    <color name="media_scrim_top">#C0000000</color>
+    <color name="media_scrim_clear">#00000000</color>
+    <color name="media_control_bar">#99807B7B</color>
 </resources>

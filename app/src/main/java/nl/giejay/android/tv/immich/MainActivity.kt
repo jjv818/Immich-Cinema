@@ -78,7 +78,26 @@ class MainActivity : FragmentActivity() {
             // Hand focus from the tab bar into the freshly-shown page content.
             homeNavViewModel.requestContentFocus()
         }
-        tabBar.onTabBarFocusChanged = { focused -> homeNavViewModel.setTabBarFocused(focused) }
+        tabBar.onTabBarFocusChanged = { focused ->
+            homeNavViewModel.setTabBarFocused(focused)
+            // Focus returned to the nav chrome: bring the bar back on screen.
+            if (focused) homeNavViewModel.setTabBarExpanded(true)
+        }
+        tabBar.onNavigateDown = {
+            // DOWN from the tab bar: hand focus into the page and slide the bar away.
+            homeNavViewModel.setTabBarExpanded(false)
+            homeNavViewModel.requestContentFocus()
+        }
+        // BaseGridView dispatches keys through this interceptor before routing to the focused
+        // child, so it is the reliable place to catch DOWN while a tab pill owns focus.
+        tabBar.setOnKeyInterceptListener { event ->
+            if (event.action == KeyEvent.ACTION_DOWN && event.keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
+                tabBar.onNavigateDown?.invoke()
+                true
+            } else {
+                false
+            }
+        }
         navController.addOnDestinationChangedListener { _, destination, _ ->
             tabBar.visibility = if (destination.id == R.id.homeFragment) View.VISIBLE else View.GONE
         }
@@ -87,6 +106,15 @@ class MainActivity : FragmentActivity() {
         }
         lifecycleScope.launch {
             homeNavViewModel.selectedTabIndex.collect { tabBar.setSelectedIndex(it) }
+        }
+        lifecycleScope.launch {
+            homeNavViewModel.tabBarExpanded.collect { expanded ->
+                val slideOut = -(tabBar.height + tabBar.top).toFloat()
+                tabBar.animate()
+                    .translationY(if (expanded) 0f else slideOut)
+                    .setDuration(150L)
+                    .start()
+            }
         }
 
         if(!PreferenceManager.hasMetaDataForScreen(MetaDataScreen.VIEWER, AlignOption.RIGHT) || !PreferenceManager.hasMetaDataForScreen(MetaDataScreen.SCREENSAVER, AlignOption.RIGHT)){
@@ -116,6 +144,16 @@ class MainActivity : FragmentActivity() {
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         keyEventsModel.postKeyEvent(event)
+        // BACK semantics (AGENTS.md §6.4): on a non-Timeline home tab, BACK returns to Timeline;
+        // on Timeline (or any non-home destination) it falls through so the system backs out.
+        if (keyCode == KeyEvent.KEYCODE_BACK &&
+            navController.currentDestination?.id == R.id.homeFragment &&
+            homeNavViewModel.selectedTabIndex.value != TIMELINE_TAB_INDEX
+        ) {
+            homeNavViewModel.selectTab(TIMELINE_TAB_INDEX)
+            homeNavViewModel.requestContentFocus()
+            return true
+        }
         return super.onKeyDown(keyCode, event)
     }
 
@@ -211,5 +249,10 @@ class MainActivity : FragmentActivity() {
     override fun onDestroy() {
         super.onDestroy()
         Timber.i("Main activity got destroyed")
+    }
+
+    private companion object {
+        /** Timeline is HEADERS[0] and the start page (AGENTS.md §4). */
+        const val TIMELINE_TAB_INDEX = 0
     }
 }

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Top scrim: black 45% at top, transparent at bottom, behind top chrome over photography. -->
+<!-- Top scrim: black 45% at top, transparent at bottom, behind top chrome over photography.
+     angle=270 => gradient runs top->bottom (start at top). -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <gradient
-        android:angle="90"
-        android:startColor="#73000000"
-        android:endColor="#00000000"
+        android:angle="270"
+        android:startColor="@color/scrim_top_start"
+        android:endColor="@color/scrim_top_end"
         android:type="linear" />
 </shape>

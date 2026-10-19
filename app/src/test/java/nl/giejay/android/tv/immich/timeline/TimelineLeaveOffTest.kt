@@ -185,7 +185,7 @@ class TimelineLeaveOffTest {
 
     @Test
     fun `focus lock release outlives cell focus scale animation`() {
-        assertTrue(TimelineLeaveOff.MOSAIC_FOCUS_LOCK_RELEASE_MS > 120L)
+        assertTrue(TimelineLeaveOff.MOSAIC_FOCUS_LOCK_RELEASE_MS > 150L)
     }
 
     @Test

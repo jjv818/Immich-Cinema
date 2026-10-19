@@ -32,7 +32,6 @@ import nl.giejay.android.tv.immich.assets.RecentAssetsFragment
 import nl.giejay.android.tv.immich.assets.SimilarTimeAssetsFragment
 import nl.giejay.android.tv.immich.people.PeopleFragment
 import nl.giejay.android.tv.immich.settings.SettingsFragment
-import nl.giejay.android.tv.immich.shared.fragment.GridFragment
 import nl.giejay.android.tv.immich.shared.prefs.HIDDEN_HOME_ITEMS
 import nl.giejay.android.tv.immich.shared.prefs.PreferenceManager
 import nl.giejay.android.tv.immich.timeline.TimelineFragment
@@ -53,15 +52,52 @@ class HomeFragment : BrowseSupportFragment() {
         loadData()
 
         mainFragmentRegistry.registerFragment(PageRow::class.java, PageRowFragmentFactory())
+
+        // Live-apply section show/hide changes made in Settings -> Sections. Subscribed once per
+        // fragment instance (observeForever is not disposed by the preference helper).
+        PreferenceManager.subscribe(HIDDEN_HOME_ITEMS) { hidden -> rebuildSections(hidden) }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        removeHeadersRail()
         // The top tab bar drives page selection; mirror its selection onto the browse host.
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 homeNavViewModel.selectedTabIndex.collect { index -> selectedPosition = index }
             }
+        }
+    }
+
+    private var appliedHidden: Set<String>? = null
+
+    /** Rebuild the page rows + tab bar when a section is shown/hidden, preserving the page. */
+    private fun rebuildSections(hidden: Set<String>) {
+        if (!::rows.isInitialized || hidden == appliedHidden) return
+        appliedHidden = hidden
+        val currentName = rows.getOrNull(selectedPosition)?.headerItem?.name
+        val newRows = createRows()
+        rows = newRows
+        mRowsAdapter.clear()
+        mRowsAdapter.addAll(0, newRows)
+        homeNavViewModel.setSections(newRows.map { it.headerItem.name })
+        val newIndex = newRows.indexOfFirst { it.headerItem.name == currentName }
+            .takeIf { it >= 0 } ?: 0
+        homeNavViewModel.selectTab(newIndex)
+        selectedPosition = newIndex
+    }
+
+    /**
+     * `headersState = HEADERS_HIDDEN` keeps PageRow fragment hosting but, on cold start and
+     * state restore, some Leanback versions still render + focus the legacy left rail dock
+     * (android/tv-samples issue #19). The top tab bar is the only navigation surface, so force
+     * the dock gone outright.
+     */
+    private fun removeHeadersRail() {
+        val dockId = resources.getIdentifier("browse_headers_dock", "id", requireContext().packageName)
+        if (dockId == 0) return
+        view?.post {
+            view?.findViewById<View>(dockId)?.visibility = View.GONE
         }
     }
 
@@ -99,13 +135,14 @@ class HomeFragment : BrowseSupportFragment() {
         mRowsAdapter.addAll(0, rows)
         // Tab bar mirrors the same filtered list, so tab index == selectedPosition.
         homeNavViewModel.setSections(rows.map { it.headerItem.name })
+        // Seed so the first live subscription does not rebuild an identical list.
+        appliedHidden = PreferenceManager.get(HIDDEN_HOME_ITEMS)
     }
 
     private fun createRows(): List<PageRow> {
         return HEADERS.mapIndexed { index, header -> index to header }
-            .filter { (index, header) ->
-                index != EDIT_INDEX &&
-                    !PreferenceManager.itemInStringSet(header.name, HIDDEN_HOME_ITEMS)
+            .filter { (_, header) ->
+                !PreferenceManager.itemInStringSet(header.name, HIDDEN_HOME_ITEMS)
             }
             .map { (index, header) -> PageRow(HeaderItem(index.toLong(), header.name)) }
     }
@@ -132,12 +169,8 @@ class HomeFragment : BrowseSupportFragment() {
             Header(ImmichApplication.appContext!!.getString(R.string.recent)) { RecentAssetsFragment() },
             Header(ImmichApplication.appContext!!.getString(R.string.seasonal)) { SimilarTimeAssetsFragment() },
             Header(ImmichApplication.appContext!!.getString(R.string.folders)) { FolderFragment() },
-            Header(ImmichApplication.appContext!!.getString(R.string.edit)) { GridFragment(hideProgressBar = true) },
             Header(ImmichApplication.appContext!!.getString(R.string.settings)) { SettingsFragment() },
         )
-
-        private val EDIT_INDEX: Int =
-            HEADERS.indexOfFirst { it.name == ImmichApplication.appContext!!.getString(R.string.edit) }
     }
 }
 

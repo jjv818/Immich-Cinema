@@ -34,7 +34,7 @@
                 android:clipToPadding="false"
                 android:elevation="4dp"
                 android:paddingStart="40dp"
-                android:paddingTop="28dp"
+                android:paddingTop="100dp"
                 android:paddingEnd="64dp"
                 android:paddingBottom="48dp" />
 

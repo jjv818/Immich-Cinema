@@ -3,20 +3,20 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_focused="true">
         <shape android:shape="rectangle">
-            <solid android:color="#00000000" />
-            <stroke android:width="2dp" android:color="#D9FFFFFF" />
+            <solid android:color="@color/transparent_clear" />
+            <stroke android:width="2dp" android:color="@color/media_control_hairline" />
             <corners android:radius="8dp" />
         </shape>
     </item>
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
-            <solid android:color="#33FFFFFF" />
+            <solid android:color="@color/media_control_pressed" />
             <corners android:radius="8dp" />
         </shape>
     </item>
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="#00000000" />
+            <solid android:color="@color/transparent_clear" />
         </shape>
     </item>
 </selector>

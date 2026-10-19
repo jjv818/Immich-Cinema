@@ -35,6 +35,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.launch
 import nl.giejay.android.tv.immich.R
 import nl.giejay.android.tv.immich.home.nav.HomeNavViewModel
@@ -53,6 +54,7 @@ open class GridFragment(val hideProgressBar: Boolean = false) : BrandedSupportFr
     private var mSceneAfterEntranceTransition: Any? = null
     var progressBar: ProgressBar? = null
     private var mSelectedPosition = -1
+    private var navViewModel: HomeNavViewModel? = null
     private val mMainFragmentAdapter: BrowseSupportFragment.MainFragmentAdapter<Fragment> =
         object : BrowseSupportFragment.MainFragmentAdapter<Fragment>(this) {
             override fun setEntranceTransitionState(state: Boolean) {
@@ -118,18 +120,12 @@ open class GridFragment(val hideProgressBar: Boolean = false) : BrandedSupportFr
     }
 
     private fun showOrHideTitle() {
-        if (mGridViewHolder!!.gridView.findViewHolderForAdapterPosition(mSelectedPosition)
-            == null
-        ) {
-            return
-        }
-        if (!mGridViewHolder!!.gridView.hasPreviousViewInSameRow(mSelectedPosition)) {
-            showTitle(true)
-            mMainFragmentAdapter.fragmentHost?.showTitleView(true)
-        } else {
-            showTitle(false)
-            mMainFragmentAdapter.fragmentHost?.showTitleView(false)
-        }
+        // Section-page headings are dropped (AGENTS.md §5.4): the top tab bar already marks the
+        // active section. Detail pages (album/person/folder) keep their contextual heading, which
+        // they set via setTitle(); those show, empty section titles do not.
+        val hasContextualTitle = !title.isNullOrBlank()
+        showTitle(hasContextualTitle)
+        mMainFragmentAdapter.fragmentHost?.showTitleView(hasContextualTitle)
     }
 
     var onItemViewClickedListener: OnItemViewClickedListener?
@@ -188,6 +184,7 @@ open class GridFragment(val hideProgressBar: Boolean = false) : BrandedSupportFr
 
         // After a tab is selected, hand focus into the freshly-shown grid content.
         val navViewModel = ViewModelProvider(requireActivity()).get(HomeNavViewModel::class.java)
+        this.navViewModel = navViewModel
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 navViewModel.contentFocusRequest.collect { request ->
@@ -199,6 +196,17 @@ open class GridFragment(val hideProgressBar: Boolean = false) : BrandedSupportFr
                 }
             }
         }
+
+        // Collapse the floating tab bar once the grid is scrolled away from the top, expand at the
+        // top. VerticalGridView's GridLayoutManager does not implement the scroll-offset methods
+        // (canScrollVertically(-1) is always false), so read the real scroll from the first child.
+        mGridViewHolder?.gridView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                val scrolled = recyclerView.childCount > 0 &&
+                    recyclerView.getChildAt(0).top < recyclerView.paddingTop
+                navViewModel.setTabBarExpanded(!scrolled)
+            }
+        })
 
         mSceneAfterEntranceTransition =
             TransitionHelper.createScene(gridDock) { setEntranceTransitionState(true) }

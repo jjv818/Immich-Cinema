@@ -2,6 +2,7 @@ package nl.giejay.android.tv.immich.settings
 
 import android.app.Activity
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.View
 import androidx.leanback.app.RowsSupportFragment
 import androidx.leanback.widget.ArrayObjectAdapter
@@ -14,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.coroutines.launch
 import nl.giejay.android.tv.immich.ImmichApplication
 import nl.giejay.android.tv.immich.R
@@ -22,6 +24,7 @@ import nl.giejay.android.tv.immich.home.nav.HomeNavViewModel
 import nl.giejay.android.tv.immich.shared.prefs.DebugPrefScreen
 import nl.giejay.android.tv.immich.shared.prefs.HomeScreenChannelsPrefScreen
 import nl.giejay.android.tv.immich.shared.prefs.ScreensaverPrefScreen
+import nl.giejay.android.tv.immich.shared.prefs.SectionsPrefScreen
 import nl.giejay.android.tv.immich.shared.prefs.ViewPrefScreen
 
 
@@ -53,6 +56,36 @@ class SettingsFragment : RowsSupportFragment() {
                 navViewModel.contentFocusRequest.collect { request ->
                     if (request > 0) {
                         view.post { view.requestFocus() }
+                    }
+                }
+            }
+        }
+        // Collapse the floating tab bar once scrolled away from the top, expand at the top.
+        // VerticalGridView's GridLayoutManager doesn't implement scroll-offset methods, so read
+        // the real scroll from the first child (same as GridFragment).
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                verticalGridView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                        val scrolled = recyclerView.childCount > 0 &&
+                            recyclerView.getChildAt(0).top < recyclerView.paddingTop
+                        navViewModel.setTabBarExpanded(!scrolled)
+                    }
+                })
+            }
+        }
+        // RowsSupportFragment has no BrowseFrameLayout, so wire UP -> tab bar via key intercept.
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                verticalGridView?.setOnKeyInterceptListener { event ->
+                    if (event.action == KeyEvent.ACTION_DOWN &&
+                        event.keyCode == KeyEvent.KEYCODE_DPAD_UP &&
+                        verticalGridView?.hasFocus() == true
+                    ) {
+                        requireActivity().findViewById<View>(R.id.home_tab_bar)?.requestFocus()
+                        true
+                    } else {
+                        false
                     }
                 }
             }
@@ -95,6 +128,17 @@ class SettingsFragment : RowsSupportFragment() {
                         ) {
                             findNavController().navigate(
                                 HomeFragmentDirections.actionGlobalToSettingsDialog(ScreensaverPrefScreen.key)
+                            )
+                        },
+                        SettingsCard(
+                            ImmichApplication.appContext!!.getString(R.string.sections),
+                            null,
+                            "sections",
+                            "ic_settings_settings",
+                            "ic_settings_settings"
+                        ) {
+                            findNavController().navigate(
+                                HomeFragmentDirections.actionGlobalToSettingsDialog(SectionsPrefScreen.key)
                             )
                         },
                         SettingsCard(

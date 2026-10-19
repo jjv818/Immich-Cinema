@@ -1,11 +1,15 @@
 package nl.giejay.android.tv.immich.home.nav
 
 import android.content.Context
+import android.graphics.Rect
 import android.graphics.Typeface
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.Gravity
+import android.view.KeyEvent
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.HorizontalGridView
 import androidx.leanback.widget.ItemBridgeAdapter
@@ -33,6 +37,8 @@ class HomeTabBarView @JvmOverloads constructor(
     private val objectAdapter = ArrayObjectAdapter(TabPresenter())
     var onTabSelected: ((Int) -> Unit)? = null
     var onTabBarFocusChanged: ((Boolean) -> Unit)? = null
+    /** Invoked when the user presses DOWN while the bar owns focus; hands focus into the page. */
+    var onNavigateDown: (() -> Unit)? = null
 
     private var selectedIndex = 0
 
@@ -52,6 +58,30 @@ class HomeTabBarView @JvmOverloads constructor(
         resizeToContent(titles)
     }
 
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        // DOWN while the bar owns focus: hand focus into the page content instead of leaving the
+        // remote stuck on the tab bar. The page reports scroll, which collapses the bar.
+        if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN && hasFocus()) {
+            onNavigateDown?.invoke()
+            return true
+        }
+        return super.onKeyDown(keyCode, event)
+    }
+
+    override fun onFocusChanged(
+        gainFocus: Boolean,
+        direction: Int,
+        previouslyFocusedRect: Rect?
+    ) {
+        super.onFocusChanged(gainFocus, direction, previouslyFocusedRect)
+        // The pill follows the focused tab while the bar owns focus and the selected tab once
+        // focus leaves. A child only repaints on its own focus change, so without this full
+        // rebind the pill it wore when it lost focus stays white (two pills on screen).
+        if (objectAdapter.size() > 0) {
+            objectAdapter.notifyItemRangeChanged(0, objectAdapter.size())
+        }
+    }
+
     /**
      * Size the capsule to its content (capped at 90% of the screen width) so it floats centred.
      * When the labels don't fit, the grid scrolls internally instead of clipping the last tab.
@@ -59,7 +89,7 @@ class HomeTabBarView @JvmOverloads constructor(
     private fun resizeToContent(titles: List<String>) {
         val d = resources.displayMetrics.density
         val probe = TextView(context).apply {
-            textSize = 20f
+            setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.text_body))
             typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
         }
         val tabPad = (18 * d).toInt() * 2
@@ -92,7 +122,7 @@ class HomeTabBarView @JvmOverloads constructor(
         override fun onCreateViewHolder(parent: ViewGroup): ViewHolder {
             val d = resources.displayMetrics.density
             val tv = TextView(context).apply {
-                textSize = 20f
+                setTextSize(TypedValue.COMPLEX_UNIT_PX, resources.getDimension(R.dimen.text_body))
                 typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
                 gravity = Gravity.CENTER
                 isFocusable = true
@@ -129,11 +159,7 @@ class HomeTabBarView @JvmOverloads constructor(
     private fun paint(tv: TextView, tab: Tab, focused: Boolean) {
         val active = isActive(tab, focused)
         tv.background = if (active) context.getDrawable(R.drawable.tab_pill) else null
-        tv.setTextColor(if (active) ACTIVE_TEXT_COLOR else IDLE_TEXT_COLOR)
-    }
-
-    companion object {
-        private const val ACTIVE_TEXT_COLOR = 0xFF0A0A0B.toInt() // surface_base (near-black)
-        private const val IDLE_TEXT_COLOR = 0xE6FFFFFF.toInt()   // white 90% (not faded)
+        val color = if (active) R.color.tab_text_active else R.color.tab_text_idle
+        tv.setTextColor(ContextCompat.getColor(context, color))
     }
 }

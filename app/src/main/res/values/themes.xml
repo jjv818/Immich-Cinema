@@ -23,11 +23,21 @@
         <item name="android:textColor">@color/default_text_color</item>
         <item name="android:textColorPrimary">@color/default_text_color</item>
         <item name="android:textColorSecondary">@color/default_text_color_secondary</item>
+        <!-- The legacy left rail is removed (top tab bar replaces it). Zero out the browse rows
+             margin so content is not still inset by the old ~238dp header width. -->
+        <item name="browseRowsMarginStart">0dp</item>
+        <!-- Clear the floating top tab bar (28dp margin + 64dp height) so grid/settings content
+             starts below it instead of being covered. -->
+        <item name="browsePaddingTop">100dp</item>
+        <item name="guidedStepTheme">@style/GuidedStepTheme</item>
     </style>
 
-    <!-- Theme for card views that show a Video -->
-    <style name="VideoCardViewTheme">
-        <item name="imageCardViewStyle">@style/CardViewStyle</item>
-        <item name="imageCardViewInfoAreaStyle">@style/CardViewInfoAreaStyle</item>
+    <!-- Guided Step (sign-in) derived from the same tokens: dark cinematic background, raised
+         action sheet. Text colours follow AppTheme's textColorPrimary/Secondary. -->
+    <style name="GuidedStepTheme" parent="Theme.AppCompat.Leanback.GuidedStep">
+        <item name="guidedStepBackground">@color/surface_base</item>
+        <item name="guidedActionsBackground">@color/surface_raised</item>
+        <item name="guidedActionsBackgroundDark">@color/surface_base</item>
     </style>
+
 </resources>
