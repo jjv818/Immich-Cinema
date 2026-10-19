@@ -67,6 +67,18 @@ Every item has a unique ID, a concise requirement, an observable definition of d
 
 ---
 
+## J. Settings page redesign
+
+| ID | Requirement | Definition of done | Verification | Priority | Deps | Status |
+|---|---|---|---|---|---|---|
+| SET-001 | Replace the outdated right-tab ("View Settings" panel) with an iOS-style toggle-based settings surface. | No right-tab remains; settings render as grouped sections with toggle switches for booleans and chevrons for drill-in. | Screenshot inspection at 1080p | P0 | VIS-001 | NOT STARTED |
+| SET-002 | Settings rows are text-first, no icon tiles, `surface_raised` background, larger touch targets for D-pad. | Each setting row uses text + optional toggle/chevron; no decorative icon tiles. | Screenshot inspection + source audit | P0 | VIS-001 | NOT STARTED |
+| SET-003 | Boolean settings use toggle switches; drill-in settings use chevrons; grouping separates sections visually. | Toggle switches switch on/off with D-pad; chevron rows open a sub-screen; sections separated by spacing/headers. | D-pad interaction test on device | P1 | SET-001 | NOT STARTED |
+| SET-004 | Full-bleed background artwork, un-blurred and lightly dimmed; settings panel floats over it with scrims. | Background visible behind panel; panel legible via scrim. | Screenshot inspection | P1 | VIS-002 | NOT STARTED |
+| SET-005 | Same `PrefScreen` declarative schema and `HIDDEN_HOME_ITEMS` key preserved; presentation layer restyled only. | Settings behaviour unchanged; only visuals changed. | Source audit + `SettingsScreenFragmentTest` | P0 | — | NOT STARTED |
+
+---
+
 ## E. Full-screen photo viewer
 
 | ID | Requirement | Definition of done | Verification | Priority | Deps | Status |
@@ -115,7 +127,7 @@ Every item has a unique ID, a concise requirement, an observable definition of d
 | A11Y-001 | Readability and contrast: text ≥ 4.5:1 normal / 3:1 large; 18sp text floor. | Measured against spec on bright and dark photos. | Screenshot + contrast measurement | P0 | VIS-002 | IN PROGRESS |
 | A11Y-002 | Clear selection states: focus hairline + brightness on tabs/rails; colour never the only cue. | Selection visible without colour. | Screenshot + interaction | P0 | FOCUS-001 | PASS |
 | A11Y-003 | Empty, loading, error states handled where applicable to existing implementation. | Placeholders/errors rendered; no blank screens. | Screenshot inspection | P1 | VIS-008 | IN PROGRESS |
-| A11Y-004 | Per-cell content descriptions for TalkBack; focus visible on white and black photos. | Descriptions present; hairline visible. | TalkBack test + screenshot | P1 | FOCUS-007 | NOT STARTED |
+| A11Y-004 | Per-cell content descriptions for TalkBack; focus visible on white and black photos. | Descriptions present; hairline visible. | TalkBack test + screenshot | P1 | FOCUS-007 | PASS |
 
 ---
 
@@ -152,9 +164,9 @@ planning default. Basis for each marker:
   a few are known shortfalls listed below.
 - **`NOT STARTED`** — genuinely absent in v1.
 
-Tally: **29 PASS / 24 IN PROGRESS / 6 NOT STARTED**.
+Tally: **30 PASS / 24 IN PROGRESS / 10 NOT STARTED**.
 
-### The six not started
+### The ten not started
 
 | ID | Why it is open |
 |---|---|
@@ -163,7 +175,11 @@ Tally: **29 PASS / 24 IN PROGRESS / 6 NOT STARTED**.
 | VIEWER-004 | D-pad left/right paging between media not exercised. |
 | MOTION-003 | The memory scrim animates `layoutParams.height`, i.e. a layout property, not `scaleY`. |
 | MOTION-005 | Reduced-motion handling not implemented. |
-| A11Y-004 | Mosaic cells expose **no content description** (`uiautomator` reports `NAF="true"`), so TalkBack announces nothing useful. |
+| SET-001 | Settings page not yet redesigned; outdated right-tab ("View Settings" panel) still in place. |
+| SET-002 | Settings row styling not yet applied (text-first, `surface_raised`, larger D-pad targets). |
+| SET-003 | Toggle switches / chevron drill-in not yet implemented. |
+| SET-004 | Settings panel not yet floated over full-bleed background with scrims. |
+| SET-005 | Presentation restyle not yet verified against `PrefScreen` schema preservation. |
 
 ### Known shortfalls hiding inside `IN PROGRESS`
 
