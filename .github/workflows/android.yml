@@ -2,9 +2,9 @@ name: Android CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "redesign" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "redesign" ]
 
 jobs:
   build:
@@ -62,6 +62,9 @@ jobs:
     - name: Build and Test
       if: steps.keystore_check.outputs.available != 'true'
       run: ./gradlew assembleDebug test
+
+    - name: Lint (baselined — fails only on new issues)
+      run: ./gradlew :app:lintDebug
 
     - name: Upload Artifacts
       if: steps.keystore_check.outputs.available == 'true'

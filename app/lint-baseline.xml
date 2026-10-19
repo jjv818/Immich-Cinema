@@ -1,0 +1,2897 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 9.2.1" type="baseline" client="gradle" dependencies="false" name="AGP (9.2.1)" variant="all" version="9.2.1">
+
+    <issue
+        id="ScrollViewSize"
+        message="This LinearLayout should use `android:layout_height=&quot;wrap_content&quot;`"
+        errorLine1="        android:layout_height=&quot;match_parent&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/screensaver_adb.xml"
+            line="8"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="PropertyEscape"
+        message="Windows file separators (`\`) and drive letter separators (&apos;:&apos;) must be escaped (`\\`) in property files; use C\\:/Users/user/AppData/Local/Android/Sdk"
+        errorLine1="sdk.dir=C:/Users/user/AppData/Local/Android/Sdk"
+        errorLine2="         ~">
+        <location
+            file="$HOME/Documents/Immich Cinema/local.properties"
+            line="1"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `clipToOutline` is only used in API level 31 and higher (current min is 24)"
+        errorLine1="    android:clipToOutline=&quot;true&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/artwork_card.xml"
+            line="7"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `min` is only used in API level 26 and higher (current min is 24)"
+        errorLine1="        android:min=&quot;12&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/xml/preferences_meta_data_item.xml"
+            line="23"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `min` is only used in API level 26 and higher (current min is 24)"
+        errorLine1="        android:min=&quot;0&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/xml/preferences_meta_data_item.xml"
+            line="34"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="InflateParams"
+        message="Avoid passing `null` as the view root (needed to resolve layout parameters on the inflated layout&apos;s root element)"
+        errorLine1="        val item: LinearLayout = layoutInflater.inflate(R.layout.fragment_metadata_item, null) as LinearLayout"
+        errorLine2="                                                                                         ~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/settings/MetaDataCustomizerAdapter.kt"
+            line="32"
+            column="90"/>
+    </issue>
+
+    <issue
+        id="QueryPermissionsNeeded"
+        message="Consider adding a `&lt;queries>` declaration to your manifest when calling this method; see https://g.co/dev/packagevisibility for details"
+        errorLine1="    val infos = manager.queryIntentActivities(intent, 0);"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/shared/prefs/Preferences.kt"
+            line="123"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="AndroidGradlePluginVersion"
+        message="A newer version of com.android.application than 9.2.1 is available: 9.4.1"
+        errorLine1="agp = &quot;9.2.1&quot;"
+        errorLine2="      ~~~~~~~">
+        <location
+            file="$HOME/Documents/Immich Cinema/gradle/libs.versions.toml"
+            line="2"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="AndroidGradlePluginVersion"
+        message="A newer version of com.android.library than 9.2.1 is available: 9.4.1"
+        errorLine1="agp = &quot;9.2.1&quot;"
+        errorLine2="      ~~~~~~~">
+        <location
+            file="$HOME/Documents/Immich Cinema/gradle/libs.versions.toml"
+            line="2"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="AndroidGradlePluginVersion"
+        message="A newer version of com.android.tools.build:gradle than 9.2.1 is available: 9.4.1"
+        errorLine1="gradle = &quot;9.2.1&quot;"
+        errorLine2="         ~~~~~~~">
+        <location
+            file="$HOME/Documents/Immich Cinema/gradle/libs.versions.toml"
+            line="17"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.appcompat:appcompat than 1.7.1 is available: 1.8.0"
+        errorLine1="appcompat = &quot;1.7.1&quot;"
+        errorLine2="            ~~~~~~~">
+        <location
+            file="$HOME/Documents/Immich Cinema/gradle/libs.versions.toml"
+            line="3"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.constraintlayout:constraintlayout than 2.2.1 is available: 2.2.2"
+        errorLine1="constraintlayout = &quot;2.2.1&quot;"
+        errorLine2="                   ~~~~~~~">
+        <location
+            file="$HOME/Documents/Immich Cinema/gradle/libs.versions.toml"
+            line="5"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.core:core-ktx than 1.19.0 is available: 1.19.1"
+        errorLine1="core-ktx = &quot;1.19.0&quot;"
+        errorLine2="           ~~~~~~~~">
+        <location
+            file="$HOME/Documents/Immich Cinema/gradle/libs.versions.toml"
+            line="7"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.fragment:fragment-ktx than 1.8.9 is available: 1.9.1"
+        errorLine1="fragment = &quot;1.8.9&quot;"
+        errorLine2="           ~~~~~~~">
+        <location
+            file="$HOME/Documents/Immich Cinema/gradle/libs.versions.toml"
+            line="11"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.fragment:fragment-testing than 1.8.9 is available: 1.9.1"
+        errorLine1="fragment = &quot;1.8.9&quot;"
+        errorLine2="           ~~~~~~~">
+        <location
+            file="$HOME/Documents/Immich Cinema/gradle/libs.versions.toml"
+            line="11"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.media3:media3-exoplayer than 1.10.1 is available: 1.11.1"
+        errorLine1="media3-exoplayer = &quot;1.10.1&quot;"
+        errorLine2="                   ~~~~~~~~">
+        <location
+            file="$HOME/Documents/Immich Cinema/gradle/libs.versions.toml"
+            line="25"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.media3:media3-exoplayer-dash than 1.10.1 is available: 1.11.1"
+        errorLine1="media3-exoplayer = &quot;1.10.1&quot;"
+        errorLine2="                   ~~~~~~~~">
+        <location
+            file="$HOME/Documents/Immich Cinema/gradle/libs.versions.toml"
+            line="25"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.media3:media3-ui than 1.10.1 is available: 1.11.1"
+        errorLine1="media3-exoplayer = &quot;1.10.1&quot;"
+        errorLine2="                   ~~~~~~~~">
+        <location
+            file="$HOME/Documents/Immich Cinema/gradle/libs.versions.toml"
+            line="25"
+            column="20"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.navigation:navigation-fragment-ktx than 2.9.8 is available: 2.10.2"
+        errorLine1="navigation = &quot;2.9.8&quot;"
+        errorLine2="             ~~~~~~~">
+        <location
+            file="$HOME/Documents/Immich Cinema/gradle/libs.versions.toml"
+            line="29"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.navigation:navigation-safe-args-gradle-plugin than 2.9.8 is available: 2.10.2"
+        errorLine1="navigation = &quot;2.9.8&quot;"
+        errorLine2="             ~~~~~~~">
+        <location
+            file="$HOME/Documents/Immich Cinema/gradle/libs.versions.toml"
+            line="29"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.navigation:navigation-ui-ktx than 2.9.8 is available: 2.10.2"
+        errorLine1="navigation = &quot;2.9.8&quot;"
+        errorLine2="             ~~~~~~~">
+        <location
+            file="$HOME/Documents/Immich Cinema/gradle/libs.versions.toml"
+            line="29"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.navigation.safeargs.kotlin than 2.9.8 is available: 2.10.2"
+        errorLine1="navigation-safeargs-kotlin = &quot;2.9.8&quot;"
+        errorLine2="                             ~~~~~~~">
+        <location
+            file="$HOME/Documents/Immich Cinema/gradle/libs.versions.toml"
+            line="30"
+            column="30"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of com.google.android.gms:play-services-auth than 21.6.0 is available: 22.0.0"
+        errorLine1="play-services-auth = &quot;21.6.0&quot;"
+        errorLine2="                     ~~~~~~~~">
+        <location
+            file="$HOME/Documents/Immich Cinema/gradle/libs.versions.toml"
+            line="33"
+            column="22"/>
+    </issue>
+
+    <issue
+        id="NewerVersionAvailable"
+        message="A newer version of com.diffplug.spotless than 8.8.0 is available: 8.10.4"
+        errorLine1="diffplug-spotless = &quot;8.8.0&quot;"
+        errorLine2="                    ~~~~~~~">
+        <location
+            file="$HOME/Documents/Immich Cinema/gradle/libs.versions.toml"
+            line="10"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="NewerVersionAvailable"
+        message="A newer version of com.google.api-client:google-api-client than 2.9.0 is available: 2.9.1"
+        errorLine1="google-api-client = &quot;2.9.0&quot;"
+        errorLine2="                    ~~~~~~~">
+        <location
+            file="$HOME/Documents/Immich Cinema/gradle/libs.versions.toml"
+            line="13"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="NewerVersionAvailable"
+        message="A newer version of com.google.auth:google-auth-library-oauth2-http than 1.49.0 is available: 1.54.0"
+        errorLine1="google-auth-library-oauth2-http = &quot;1.49.0&quot;"
+        errorLine2="                                  ~~~~~~~~">
+        <location
+            file="$HOME/Documents/Immich Cinema/gradle/libs.versions.toml"
+            line="15"
+            column="35"/>
+    </issue>
+
+    <issue
+        id="NewerVersionAvailable"
+        message="A newer version of org.jetbrains.kotlin.android than 2.4.0 is available: 2.4.21"
+        errorLine1="kotlin = &quot;2.4.0&quot;"
+        errorLine2="         ~~~~~~~">
+        <location
+            file="$HOME/Documents/Immich Cinema/gradle/libs.versions.toml"
+            line="21"
+            column="10"/>
+    </issue>
+
+    <issue
+        id="NewerVersionAvailable"
+        message="A newer version of org.mockito:mockito-core than 5.23.0 is available: 5.24.0"
+        errorLine1="mockito-core = &quot;5.23.0&quot;"
+        errorLine2="               ~~~~~~~~">
+        <location
+            file="$HOME/Documents/Immich Cinema/gradle/libs.versions.toml"
+            line="26"
+            column="16"/>
+    </issue>
+
+    <issue
+        id="NewerVersionAvailable"
+        message="A newer version of org.mockito.kotlin:mockito-kotlin than 6.3.0 is available: 6.4.0"
+        errorLine1="mockito-kotlin = &quot;6.3.0&quot;"
+        errorLine2="                 ~~~~~~~">
+        <location
+            file="$HOME/Documents/Immich Cinema/gradle/libs.versions.toml"
+            line="28"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="NewerVersionAvailable"
+        message="A newer version of io.github.anilbeesetti:nextlib-media3ext than 1.10.1-0.13.0 is available: 1.11.1-0.16.0"
+        errorLine1="nextlib-media3ext = &quot;1.10.1-0.13.0&quot;"
+        errorLine2="                    ~~~~~~~~~~~~~~~">
+        <location
+            file="$HOME/Documents/Immich Cinema/gradle/libs.versions.toml"
+            line="31"
+            column="21"/>
+    </issue>
+
+    <issue
+        id="NewerVersionAvailable"
+        message="A newer version of org.robolectric:robolectric than 4.16.1 is available: 4.17"
+        errorLine1="robolectric = &quot;4.16.1&quot;"
+        errorLine2="              ~~~~~~~~">
+        <location
+            file="$HOME/Documents/Immich Cinema/gradle/libs.versions.toml"
+            line="35"
+            column="15"/>
+    </issue>
+
+    <issue
+        id="RestrictedApi"
+        message="BasePreviewProgram.getInternalProviderId can only be called from within the same library (androidx.tvprovider:tvprovider)"
+        errorLine1="                program.internalProviderId?.let { assetId -> existingProgramIdsByAssetId[assetId] = program.id }"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/homescreenchannels/HomeScreenChannelManager.kt"
+            line="305"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="RestrictedApi"
+        message="BasePreviewProgram.getInternalProviderId can only be called from within the same library (androidx.tvprovider:tvprovider)"
+        errorLine1="                program.internalProviderId?.let { assetId -> existingProgramIdsByAssetId[assetId] = program.id }"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/homescreenchannels/HomeScreenChannelManager.kt"
+            line="305"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="RestrictedApi"
+        message="BaseProgram.getId can only be called from within the same library (androidx.tvprovider:tvprovider)"
+        errorLine1="                program.internalProviderId?.let { assetId -> existingProgramIdsByAssetId[assetId] = program.id }"
+        errorLine2="                                                                                                            ~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/homescreenchannels/HomeScreenChannelManager.kt"
+            line="305"
+            column="109"/>
+    </issue>
+
+    <issue
+        id="RestrictedApi"
+        message="BaseProgram.getId can only be called from within the same library (androidx.tvprovider:tvprovider)"
+        errorLine1="                program.internalProviderId?.let { assetId -> existingProgramIdsByAssetId[assetId] = program.id }"
+        errorLine2="                                                                                                            ~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/homescreenchannels/HomeScreenChannelManager.kt"
+            line="305"
+            column="109"/>
+    </issue>
+
+    <issue
+        id="RestrictedApi"
+        message="Builder.setType can only be called from within the same library (androidx.tvprovider:tvprovider)"
+        errorLine1="                .setType(TvContractCompat.PreviewPrograms.TYPE_CLIP)"
+        errorLine2="                 ~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/homescreenchannels/HomeScreenChannelManager.kt"
+            line="324"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="RestrictedApi"
+        message="Builder.setType can only be called from within the same library (androidx.tvprovider:tvprovider)"
+        errorLine1="                .setType(TvContractCompat.PreviewPrograms.TYPE_CLIP)"
+        errorLine2="                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/homescreenchannels/HomeScreenChannelManager.kt"
+            line="324"
+            column="26"/>
+    </issue>
+
+    <issue
+        id="RestrictedApi"
+        message="Builder.setTitle can only be called from within the same library (androidx.tvprovider:tvprovider)"
+        errorLine1="                .setTitle(asset.originalFileName ?: asset.id)"
+        errorLine2="                 ~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/homescreenchannels/HomeScreenChannelManager.kt"
+            line="325"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="RestrictedApi"
+        message="Builder.setPosterArtUri can only be called from within the same library (androidx.tvprovider:tvprovider)"
+        errorLine1="                .setPosterArtUri(Uri.parse(posterArtUrl))"
+        errorLine2="                 ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/homescreenchannels/HomeScreenChannelManager.kt"
+            line="326"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="RestrictedApi"
+        message="Builder.setPosterArtAspectRatio can only be called from within the same library (androidx.tvprovider:tvprovider)"
+        errorLine1="                .setPosterArtAspectRatio(TvContractCompat.PreviewPrograms.ASPECT_RATIO_16_9)"
+        errorLine2="                 ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/homescreenchannels/HomeScreenChannelManager.kt"
+            line="327"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="RestrictedApi"
+        message="Builder.setPosterArtAspectRatio can only be called from within the same library (androidx.tvprovider:tvprovider)"
+        errorLine1="                .setPosterArtAspectRatio(TvContractCompat.PreviewPrograms.ASPECT_RATIO_16_9)"
+        errorLine2="                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/homescreenchannels/HomeScreenChannelManager.kt"
+            line="327"
+            column="42"/>
+    </issue>
+
+    <issue
+        id="RestrictedApi"
+        message="Builder.setIntentUri can only be called from within the same library (androidx.tvprovider:tvprovider)"
+        errorLine1="                .setIntentUri(ChannelDeepLinks.forAsset(asset.id))"
+        errorLine2="                 ~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/homescreenchannels/HomeScreenChannelManager.kt"
+            line="328"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="RestrictedApi"
+        message="Builder.setInternalProviderId can only be called from within the same library (androidx.tvprovider:tvprovider)"
+        errorLine1="                .setInternalProviderId(asset.id)"
+        errorLine2="                 ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/homescreenchannels/HomeScreenChannelManager.kt"
+            line="329"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="RestrictedApi"
+        message="BasePreviewProgram.isBrowsable can only be called from within the same library (androidx.tvprovider:tvprovider)"
+        errorLine1="            if (program.isBrowsable) return@use"
+        errorLine2="                        ~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/homescreenchannels/HomeScreenChannelReceiver.kt"
+            line="74"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="RestrictedApi"
+        message="BasePreviewProgram.isBrowsable can only be called from within the same library (androidx.tvprovider:tvprovider)"
+        errorLine1="            if (program.isBrowsable) return@use"
+        errorLine2="                        ~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/homescreenchannels/HomeScreenChannelReceiver.kt"
+            line="74"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="RestrictedApi"
+        message="BasePreviewProgram.getInternalProviderId can only be called from within the same library (androidx.tvprovider:tvprovider)"
+        errorLine1="            val assetId = program.internalProviderId ?: return@use"
+        errorLine2="                                  ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/homescreenchannels/HomeScreenChannelReceiver.kt"
+            line="75"
+            column="35"/>
+    </issue>
+
+    <issue
+        id="RestrictedApi"
+        message="BasePreviewProgram.getInternalProviderId can only be called from within the same library (androidx.tvprovider:tvprovider)"
+        errorLine1="            val assetId = program.internalProviderId ?: return@use"
+        errorLine2="                                  ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/homescreenchannels/HomeScreenChannelReceiver.kt"
+            line="75"
+            column="35"/>
+    </issue>
+
+    <issue
+        id="DiscouragedApi"
+        message="Use of this function is discouraged because resource reflection makes it harder to perform build optimizations and compile-time verification of code. It is much more efficient to retrieve resources by identifier (e.g. `R.foo.bar`) than by name (e.g. `getIdentifier(&quot;bar&quot;, &quot;foo&quot;, null)`)."
+        errorLine1="                    .getIdentifier(url, &quot;drawable&quot;, &quot;nl.giejay.android.tv.immich&quot;)"
+        errorLine2="                     ~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/card/ArtworkCardPresenter.kt"
+            line="71"
+            column="22"/>
+    </issue>
+
+    <issue
+        id="DiscouragedApi"
+        message="Use of this function is discouraged because resource reflection makes it harder to perform build optimizations and compile-time verification of code. It is much more efficient to retrieve resources by identifier (e.g. `R.foo.bar`) than by name (e.g. `getIdentifier(&quot;bar&quot;, &quot;foo&quot;, null)`)."
+        errorLine1="        val dockId = resources.getIdentifier(&quot;browse_headers_dock&quot;, &quot;id&quot;, requireContext().packageName)"
+        errorLine2="                               ~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/home/HomeFragment.kt"
+            line="97"
+            column="32"/>
+    </issue>
+
+    <issue
+        id="UseCompatLoadingForDrawables"
+        message="Use `AppCompatResources.getDrawable()`"
+        errorLine1="            requireContext().getDrawable(R.drawable.icon)!!"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/auth/AuthFragmentStep1.kt"
+            line="30"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UseCompatLoadingForDrawables"
+        message="Use `AppCompatResources.getDrawable()`"
+        errorLine1="        val icon: Drawable = requireContext().getDrawable(R.drawable.icon)!!"
+        errorLine2="                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/auth/AuthFragmentStep2.kt"
+            line="40"
+            column="30"/>
+    </issue>
+
+    <issue
+        id="UseCompatLoadingForDrawables"
+        message="Use `AppCompatResources.getDrawable()`"
+        errorLine1="        tv.background = if (active) context.getDrawable(R.drawable.tab_pill) else null"
+        errorLine2="                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/home/nav/HomeTabBarView.kt"
+            line="161"
+            column="37"/>
+    </issue>
+
+    <issue
+        id="UseCompatLoadingForDrawables"
+        message="Use `AppCompatResources.getDrawable()`"
+        errorLine1="        tv.background = if (active) context.getDrawable(R.drawable.tab_pill) else null"
+        errorLine2="                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/home/nav/HomeTabBarView.kt"
+            line="161"
+            column="37"/>
+    </issue>
+
+    <issue
+        id="UseCompatLoadingForDrawables"
+        message="Use `AppCompatResources.getDrawable()`"
+        errorLine1="            v.foreground = if (hasFocus) context.getDrawable(R.drawable.focus_hairline) else null"
+        errorLine2="                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/timeline/MemoryPresenter.kt"
+            line="85"
+            column="42"/>
+    </issue>
+
+    <issue
+        id="UseCompatLoadingForDrawables"
+        message="Use `AppCompatResources.getDrawable()`"
+        errorLine1="            v.foreground = if (hasFocus) context.getDrawable(R.drawable.focus_hairline) else null"
+        errorLine2="                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/timeline/MemoryPresenter.kt"
+            line="85"
+            column="42"/>
+    </issue>
+
+    <issue
+        id="MissingQuantity"
+        message="For locale &quot;fr&quot; (French) the following quantity should also be defined: `many` (e.g. &quot;1000000 de jours&quot;)"
+        errorLine1="    &lt;plurals name=&quot;years_ago&quot;>"
+        errorLine2="    ^">
+        <location
+            file="src/main/res/values-fr/strings.xml"
+            line="73"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;home_screen_channels&quot; is not translated in &quot;ru&quot; (Russian) or &quot;fr&quot; (French)"
+        errorLine1="    &lt;string name=&quot;home_screen_channels&quot;>Home screen channels&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="212"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;home_screen_channels_settings&quot; is not translated in &quot;ru&quot; (Russian) or &quot;fr&quot; (French)"
+        errorLine1="    &lt;string name=&quot;home_screen_channels_settings&quot;>Home screen channel settings&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="213"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;channel_recent_photos&quot; is not translated in &quot;ru&quot; (Russian) or &quot;fr&quot; (French)"
+        errorLine1="    &lt;string name=&quot;channel_recent_photos&quot;>Recent photos&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="214"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;enable_home_screen_channels&quot; is not translated in &quot;ru&quot; (Russian) or &quot;fr&quot; (French)"
+        errorLine1="    &lt;string name=&quot;enable_home_screen_channels&quot;>Show channels on home screen&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="215"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;enable_home_screen_channels_desc&quot; is not translated in &quot;ru&quot; (Russian) or &quot;fr&quot; (French)"
+        errorLine1="    &lt;string name=&quot;enable_home_screen_channels_desc&quot;>Publish your recent photos, and any albums you pick below, as channels on the Android TV home screen&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="216"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;set_albums_home_screen_channels&quot; is not translated in &quot;ru&quot; (Russian) or &quot;fr&quot; (French)"
+        errorLine1="    &lt;string name=&quot;set_albums_home_screen_channels&quot;>Set albums to publish as channels&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="217"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;set_albums_home_screen_channels_desc&quot; is not translated in &quot;ru&quot; (Russian) or &quot;fr&quot; (French)"
+        errorLine1="    &lt;string name=&quot;set_albums_home_screen_channels_desc&quot;>Each selected album shows up as its own row on the Android TV home screen&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="218"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;home_screen_channels_refresh_now&quot; is not translated in &quot;ru&quot; (Russian) or &quot;fr&quot; (French)"
+        errorLine1="    &lt;string name=&quot;home_screen_channels_refresh_now&quot;>Refresh now&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="219"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;home_screen_channels_refresh_now_desc&quot; is not translated in &quot;ru&quot; (Russian) or &quot;fr&quot; (French)"
+        errorLine1="    &lt;string name=&quot;home_screen_channels_refresh_now_desc&quot;>Immediately sync the home screen channels instead of waiting for the next automatic refresh&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="220"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="MissingTranslation"
+        message="&quot;home_screen_channel_error&quot; is not translated in &quot;ru&quot; (Russian) or &quot;fr&quot; (French)"
+        errorLine1="    &lt;string name=&quot;home_screen_channel_error&quot;>Could not set up the home screen channel for this album&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="221"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="ExtraTranslation"
+        message="&quot;donation_subtitle&quot; is translated here but not found in default locale"
+        errorLine1="    &lt;string name=&quot;donation_subtitle&quot;>Le développement de cette application demande beaucoup d’efforts. Si vous souhaitez montrer votre soutien, vous pouvez faire un don avec les options suivantes.&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-fr/strings.xml"
+            line="242"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="ExtraTranslation"
+        message="&quot;donation_exhausted&quot; is translated here but not found in default locale"
+        errorLine1="    &lt;string name=&quot;donation_exhausted&quot;>Vous avez épuisé vos options de don, merci !&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-fr/strings.xml"
+            line="243"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="ExtraTranslation"
+        message="&quot;donation_subtitle&quot; is translated here but not found in default locale"
+        errorLine1="    &lt;string name=&quot;donation_subtitle&quot;>Разработка этого приложения требует больших усилий. Если хотите выразить признательность, вы можете пожертвовать, используя следующие варианты.&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-ru/strings.xml"
+            line="244"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="ExtraTranslation"
+        message="&quot;donation_exhausted&quot; is translated here but not found in default locale"
+        errorLine1="    &lt;string name=&quot;donation_exhausted&quot;>Вы исчерпали варианты пожертвований, спасибо!&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-ru/strings.xml"
+            line="245"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="ExtraTranslation"
+        message="&quot;donation_subtitle&quot; is translated here but not found in default locale"
+        errorLine1="    &lt;string name=&quot;donation_subtitle&quot;>开发本应用花费了大量心血，如果你想表达支持，欢迎通过以下方式捐赠。&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-zh-rCN/strings.xml"
+            line="251"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="ExtraTranslation"
+        message="&quot;donation_exhausted&quot; is translated here but not found in default locale"
+        errorLine1="    &lt;string name=&quot;donation_exhausted&quot;>你已用完所有捐赠渠道，谢谢！&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-zh-rCN/strings.xml"
+            line="252"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="TrustAllX509TrustManager"
+        message="`checkClientTrusted` is empty, which could cause insecure network traffic due to trusting arbitrary TLS/SSL certificates presented by peers"
+        errorLine1="                    override fun checkClientTrusted("
+        errorLine2="                                 ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/api/util/UnsafeOkHttpClient.kt"
+            line="19"
+            column="34"/>
+    </issue>
+
+    <issue
+        id="TrustAllX509TrustManager"
+        message="`checkServerTrusted` is empty, which could cause insecure network traffic due to trusting arbitrary TLS/SSL certificates presented by peers"
+        errorLine1="                    override fun checkServerTrusted("
+        errorLine2="                                 ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/api/util/UnsafeOkHttpClient.kt"
+            line="26"
+            column="34"/>
+    </issue>
+
+    <issue
+        id="AcceptsUserCertificates"
+        message="The Network Security Configuration allows the use of user certificates in the release version of your app"
+        errorLine1="            &lt;certificates src=&quot;user&quot; />"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/xml/network_security_config.xml"
+            line="6"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="CustomX509TrustManager"
+        message="Implementing a custom `X509TrustManager` is error-prone and likely to be insecure. It is likely to disable certificate validation altogether, and is non-trivial to implement correctly without calling Android&apos;s default implementation."
+        errorLine1="                object : X509TrustManager {"
+        errorLine2="                ~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/api/util/UnsafeOkHttpClient.kt"
+            line="17"
+            column="17"/>
+    </issue>
+
+    <issue
+        id="InsecureBaseConfiguration"
+        message="Insecure Base Configuration"
+        errorLine1="    &lt;base-config cleartextTrafficPermitted=&quot;true&quot;>"
+        errorLine2="                                            ~~~~">
+        <location
+            file="src/main/res/xml/network_security_config.xml"
+            line="3"
+            column="45"/>
+    </issue>
+
+    <issue
+        id="DataExtractionRules"
+        message="The attribute `android:fullBackupContent` is deprecated from Android 12 and higher and may be removed in future versions. Consider adding the attribute `android:dataExtractionRules` specifying an `@xml` resource which configures cloud backups and device transfers on Android 12 and higher."
+        errorLine1="        android:fullBackupContent=&quot;true&quot;"
+        errorLine2="                                   ~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="39"
+            column="36"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="This folder configuration (`v24`) is unnecessary; `minSdkVersion` is 24. Merge all the resources in this folder into `drawable`.">
+        <location
+            file="src/main/res/drawable-v24"/>
+    </issue>
+
+    <issue
+        id="ObsoleteSdkInt"
+        message="This folder configuration (`v23`) is unnecessary; `minSdkVersion` is 24. Merge all the resources in this folder into `values`.">
+        <location
+            file="src/main/res/values-v23"/>
+    </issue>
+
+    <issue
+        id="UseCompoundDrawables"
+        message="This tag and its children can be replaced by one `&lt;TextView/>` and a compound drawable"
+        errorLine1="&lt;LinearLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2=" ~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/presenter_row.xml"
+            line="2"
+            column="2"/>
+    </issue>
+
+    <issue
+        id="UseCompoundDrawables"
+        message="This tag and its children can be replaced by one `&lt;TextView/>` and a compound drawable"
+        errorLine1="    &lt;LinearLayout"
+        errorLine2="     ~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/timeline_mosaic_cell.xml"
+            line="18"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="ViewHolder"
+        message="Unconditional layout inflation from view adapter: Should use View Holder pattern (use recycled view passed into this method as the second parameter) for smoother scrolling"
+        errorLine1="        val item: LinearLayout = layoutInflater.inflate(R.layout.fragment_metadata_item, null) as LinearLayout"
+        errorLine2="                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/settings/MetaDataCustomizerAdapter.kt"
+            line="32"
+            column="34"/>
+    </issue>
+
+    <issue
+        id="MergeRootFrame"
+        message="This `&lt;FrameLayout>` can be replaced with a `&lt;merge>` tag"
+        errorLine1="&lt;FrameLayout xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2="^">
+        <location
+            file="src/main/res/layout/activity_main.xml"
+            line="16"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="Overdraw"
+        message="Possible overdraw: Root element paints background `@color/gray_dark` with a theme that also paints a background (inferred theme is `@style/AppTheme`)"
+        errorLine1="    android:background=&quot;@color/gray_dark&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/fragment_metadata.xml"
+            line="23"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.animator.action_button_animator` appears to be unused"
+        errorLine1="&lt;selector"
+        errorLine2="^">
+        <location
+            file="src/main/res/animator/action_button_animator.xml"
+            line="16"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.action_button_background` appears to be unused"
+        errorLine1="&lt;ripple xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2="^">
+        <location
+            file="src/main/res/drawable/action_button_background.xml"
+            line="16"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.action_button_background_color_state_list` appears to be unused"
+        errorLine1="&lt;selector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;>"
+        errorLine2="^">
+        <location
+            file="src/main/res/color/action_button_background_color_state_list.xml"
+            line="16"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.action_button_icon_tint_state_list` appears to be unused"
+        errorLine1="&lt;selector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;>"
+        errorLine2="^">
+        <location
+            file="src/main/res/color/action_button_icon_tint_state_list.xml"
+            line="16"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.action_button_ripple_color_state_list` appears to be unused"
+        errorLine1="&lt;selector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;>"
+        errorLine2="^">
+        <location
+            file="src/main/res/color/action_button_ripple_color_state_list.xml"
+            line="16"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.action_button_text_color_state_list` appears to be unused"
+        errorLine1="&lt;selector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;>"
+        errorLine2="^">
+        <location
+            file="src/main/res/color/action_button_text_color_state_list.xml"
+            line="16"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.array.meta_data_alignment_labels` appears to be unused"
+        errorLine1="    &lt;array name=&quot;meta_data_alignment_labels&quot;>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/arrays.xml"
+            line="40"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.array.meta_data_alignment_keys` appears to be unused"
+        errorLine1="    &lt;array name=&quot;meta_data_alignment_keys&quot;>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/arrays.xml"
+            line="45"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.array.albums_order` appears to be unused"
+        errorLine1="    &lt;string-array name=&quot;albums_order&quot;>"
+        errorLine2="                  ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/arrays.xml"
+            line="73"
+            column="19"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.array.albums_order_keys` appears to be unused"
+        errorLine1="    &lt;string-array name=&quot;albums_order_keys&quot;>"
+        errorLine2="                  ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/arrays.xml"
+            line="80"
+            column="19"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.array.photos_order` appears to be unused"
+        errorLine1="    &lt;string-array name=&quot;photos_order&quot;>"
+        errorLine2="                  ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/arrays.xml"
+            line="87"
+            column="19"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.array.content_type` appears to be unused"
+        errorLine1="    &lt;string-array name=&quot;content_type&quot;>"
+        errorLine2="                  ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/arrays.xml"
+            line="94"
+            column="19"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.array.content_type_keys` appears to be unused"
+        errorLine1="    &lt;string-array name=&quot;content_type_keys&quot;>"
+        errorLine2="                  ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/arrays.xml"
+            line="100"
+            column="19"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.array.photos_order_keys` appears to be unused"
+        errorLine1="    &lt;string-array name=&quot;photos_order_keys&quot;>"
+        errorLine2="                  ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/arrays.xml"
+            line="106"
+            column="19"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.array.all_assets_order` appears to be unused"
+        errorLine1="    &lt;string-array name=&quot;all_assets_order&quot;>"
+        errorLine2="                  ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/arrays.xml"
+            line="113"
+            column="19"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.array.all_assets_order_keys` appears to be unused"
+        errorLine1="    &lt;string-array name=&quot;all_assets_order_keys&quot;>"
+        errorLine2="                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/arrays.xml"
+            line="118"
+            column="19"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.array.screensaver_type_keys` appears to be unused"
+        errorLine1="    &lt;string-array name=&quot;screensaver_type_keys&quot;>"
+        errorLine2="                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/arrays.xml"
+            line="123"
+            column="19"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.array.screensaver_type_values` appears to be unused"
+        errorLine1="    &lt;string-array name=&quot;screensaver_type_values&quot;>"
+        errorLine2="                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/arrays.xml"
+            line="130"
+            column="19"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.border_timeline_cell` appears to be unused"
+        errorLine1="&lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot; android:shape=&quot;rectangle&quot;>"
+        errorLine2="^">
+        <location
+            file="src/main/res/drawable/border_timeline_cell.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.bug` appears to be unused">
+        <location
+            file="src/main/res/drawable/bug.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.character_focused` appears to be unused"
+        errorLine1="&lt;shape"
+        errorLine2="^">
+        <location
+            file="src/main/res/drawable/character_focused.xml"
+            line="17"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.character_not_focused` appears to be unused"
+        errorLine1="&lt;shape"
+        errorLine2="^">
+        <location
+            file="src/main/res/drawable/character_not_focused.xml"
+            line="17"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.character_not_focused_padding` appears to be unused"
+        errorLine1="&lt;shape"
+        errorLine2="^">
+        <location
+            file="src/main/res/drawable/character_not_focused_padding.xml"
+            line="17"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.screen_white_10` appears to be unused"
+        errorLine1="    &lt;color name=&quot;screen_white_10&quot;>#1AE8EAED&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="27"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.screen_black` appears to be unused"
+        errorLine1="    &lt;color name=&quot;screen_black&quot;>#0E0E0F&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="30"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.default_card_background_color` appears to be unused"
+        errorLine1="    &lt;color name=&quot;default_card_background_color&quot;>#263238&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="35"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.default_card_footer_background_color` appears to be unused"
+        errorLine1="    &lt;color name=&quot;default_card_footer_background_color&quot;>#37474F&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="36"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.selected_card_footer_background_color` appears to be unused"
+        errorLine1="    &lt;color name=&quot;selected_card_footer_background_color&quot;>#F0F&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="37"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.action_button_ripple_color` appears to be unused"
+        errorLine1="    &lt;color name=&quot;action_button_ripple_color&quot;>@color/black&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="39"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.action_button_background_focused_color` appears to be unused"
+        errorLine1="    &lt;color name=&quot;action_button_background_focused_color&quot;>@color/screen_white&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="40"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.action_button_background_unfocused_color` appears to be unused"
+        errorLine1="    &lt;color name=&quot;action_button_background_unfocused_color&quot;>@color/screen_white_10&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="41"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.action_button_text_focused_color` appears to be unused"
+        errorLine1="    &lt;color name=&quot;action_button_text_focused_color&quot;>@color/screen_black&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="42"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.action_button_text_unfocused_color` appears to be unused"
+        errorLine1="    &lt;color name=&quot;action_button_text_unfocused_color&quot;>@color/screen_white_70&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="43"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.error_text` appears to be unused"
+        errorLine1="    &lt;color name=&quot;error_text&quot;>#EF9A9A&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="45"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.settings_card_background` appears to be unused"
+        errorLine1="    &lt;color name=&quot;settings_card_background&quot;>#0277BD&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="47"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.color.settings_card_background_focussed` appears to be unused"
+        errorLine1="    &lt;color name=&quot;settings_card_background_focussed&quot;>#01579B&lt;/color>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/colors.xml"
+            line="48"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.overscan_horizontal` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;overscan_horizontal&quot;>48dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="21"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.overscan_vertical` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;overscan_vertical&quot;>27dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="22"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.image_card_width` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;image_card_width&quot;>192dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="27"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.image_card_height` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;image_card_height&quot;>108dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="28"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.text_size_h3` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;text_size_h3&quot;>16sp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="31"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.text_size_h1` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;text_size_h1&quot;>32sp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="32"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.error_ui_margin_start` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;error_ui_margin_start&quot;>194dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="35"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.error_ui_margin_end` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;error_ui_margin_end&quot;>194dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="36"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.error_ui_message_margin_top` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;error_ui_message_margin_top&quot;>21dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="37"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.error_actions_spacing` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;error_actions_spacing&quot;>24dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="38"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.error_actions_margin_top` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;error_actions_margin_top&quot;>24dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="39"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.error_actions_container_padding` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;error_actions_container_padding&quot;>12dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="40"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.action_button_height` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;action_button_height&quot;>40dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="42"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.action_button_text_size` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;action_button_text_size&quot;>@dimen/text_size_h3&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="43"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.action_button_corner_radius` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;action_button_corner_radius&quot;>20dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="44"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.action_button_base_elevation` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;action_button_base_elevation&quot;>0dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="45"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.action_button_focused_elevation` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;action_button_focused_elevation&quot;>4dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="46"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.action_button_padding_horizontal` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;action_button_padding_horizontal&quot;>20dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="47"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.default_image_card_width` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;default_image_card_width&quot;>206dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="49"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.default_image_card_height` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;default_image_card_height&quot;>116dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="50"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.movie_image_card_width` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;movie_image_card_width&quot;>120dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="52"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.movie_image_card_height` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;movie_image_card_height&quot;>172dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="53"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.icon_image_card_width` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;icon_image_card_width&quot;>224dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="55"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.icon_image_card_height` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;icon_image_card_height&quot;>109dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="56"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.big_square_image_card_width` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;big_square_image_card_width&quot;>144dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="58"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.big_square_image_card_height` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;big_square_image_card_height&quot;>144dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="59"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.square_image_card_width` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;square_image_card_width&quot;>128dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="61"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.square_image_card_height` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;square_image_card_height&quot;>128dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="62"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.small_square_image_card_width` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;small_square_image_card_width&quot;>96dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="64"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.small_square_image_card_height` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;small_square_image_card_height&quot;>96dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="65"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.sidetext_image_card_width` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;sidetext_image_card_width&quot;>144dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="67"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.sidetext_image_card_height` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;sidetext_image_card_height&quot;>144dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="68"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.wide_short_image_card_width` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;wide_short_image_card_width&quot;>224dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="70"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.wide_short_image_card_height` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;wide_short_image_card_height&quot;>109dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="71"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.character_image_card_width` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;character_image_card_width&quot;>120dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="73"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.character_image_card_height` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;character_image_card_height&quot;>120dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="74"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.grid_card_width` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;grid_card_width&quot;>200dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="76"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.grid_card_height` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;grid_card_height&quot;>200dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="77"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.playback_now_playing_card_width` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;playback_now_playing_card_width&quot;>240dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="79"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.playback_now_playing_card_height` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;playback_now_playing_card_height&quot;>240dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="80"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.add_remove_margin` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;add_remove_margin&quot;>20dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="81"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.card_width` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;card_width&quot;>192dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="82"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.dimen.card_height` appears to be unused"
+        errorLine1="    &lt;dimen name=&quot;card_height&quot;>96dp&lt;/dimen>"
+        errorLine2="           ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/dimens.xml"
+            line="83"
+            column="12"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.donate` appears to be unused">
+        <location
+            file="src/main/res/drawable/donate.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.down` appears to be unused">
+        <location
+            file="src/main/res/drawable/down.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.error_action_divider` appears to be unused"
+        errorLine1="&lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;>"
+        errorLine2="^">
+        <location
+            file="src/main/res/drawable/error_action_divider.xml"
+            line="16"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.folder` appears to be unused">
+        <location
+            file="src/main/res/drawable/folder.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.folder_up` appears to be unused">
+        <location
+            file="src/main/res/drawable/folder_up.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_home_channels` appears to be unused"
+        errorLine1="&lt;vector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2="^">
+        <location
+            file="src/main/res/drawable/ic_home_channels.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_launcher_background` appears to be unused"
+        errorLine1="&lt;vector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2="^">
+        <location
+            file="src/main/res/drawable/ic_launcher_background.xml"
+            line="17"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_launcher_foreground` appears to be unused"
+        errorLine1="&lt;vector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2="^">
+        <location
+            file="src/main/res/drawable-v24/ic_launcher_foreground.xml"
+            line="17"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_settings_settings` appears to be unused">
+        <location
+            file="src/main/res/drawable/ic_settings_settings.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.mipmap.icon_banner` appears to be unused">
+        <location
+            file="src/main/res/mipmap-xhdpi/icon_banner.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_focused` appears to be unused"
+        errorLine1="&lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2="^">
+        <location
+            file="src/main/res/drawable/icon_focused.xml"
+            line="17"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.icon_view` appears to be unused">
+        <location
+            file="src/main/res/drawable/icon_view.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.integer.button_focused_animation_duration_ms` appears to be unused"
+        errorLine1="    &lt;integer name=&quot;button_focused_animation_duration_ms&quot;>150&lt;/integer>"
+        errorLine2="             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/integers.xml"
+            line="17"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.memory_card_scrim` appears to be unused"
+        errorLine1="&lt;shape xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;>"
+        errorLine2="^">
+        <location
+            file="src/main/res/drawable/memory_card_scrim.xml"
+            line="2"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.remove` appears to be unused">
+        <location
+            file="src/main/res/drawable/remove.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.save` appears to be unused">
+        <location
+            file="src/main/res/drawable/save.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.screensaver` appears to be unused">
+        <location
+            file="src/main/res/drawable/screensaver.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.menu_identity` appears to be unused"
+        errorLine1="    &lt;string name=&quot;menu_identity&quot;>Identity&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="23"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.email` appears to be unused"
+        errorLine1="    &lt;string name=&quot;email&quot;>E-mail address&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="26"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.password` appears to be unused"
+        errorLine1="    &lt;string name=&quot;password&quot;>Password&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="27"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.sign_in` appears to be unused"
+        errorLine1="    &lt;string name=&quot;sign_in&quot;>Sign in&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="28"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.sign_out` appears to be unused"
+        errorLine1="    &lt;string name=&quot;sign_out&quot;>Sign out&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="29"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.not_signed_in` appears to be unused"
+        errorLine1="    &lt;string name=&quot;not_signed_in&quot;>Not signed in&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="30"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.sign_in_error` appears to be unused"
+        errorLine1="    &lt;string name=&quot;sign_in_error&quot;>Error signing in: %1$s&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="31"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.empty_username_or_password` appears to be unused"
+        errorLine1="    &lt;string name=&quot;empty_username_or_password&quot;>Both username and password must be provided&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="32"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.invalid_credentials` appears to be unused"
+        errorLine1="    &lt;string name=&quot;invalid_credentials&quot;>Invalid credentials&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="33"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.onetap_error` appears to be unused"
+        errorLine1="    &lt;string name=&quot;onetap_error&quot;>One Tap returned an error&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="34"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.server_error` appears to be unused"
+        errorLine1="    &lt;string name=&quot;server_error&quot;>Server error&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="35"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.unknown_error` appears to be unused"
+        errorLine1="    &lt;string name=&quot;unknown_error&quot;>Unknown error&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="36"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.sign_in_intro` appears to be unused"
+        errorLine1="    &lt;string name=&quot;sign_in_intro&quot;>Without any changes, this app uses local authorization (MockAuthClient). You can log in using &quot;%1$s&quot; as the email and any non-empty string as the password. To update the app to use remote auth, see the RemoteAuthClient class.&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="37"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.default_home_screen_channel_name` appears to be unused"
+        errorLine1="    &lt;string name=&quot;default_home_screen_channel_name&quot;>Example Channel&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="40"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.default_home_screen_channel_description` appears to be unused"
+        errorLine1="    &lt;string name=&quot;default_home_screen_channel_description&quot;>An example of a default home screen channel&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="41"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.content_type_season_episode` appears to be unused"
+        errorLine1="    &lt;string name=&quot;content_type_season_episode&quot;>Season %s Episode %s&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="44"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.content_type_movie` appears to be unused"
+        errorLine1="    &lt;string name=&quot;content_type_movie&quot;>Movie&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="45"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.content_type_clip` appears to be unused"
+        errorLine1="    &lt;string name=&quot;content_type_clip&quot;>Clip&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="46"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.retry` appears to be unused"
+        errorLine1="    &lt;string name=&quot;retry&quot;>Retry&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="49"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.go_back` appears to be unused"
+        errorLine1="    &lt;string name=&quot;go_back&quot;>Return to browsing&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="50"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.error_title_with_video` appears to be unused"
+        errorLine1="    &lt;string name=&quot;error_title_with_video&quot;>Something terrible happened with %s&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="51"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.season` appears to be unused"
+        errorLine1="    &lt;string name=&quot;season&quot;>%1$s Season %2$s&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="54"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.sections_desc` appears to be unused"
+        errorLine1="    &lt;string name=&quot;sections_desc&quot;>Choose which sections appear in the top navigation bar&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="61"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.edit` appears to be unused"
+        errorLine1="    &lt;string name=&quot;edit&quot;>Edit&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="63"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.this_month` appears to be unused"
+        errorLine1="    &lt;string name=&quot;this_month&quot;>This month&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="70"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.done` appears to be unused"
+        errorLine1="    &lt;string name=&quot;done&quot;>Done&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="91"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.or_enter_code_on_site` appears to be unused"
+        errorLine1="    &lt;string name=&quot;or_enter_code_on_site&quot;>Or enter the code on https://immich.giejay.nl&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="95"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.show_media_count` appears to be unused"
+        errorLine1="    &lt;string name=&quot;show_media_count&quot;>Show media count&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="108"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.show_media_count_desc_screensaver` appears to be unused"
+        errorLine1="    &lt;string name=&quot;show_media_count_desc_screensaver&quot;>Show the number of total items and currently selected item&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="109"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.other` appears to be unused"
+        errorLine1="    &lt;string name=&quot;other&quot;>Other&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="205"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.donation_subtitle` appears to be unused"
+        errorLine1="    &lt;string name=&quot;donation_subtitle&quot;>Le développement de cette application demande beaucoup d’efforts. Si vous souhaitez montrer votre soutien, vous pouvez faire un don avec les options suivantes.&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-fr/strings.xml"
+            line="242"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.or_enter_code_on_auth_url` appears to be unused"
+        errorLine1="    &lt;string name=&quot;or_enter_code_on_auth_url&quot;>Or enter the code %1$s on %2$s&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="242"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.auth_timeout_recreating_qr` appears to be unused"
+        errorLine1="    &lt;string name=&quot;auth_timeout_recreating_qr&quot;>Did not authenticate within the timeout, recreating QR code.&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="243"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.donation_exhausted` appears to be unused"
+        errorLine1="    &lt;string name=&quot;donation_exhausted&quot;>Vous avez épuisé vos options de don, merci !&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values-fr/strings.xml"
+            line="243"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.invalid_server_url_or_api_key` appears to be unused"
+        errorLine1="    &lt;string name=&quot;invalid_server_url_or_api_key&quot;>Invalid Server URL or API key, try scanning again!&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="244"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.could_not_fetch_qr` appears to be unused"
+        errorLine1="    &lt;string name=&quot;could_not_fetch_qr&quot;>Could not fetch QR code: %1$s&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="245"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.could_not_fetch_qr_short` appears to be unused"
+        errorLine1="    &lt;string name=&quot;could_not_fetch_qr_short&quot;>Could not fetch QR code&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="246"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.donation_title` appears to be unused"
+        errorLine1="    &lt;string name=&quot;donation_title&quot;>Donation&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="253"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.donation_init_failed` appears to be unused"
+        errorLine1="    &lt;string name=&quot;donation_init_failed&quot;>Could not initialize donation service, sorry!&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="254"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.content_type_all` appears to be unused"
+        errorLine1="    &lt;string name=&quot;content_type_all&quot;>All&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="283"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.content_type_image` appears to be unused"
+        errorLine1="    &lt;string name=&quot;content_type_image&quot;>Image&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="284"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.content_type_video` appears to be unused"
+        errorLine1="    &lt;string name=&quot;content_type_video&quot;>Video&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="285"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.left` appears to be unused"
+        errorLine1="    &lt;string name=&quot;left&quot;>Left&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="288"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.right` appears to be unused"
+        errorLine1="    &lt;string name=&quot;right&quot;>Right&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="289"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.up` appears to be unused">
+        <location
+            file="src/main/res/drawable/up.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.view` appears to be unused">
+        <location
+            file="src/main/res/drawable/view.png"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.visible_eye` appears to be unused">
+        <location
+            file="src/main/res/drawable/visible_eye.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/bug.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/bug.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/closed_eye.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/closed_eye.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/donate.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/donate.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/down.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/down.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/folder.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/folder.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/folder_up.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/folder_up.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/ic_settings_settings.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/ic_settings_settings.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/icon.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/icon.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/icon_600px.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/icon_600px.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/icon_view.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/icon_view.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/plus.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/plus.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/remove.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/remove.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/save.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/save.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/screensaver.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/screensaver.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/up.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/up.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/view.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/view.png"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/visible_eye.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/visible_eye.png"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="        Uri.parse(&quot;$SCHEME://asset/$assetId&quot;)"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/homescreenchannels/ChannelDeepLinks.kt"
+            line="17"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="        Uri.parse(&quot;$SCHEME://album/$albumId&quot;).buildUpon()"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/homescreenchannels/ChannelDeepLinks.kt"
+            line="20"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="    fun forHome(): Uri = Uri.parse(&quot;$SCHEME://home&quot;)"
+        errorLine2="                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/homescreenchannels/ChannelDeepLinks.kt"
+            line="24"
+            column="26"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        PreferenceManager.sharedPreference.edit().putString(PREF_KEY, gson.toJson(registry)).apply()"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/homescreenchannels/ChannelRegistry.kt"
+            line="39"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `ViewGroup.isNotEmpty` instead?"
+        errorLine1="                val scrolled = recyclerView.childCount > 0 &amp;&amp;"
+        errorLine2="                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/shared/fragment/GridFragment.kt"
+            line="205"
+            column="32"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="                .setPosterArtUri(Uri.parse(posterArtUrl))"
+        errorLine2="                                 ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/homescreenchannels/HomeScreenChannelManager.kt"
+            line="326"
+            column="34"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        sharedPreference.edit().putString(key(), value).apply()"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/shared/prefs/Pref.kt"
+            line="59"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        sharedPreferences.edit().putString(key(), value.toString()).apply()"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/shared/prefs/Pref.kt"
+            line="100"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        sharedPreferences.edit().putString(key(), value.toString()).apply()"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/shared/prefs/Pref.kt"
+            line="124"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        sharedPreference.edit().putBoolean(key(), value).apply()"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/shared/prefs/Pref.kt"
+            line="152"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        sharedPreference.edit().putString(key(), value).apply()"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/shared/prefs/Pref.kt"
+            line="168"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        sharedPreference.edit().putStringSet(key(), value).apply()"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/shared/prefs/Pref.kt"
+            line="184"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        sharedPreference.edit().putInt(key(), value).apply()"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/shared/prefs/Pref.kt"
+            line="198"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        sharedPreference.edit().putString(key(), value.toString()).apply()"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/shared/prefs/Pref.kt"
+            line="213"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        sharedPreference.edit().putString(createKey(metaDataScreen, align), MetaDataConverter.metaDataListToJson(metaData)).apply()"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/shared/prefs/PreferenceManager.kt"
+            line="173"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `SharedPreferences.edit` instead?"
+        errorLine1="        sharedPreferences.edit().putString(key(), value).apply()"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/shared/prefs/Preferences.kt"
+            line="534"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `Int.toDrawable` instead?"
+        errorLine1="        dialogWindow!!.setBackgroundDrawable(ColorDrawable(Color.BLACK))"
+        errorLine2="                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/settings/SettingsDialogFragment.kt"
+            line="75"
+            column="46"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `ViewGroup.isNotEmpty` instead?"
+        errorLine1="                        val scrolled = recyclerView.childCount > 0 &amp;&amp;"
+        errorLine2="                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/settings/SettingsFragment.kt"
+            line="70"
+            column="40"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="            .createMediaSource(MediaItem.fromUri(Uri.parse(url)))"
+        errorLine2="                                                 ~~~~~~~~~~~~~~">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/timeline/TimelineFocusVideoPreview.kt"
+            line="151"
+            column="50"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `Int.toDrawable` instead?"
+        errorLine1="        backgroundManager.drawable = ColorDrawable("
+        errorLine2="                                     ^">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/timeline/TimelineFragment.kt"
+            line="446"
+            column="38"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `Int.toDrawable` instead?"
+        errorLine1="        backgroundManager.drawable = ColorDrawable("
+        errorLine2="                                     ^">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/timeline/TimelineFragment.kt"
+            line="446"
+            column="38"/>
+    </issue>
+
+    <issue
+        id="UseKtx"
+        message="Use the KTX extension function `String.toUri` instead?"
+        errorLine1="        return Uri.parse("
+        errorLine2="               ^">
+        <location
+            file="src/main/java/nl/giejay/android/tv/immich/shared/util/Utils.kt"
+            line="95"
+            column="16"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="            &lt;ImageButton"
+        errorLine2="             ~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/fragment_metadata.xml"
+            line="73"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="            &lt;ImageButton"
+        errorLine2="             ~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/fragment_metadata.xml"
+            line="104"
+            column="14"/>
+    </issue>
+
+    <issue
+        id="ContentDescription"
+        message="Missing `contentDescription` attribute on image"
+        errorLine1="    &lt;ImageView"
+        errorLine2="     ~~~~~~~~~">
+        <location
+            file="src/main/res/layout/presenter_row.xml"
+            line="6"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;Could not open the screensaver settings on this device. You can use the following steps to enable the screensaver:\n\n 1. Enable development mode on the device (click the build number or &apos;Android TV OS Build&apos; 7 times in the System->About settings).\n 2. Go to System -> Developer Options and enable USB Debugging\n 3. If you don&apos;t have ADB installed on your PC, follow these instructions: https://www.xda-developers.com/install-adb-windows-macos-linux/ 4. After downloading/installing ADB on the PC, connect to the device using it&apos;s IP: &apos;adb connect 192.168.xx.xx&apos;.\n 5. Once you are connected, execute the following command: &apos;adb shell settings put secure screensaver_components nl.giejay.android.tv.immich/.screensaver.ScreenSaverService&apos;\n 6. Done!.\n\nYou can also check the instructions on the GitHub page: https://github.com/giejay/Immich-Android-TV&quot;, should use `@string` resource"
+        errorLine1="            android:text=&quot;Could not open the screensaver settings on this device. You can use the following steps to enable the screensaver:\n\n"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/screensaver_adb.xml"
+            line="19"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="RtlSymmetry"
+        message="When you define `paddingStart` you should probably also define `paddingEnd` for right-to-left symmetry"
+        errorLine1="            android:paddingStart=&quot;40dp&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/fragment_metadata.xml"
+            line="71"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="RtlSymmetry"
+        message="When you define `paddingEnd` you should probably also define `paddingStart` for right-to-left symmetry"
+        errorLine1="            android:paddingEnd=&quot;40dp&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/fragment_metadata.xml"
+            line="101"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="RtlSymmetry"
+        message="When you define `paddingEnd` you should probably also define `paddingStart` for right-to-left symmetry"
+        errorLine1="    android:paddingEnd=&quot;@dimen/timeline_memories_end_clearance&quot;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/timeline_memories_row.xml"
+            line="16"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Consider replacing `android:layout_marginRight` with `android:layout_marginEnd=&quot;10dp&quot;` to better support right-to-left layouts"
+        errorLine1="        android:layout_marginRight=&quot;10dp&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/presenter_row.xml"
+            line="12"
+            column="9"/>
+    </issue>
+
+</issues>
