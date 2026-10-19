@@ -59,6 +59,15 @@
         <item name="preferenceStyle">@style/SettingsPreferenceRow</item>
         <item name="preferenceCategoryStyle">@style/SettingsPreferenceCategory</item>
         <item name="checkBoxPreferenceStyle">@style/SettingsPreferenceSwitch</item>
+        <!-- Switch rows: the schema's booleans are CheckBoxPreference (above), but any
+             SwitchPreferenceCompat/SwitchPreference must render the same chip + real
+             SwitchCompat widget. -->
+        <item name="switchPreferenceCompatStyle">@style/SettingsPreferenceSwitch</item>
+        <item name="switchPreferenceStyle">@style/SettingsPreferenceSwitch</item>
+        <!-- ListPreference / MultiSelectListPreference (and EditTextPreference) resolve
+             dialogPreferenceStyle — chip row + trailing chevron. -->
+        <item name="dialogPreferenceStyle">@style/SettingsPreferenceDialogRow</item>
+        <item name="editTextPreferenceStyle">@style/SettingsPreferenceDialogRow</item>
         <item name="preferenceScreenStyle">@style/SettingsPreferenceRow</item>
         <item name="seekBarPreferenceStyle">@style/SettingsPreferenceSeekbar</item>
         <item name="preferenceFragmentListStyle">@style/SettingsPreferenceList</item>
@@ -77,6 +86,16 @@
     <style name="SettingsPreferenceRow" parent="@style/LeanbackPreference"
         tools:ignore="PrivateResource">
         <item name="android:layout">@layout/settings_preference_row</item>
+    </style>
+
+    <!-- ListPreference / MultiSelectListPreference / EditTextPreference resolve
+         dialogPreferenceStyle (NOT preferenceStyle) — without this they fall back to the
+         flat Leanback default row and break the chip treatment on every nested screen
+         (e.g. the Ordering screen). Chevron widget: these all open a picker/dialog. -->
+    <style name="SettingsPreferenceDialogRow" parent="@style/LeanbackPreference.DialogPreference"
+        tools:ignore="PrivateResource">
+        <item name="android:layout">@layout/settings_preference_row</item>
+        <item name="android:widgetLayout">@layout/settings_widget_chevron</item>
     </style>
 
     <style name="SettingsPreferenceCategory" parent="@style/LeanbackPreference.Category">
