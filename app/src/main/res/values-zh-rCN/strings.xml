@@ -76,6 +76,9 @@
     <string name="yesterday">昨天</string>
     <string name="a11y_photo">照片，%1$s</string>
     <string name="a11y_video">视频，%1$s</string>
+    <plurals name="album_title_count">
+        <item quantity="other">%1$s · %2$d 项</item>
+    </plurals>
     <plurals name="years_ago">
         <item quantity="other">%d 年前</item>
     </plurals>

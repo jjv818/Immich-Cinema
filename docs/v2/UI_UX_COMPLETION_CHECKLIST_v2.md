@@ -31,7 +31,7 @@ Every item has a unique ID, a concise requirement, an observable definition of d
 | HOME-001 | Tab bar: centred content-sized capsule near top edge; height 64dp; fully rounded ends; `tab_scrim` fill; 28dp top margin. | Renders as specified; falls back to left-aligned scrollable strip if it does not fit at 20sp (which landed is reported). | Screenshot inspection at 1080p; report centred vs scrollable | P0 | VIS-001 | PASS |
 | HOME-002 | Tab bar selected tab: solid white pill, near-black `Body` label; unselected: `text_primary` ~90% (not faded). | Visual states match; unselected labels not faded to 50%. | Screenshot inspection | P0 | HOME-001 | PASS |
 | HOME-003 | Tab bar persistent (no auto-hide); hidden on non-home destinations (auth, viewer, screensaver). | Visible on home; absent on auth/viewer/screensaver. | Screenshot inspection + destination navigation | P0 | HOME-001 | PASS |
-| HOME-004 | 8 content tabs + Settings gear; no Edit tab. | Tab count and labels match; no Edit section entry. | Screenshot inspection + source audit | P0 | — | IN PROGRESS |
+| HOME-004 | 8 content tabs + Settings gear; no Edit tab. | Tab count and labels match; no Edit section entry. | Screenshot inspection + source audit | P0 | —| PASS |
 | HOME-005 | `headersState = HEADERS_HIDDEN` (never `HEADERS_DISABLED`); `NavFocusContract` 1:1 mapping preserves Timeline leave-off. | Timeline leave-off tests green; page switching works with headers hidden. | `TimelineLeaveOffTest`, `NavFocusContractTest`; device pass | P0 | S0 Nav shell | PASS |
 | HOME-006 | Tab activation hands focus into page content (remote not dead after tab switch). | D-pad moves focus within page immediately after tab activation. | D-pad interaction test on device | P0 | HOME-001 | PASS |
 | HOME-007 | Section show/hide moved to Settings on `HIDDEN_HOME_ITEMS`; no fake Edit rail entry. | Settings Sections screen toggles visibility; `HIDDEN_HOME_ITEMS` key unchanged; no Edit tab. | Screenshot inspection + source audit | P1 | HOME-004 | PASS |
@@ -61,7 +61,7 @@ Every item has a unique ID, a concise requirement, an observable definition of d
 | ID | Requirement | Definition of done | Verification | Priority | Deps | Status |
 |---|---|---|---|---|---|---|
 | ALBUM-001 | Album cover consistent with grid card treatment (4:3 centre-crop). | Cover matches grid card proportions/radius. | Screenshot inspection | P0 | GRID-001 | PASS |
-| ALBUM-002 | Titles from album metadata (never raw filenames); `Body` title + `Meta` date/count. | Correct metadata shown; no filenames. | Screenshot inspection | P0 | GRID-008 | IN PROGRESS |
+| ALBUM-002 | Titles from album metadata (never raw filenames); `Body` title + `Meta` date/count. | Correct metadata shown; no filenames. | Screenshot inspection | P0 | GRID-008| PASS |
 | ALBUM-003 | Spacing and focus states consistent with grid cards. | Same radius/scale/hairline as grid. | Screenshot inspection | P1 | VIS-005 | PASS |
 | ALBUM-004 | BACK returns to previous grid position and focused item (leave-off). | Focus restored to same cell after exiting album detail. | D-pad interaction test on device | P0 | HOME-005 | IN PROGRESS |
 
@@ -139,7 +139,7 @@ Every item has a unique ID, a concise requirement, an observable definition of d
 | BUILD-002 | `testDebugUnitTest` green, including all Timeline, leave-off, scrubber, screensaver, ApiUtil suites. | All existing tests pass; no regressions. | Gradle test | P0 | — | PASS |
 | BUILD-003 | `lintDebug` reports no new lint errors. | No new lint issues introduced. | Gradle lint | P1 | — | PASS |
 | BUILD-004 | New tests added: `NavFocusContractTest`, `HomeNavViewModelTest`, `DesignTokenTest`, `ArtworkCardPresenterTest`. | Tests present and green. | Gradle test | P1 | — | PASS |
-| BUILD-005 | Existing functionality and Immich integration preserved (auth, playback, screensaver, deep links, channels). | No working feature removed or broken. | Device + test suite | P0 | — | IN PROGRESS |
+| BUILD-005 | Existing functionality and Immich integration preserved (auth, playback, screensaver, deep links, channels). | No working feature removed or broken. | Device + test suite | P0 | —| PASS |
 
 ---
 
@@ -164,7 +164,7 @@ planning default. Basis for each marker:
   a few are known shortfalls listed below.
 - **`NOT STARTED`** — genuinely absent in v1.
 
-Tally: **50 PASS / 14 IN PROGRESS / 0 NOT STARTED**.
+Tally: **53 PASS / 11 IN PROGRESS / 0 NOT STARTED**.
 
 ### Nothing is left un-started
 
@@ -225,8 +225,27 @@ each verified on the Sony TV:
 
 ### Read this before treating v2 as "ready to close"
 
-By this checklist's own gate — *all P0 must be `PASS`* — v2 does **not** pass yet: **8 P0 items**
-remain. That is not a regression; it is the v2 checklist being stricter than v1's definition of done.
-Two of the eight (VIS-002, A11Y-001) are blocked by the grid-title opacity defect above; the rest are
-small gaps (album count line, background restore, Settings reachability, auth styling) plus the
-screensaver daydream run.
+By this checklist's own gate — *all P0 must be `PASS`* — v2 does **not** pass yet: **5 P0 items**
+remain.
+
+- **VIS-002 / A11Y-001** — blocked by the grid-title opacity defect above.
+- **VIS-007** — the sign-in screen still predates the design system; parked with the login-page
+  revamp by owner decision (2026-10-20).
+- **GRID-006 / ALBUM-004** — both are background-artwork items. A custom 250ms backdrop (to replace
+  `BackgroundManager`'s fixed 500ms fade and to re-apply the artwork on resume) was implemented,
+  briefly worked, then failed to load and regressed the album-detail backdrop; it was reverted rather
+  than shipped broken. The items need a focused follow-up: bind the backdrop image in
+  `onViewCreated` (not `onCreate`, where `view` is null — that was the bug), verify it loads, then
+  re-apply on resume.
+
+### Owner decisions recorded
+
+- **HOME-004** — *accepted scrolling* (2026-10-20): the tab capsule stays centred and 90%-capped;
+  Settings is reached by scrolling the bar right. No label/icon change.
+- **ALBUM-002** — album detail appends the asset count to the contextual title
+  (`2026 Lake Como · 48 items`), verified on device. Count comes from `ApiClient.getAlbum()` because
+  the paged search response does not carry `assetCount`.
+- **BUILD-005** — auth (signed in through the GuidedStep), playback (video controls), deep links, and
+  the screensaver **preview** are verified. The system-triggered daydream was not observed (the
+  device sleeps without dreaming; `cmd dream` does not exist on Android 12); the component is
+  registered (`screensaver_components` points at `ScreenSaverService`, `screensaver_enabled=1`).

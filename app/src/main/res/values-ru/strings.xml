@@ -77,6 +77,12 @@
     <string name="yesterday">Вчера</string>
     <string name="a11y_photo">Фото, %1$s</string>
     <string name="a11y_video">Видео, %1$s</string>
+    <plurals name="album_title_count">
+        <item quantity="one">%1$s · %2$d элемент</item>
+        <item quantity="few">%1$s · %2$d элемента</item>
+        <item quantity="many">%1$s · %2$d элементов</item>
+        <item quantity="other">%1$s · %2$d элемента</item>
+    </plurals>
     <plurals name="years_ago">
         <item quantity="one">%d год назад</item>
         <item quantity="few">%d года назад</item>

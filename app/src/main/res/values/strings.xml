@@ -77,6 +77,10 @@
     <string name="yesterday">Yesterday</string>
     <string name="a11y_photo">Photo, %1$s</string>
     <string name="a11y_video">Video, %1$s</string>
+    <plurals name="album_title_count">
+        <item quantity="one">%1$s · %2$d item</item>
+        <item quantity="other">%1$s · %2$d items</item>
+    </plurals>
     <plurals name="years_ago">
         <item quantity="one">%d year ago</item>
         <item quantity="other">%d years ago</item>

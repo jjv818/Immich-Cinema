@@ -128,6 +128,11 @@ class ApiClient(private val config: ApiClientConfig) {
         return executeAPICall(200) { service.listAlbums(assetId.getOrNull()) }
     }
 
+    /** Single album by id — carries metadata the asset search response does not (e.g. assetCount). */
+    suspend fun getAlbum(id: String): Either<String, Album> {
+        return executeAPICall(200) { service.getAlbum(id) }
+    }
+
     suspend fun listPeople(): Either<String, List<Person>> {
         return executeAPICall(200) { service.listPeople() }.map { response -> response.people.filter { !it.name.isNullOrBlank() } }
     }
