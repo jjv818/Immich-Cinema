@@ -221,9 +221,13 @@ each verified on the Sony TV:
   **Still unstyled by design:** the picker dialog that opens on Enter (radio options) is drawn by
   Leanback's own `LeanbackListPreferenceDialogFragmentCompat` item layouts and is not theme-addressable
   without subclassing it — deliberately left as a separate, isolated fix.
+- **A11Y-001 / typography floor — spec conflict, owner call needed.** The measured-contrast clause now
+  passes (6.9–13.8:1 on the grid). The `Meta` token is 15sp, below the "practical ~18sp text floor" in
+  `AGENTS.md` §2.4 — but `Meta 15sp` is itself a locked token in §5.1 (dates, counts, supporting
+  lines). The two statements in the same document disagree; flagged here rather than changing either
+  unilaterally. Body/interactive text is at 20sp and unaffected.
 
 ### Read this before treating v2 as "ready to close"
-
 By this checklist's own gate — *all P0 must be `PASS`* — the only P0 item still open is **VIS-007**
 (the sign-in screen predates the design system), which is blocked solely by the parked login revamp
 (owner decision, 2026-10-20). Everything else on the P0 set is `PASS`, including the two measurement
