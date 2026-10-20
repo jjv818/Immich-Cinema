@@ -23,8 +23,9 @@ UI/UX iteration. They are *not* the acceptance criteria for v1.
   the GuidedStep theme, and a 10-foot-first layout. **Out of scope for v2** — parked by the owner
   on 2026-10-20. (Owner also noted: the app has never had a demo mode; if one is wanted, that is a
   v3 feature.)
-- **Grid-page opacity defect.** See the checklist's shortfalls section — unresolved, needs a
-  different investigation technique.
+- ~~**Grid-page opacity defect.**~~ **Resolved 2026-10-20.** Leanback's focus dimmer (enabled by the
+  single-argument `VerticalGridPresenter` constructor) dimmed every unfocused grid item by 40%. See
+  the checklist's shortfalls section for the diagnosis and the fix.
 
 Because v2 is still a plan, the checklist uses `NOT STARTED` as its default marker even where a
 requirement is already satisfied in v1. Statuses are filled in only when v2 work is validated on the

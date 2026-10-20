@@ -14,7 +14,7 @@ Every item has a unique ID, a concise requirement, an observable definition of d
 | ID | Requirement | Definition of done | Verification | Priority | Deps | Status |
 |---|---|---|---|---|---|---|
 | VIS-001 | Colours resolve to the spec palette (`surface_base`, `surface_raised`, `text_primary`, `text_secondary`, `text_tertiary`, `focus_hairline`, `accent_brand`, `tab_scrim`) on all chrome surfaces. | Each named token resolves to its AGENTS.md §5.1 hex/opacity value; no ad-hoc per-screen hex values. | `DesignTokenTest` (Robolectric, `includeAndroidResources=true`) — every token resolves; build validation | P0 | tokens defined | PASS |
-| VIS-002 | Contrast: primary text ≥ 4.5:1, large/heading text ≥ 3:1, non-text focus indicator ≥ 3:1 against its surface. | Measured contrast ratio on each text/indicator pairing meets threshold on both bright and dark photos. | Screenshot inspection + contrast measurement on device screenshots | P0 | VIS-001 | IN PROGRESS |
+| VIS-002 | Contrast: primary text ≥ 4.5:1, large/heading text ≥ 3:1, non-text focus indicator ≥ 3:1 against its surface. | Measured contrast ratio on each text/indicator pairing meets threshold on both bright and dark photos. | Screenshot inspection + contrast measurement on device screenshots | P0 | VIS-001 | PASS |
 | VIS-003 | Typography uses exactly four sizes: Display 44sp, Heading 30sp, Body 20sp, Meta 15sp; platform default font. | No other text sizes appear on principal screens; platform default font family used. | Screenshot inspection + grep of `sp` values in layouts/styles | P0 | VIS-001| PASS |
 | VIS-004 | Spacing uses only the 8/16/24/32/48 dp scale; safe gutters 48dp horizontal / 27dp top / 48dp bottom applied. | No ad-hoc dp values on principal screens; gutters present. | Screenshot inspection + dimen resource audit | P1 | VIS-001 | IN PROGRESS |
 | VIS-005 | Corner radii: card 8dp, rail/memory 12dp, mosaic cell 6dp. | Radii match spec on each card type; no invented per-component radii. | Screenshot inspection + dimen audit | P1 | VIS-001 | PASS |
@@ -124,7 +124,7 @@ Every item has a unique ID, a concise requirement, an observable definition of d
 
 | ID | Requirement | Definition of done | Verification | Priority | Deps | Status |
 |---|---|---|---|---|---|---|
-| A11Y-001 | Readability and contrast: text ≥ 4.5:1 normal / 3:1 large; 18sp text floor. | Measured against spec on bright and dark photos. | Screenshot + contrast measurement | P0 | VIS-002 | IN PROGRESS |
+| A11Y-001 | Readability and contrast: text ≥ 4.5:1 normal / 3:1 large; 18sp text floor. | Measured against spec on bright and dark photos. | Screenshot + contrast measurement | P0 | VIS-002 | PASS |
 | A11Y-002 | Clear selection states: focus hairline + brightness on tabs/rails; colour never the only cue. | Selection visible without colour. | Screenshot + interaction | P0 | FOCUS-001 | PASS |
 | A11Y-003 | Empty, loading, error states handled where applicable to existing implementation. | Placeholders/errors rendered; no blank screens. | Screenshot inspection | P1 | VIS-008 | IN PROGRESS |
 | A11Y-004 | Per-cell content descriptions for TalkBack; focus visible on white and black photos. | Descriptions present; hairline visible. | TalkBack test + screenshot | P1 | FOCUS-007 | PASS |
@@ -164,7 +164,7 @@ planning default. Basis for each marker:
   a few are known shortfalls listed below.
 - **`NOT STARTED`** — genuinely absent in v1.
 
-Tally: **55 PASS / 9 IN PROGRESS / 0 NOT STARTED**.
+Tally: **57 PASS / 7 IN PROGRESS / 0 NOT STARTED**.
 
 ### Nothing is left un-started
 
@@ -201,20 +201,19 @@ each verified on the Sony TV:
   this checklist still carries the original numbers.
 - **BUILD-005** — deep links, playback entry and the screensaver preview path are intact, but the
   real daydream, TalkBack and the sign-in GuidedStep screen were not exercised.
-- **NEW P0 — grid card titles render at 40% opacity (blocks VIS-002 / A11Y-001 measurement).**
-  Measured on the Sony TV: a card title forced to pure green renders `(0,102,0)`; the B/R channel
-  ratio of the rendered glyphs matches `text_primary` at exactly 0.40 alpha. Every other element is
-  fine — the subtitle in the same LinearLayout renders bright, memory-card titles render bright.
-  **Ruled out by experiment:** view alpha (whole ancestor chain probes 1.0, incl. transitionAlpha),
-  paint colour/alpha (probed at bind and +4s: #FFF2F2F7 / 255), layer type (title and whole card
-  forced to software rendering — no change), `clipToOutline` + `elevation` (disabled at runtime — no
-  change), item animator (nulled — no change), text attributes (style/size/colour swapped — dim
-  follows the title *instance*, not the attributes), spans (none in the codebase), stuck transitions
-  (`setEntranceTransitionState` only toggles child visibility), app-side `setAlpha` (none exists).
-  Hiding the title view removes the dim text, so the title view *does* draw it. Remaining suspect:
-  a native RenderNode / HWUI text-layer desync on API 31 that Java-side probes cannot read. Needs
-  RenderNode-level tooling (systrace/HWUI inspector or a minimal repro outside the app). The grid is
-  otherwise fully functional; titles are legible but measure ~2.9:1.
+- **~~NEW P0 — grid card titles render at 40% opacity~~ RESOLVED (VIS-002 / A11Y-001 now PASS).**
+  The defect was never in text rendering. `VerticalGridPresenter` was built with the single-argument
+  constructor, so Leanback's focus dimmer stayed on and drew its dimming overlay over **every
+  unfocused grid item** — artwork, title and subtitle alike. It is a *multiplicative* dim, not view
+  alpha: a card forced to a white background rendered `(102,102,102)` = 0.4 × 255 no matter how bright
+  the backdrop behind it was, which is exactly why every `alpha` / `transitionAlpha` / paint probe on
+  the chain read normal. Fixed with `VerticalGridPresenter(ZOOM_FACTOR, false)` in
+  `VerticalCardGridFragment.setupAdapter()`; all grid pages (Albums, Photos, Random, Recent, Seasonal,
+  Folders, People, album detail, person assets) inherit it.
+  Verified on the Sony TV: white card → `(255,255,255)`; glyph core `(242,242,247)` = `text_primary`
+  at full strength; measured contrast on the Albums grid 6.9:1 (over bright sky), 10.2:1, 13.3:1,
+  13.8:1 — all above the 4.5:1 P0 bar. Focus is unaffected: hairline + 1.06 scale + lift remain, and
+  the dim was never the focus cue.
 - **SET-002 / SET-003** — resolved on device: hub, "View Settings" index and nested
   `PreferenceScreen`s now share one raised-chip row with hairline focus; `ListPreference` rows were
   falling back to Leanback's flat default because `dialogPreferenceStyle` was missing from the
@@ -225,12 +224,13 @@ each verified on the Sony TV:
 
 ### Read this before treating v2 as "ready to close"
 
-By this checklist's own gate — *all P0 must be `PASS`* — v2 does **not** pass yet: **3 P0 items**
-remain.
+By this checklist's own gate — *all P0 must be `PASS`* — the only P0 item still open is **VIS-007**
+(the sign-in screen predates the design system), which is blocked solely by the parked login revamp
+(owner decision, 2026-10-20). Everything else on the P0 set is `PASS`, including the two measurement
+items (VIS-002 / A11Y-001) that the focus-dimmer defect had been blocking.
 
-- **VIS-002 / A11Y-001** — blocked by the grid-title opacity defect above.
-- **VIS-007** — the sign-in screen still predates the design system; parked with the login-page
-  revamp by owner decision (2026-10-20).
+The remaining `IN PROGRESS` items are P1/P2 measurement gaps and the known shortfalls listed above —
+none of them gates the P0 set.
 
 **GRID-006 / ALBUM-004 are now PASS.** The grid owns its backdrop as a `grid_backdrop` ImageView
 with a 250ms (`motion_background_ms`) cross-fade instead of `BackgroundManager`'s fixed 500ms, and
