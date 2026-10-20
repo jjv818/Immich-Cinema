@@ -4,6 +4,15 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent" >
 
+    <!-- TEMP PROBE: candidate backdrop for the 250ms cross-fade. -->
+    <ImageView
+            android:id="@+id/grid_backdrop"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@null"
+            android:importantForAccessibility="no"
+            android:scaleType="centerCrop" />
+
     <androidx.leanback.widget.BrowseFrameLayout
             android:id="@+id/grid_frame"
             android:focusable="true"

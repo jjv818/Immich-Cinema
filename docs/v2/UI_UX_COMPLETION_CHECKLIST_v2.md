@@ -49,7 +49,7 @@ Every item has a unique ID, a concise requirement, an observable definition of d
 | GRID-003 | Date grouping with restrained day headers (`Heading`/`Meta`, left-aligned). | Day headers present and visually subordinate. | Screenshot inspection | P1 | VIS-003 | PASS |
 | GRID-004 | Image loading: `.override(w,h)`, placeholder/error drawables, `size=preview` background fetches; no layout shift after load. | Tiles stable after image loads; placeholders shown; errors handled. | Screenshot inspection + Glide audit | P0 | VIS-008| PASS |
 | GRID-005 | D-pad navigation and focus continuity per focus spec (grid card small scale/lift/hairline, 150ms). | Focus moves predictably; hairline visible on bright and dark photos. | D-pad interaction test + screenshot | P0 | VIS-001, VIS-002| PASS |
-| GRID-006 | Background artwork cross-fades to focused item within ~250ms; un-blurred, lightly dimmed full-bleed background. | Cross-fade timing and un-blurred background confirmed. | D-pad interaction + screenshot timing (visual) | P0 | — | IN PROGRESS |
+| GRID-006 | Background artwork cross-fades to focused item within ~250ms; un-blurred, lightly dimmed full-bleed background. | Cross-fade timing and un-blurred background confirmed. | D-pad interaction + screenshot timing (visual) | P0 | —| PASS |
 | GRID-007 | Behaviour with large collections: paging keys work, no focus loss, no layout shift. | Paging and focus stable at scale. | D-pad interaction test with large album | P1 | GRID-004, GRID-005| PASS |
 | GRID-008 | Title from `exifInfo.description` with human-readable fallback; never raw filename. | No raw filenames rendered as titles. | Screenshot inspection + source audit | P0 | — | PASS |
 | GRID-009 | Video items: single monochrome play glyph bottom-right, no duration text. | Glyph present; no duration overlay. | Screenshot inspection | P1 | VIS-001| PASS |
@@ -63,7 +63,7 @@ Every item has a unique ID, a concise requirement, an observable definition of d
 | ALBUM-001 | Album cover consistent with grid card treatment (4:3 centre-crop). | Cover matches grid card proportions/radius. | Screenshot inspection | P0 | GRID-001 | PASS |
 | ALBUM-002 | Titles from album metadata (never raw filenames); `Body` title + `Meta` date/count. | Correct metadata shown; no filenames. | Screenshot inspection | P0 | GRID-008| PASS |
 | ALBUM-003 | Spacing and focus states consistent with grid cards. | Same radius/scale/hairline as grid. | Screenshot inspection | P1 | VIS-005 | PASS |
-| ALBUM-004 | BACK returns to previous grid position and focused item (leave-off). | Focus restored to same cell after exiting album detail. | D-pad interaction test on device | P0 | HOME-005 | IN PROGRESS |
+| ALBUM-004 | BACK returns to previous grid position and focused item (leave-off). | Focus restored to same cell after exiting album detail. | D-pad interaction test on device | P0 | HOME-005| PASS |
 
 ---
 
@@ -164,7 +164,7 @@ planning default. Basis for each marker:
   a few are known shortfalls listed below.
 - **`NOT STARTED`** — genuinely absent in v1.
 
-Tally: **53 PASS / 11 IN PROGRESS / 0 NOT STARTED**.
+Tally: **55 PASS / 9 IN PROGRESS / 0 NOT STARTED**.
 
 ### Nothing is left un-started
 
@@ -225,19 +225,19 @@ each verified on the Sony TV:
 
 ### Read this before treating v2 as "ready to close"
 
-By this checklist's own gate — *all P0 must be `PASS`* — v2 does **not** pass yet: **5 P0 items**
+By this checklist's own gate — *all P0 must be `PASS`* — v2 does **not** pass yet: **3 P0 items**
 remain.
 
 - **VIS-002 / A11Y-001** — blocked by the grid-title opacity defect above.
 - **VIS-007** — the sign-in screen still predates the design system; parked with the login-page
   revamp by owner decision (2026-10-20).
-- **GRID-006 / ALBUM-004** — both are background-artwork items. A custom 250ms backdrop (to replace
-  `BackgroundManager`'s fixed 500ms fade and to re-apply the artwork on resume) was implemented and
-  reverted. Two problems: the ImageView was first bound in `onCreate` where `view` is null, and after
-  moving the binding to `onViewCreated` the image still did not load (the backdrop stayed empty and
-  the album-detail artwork regressed). The load path needs proper debugging — likely the
-  `loadBackground` call site or its `isResumed`/preference guard — before this is retried. Reverted
-  rather than shipped regressed.
+
+**GRID-006 / ALBUM-004 are now PASS.** The grid owns its backdrop as a `grid_backdrop` ImageView
+with a 250ms (`motion_background_ms`) cross-fade instead of `BackgroundManager`'s fixed 500ms, and
+re-applies the backdrop for the selected card on resume. Verified on the TV: the Albums page shows
+the focused album's cover, the album detail shows its first asset, and the backdrop follows focus.
+Known limitation: a video asset cannot decode as a backdrop (`VideoDecoderException`), so the
+previous backdrop is kept for videos — same behaviour as before, now intentional.
 
 ### Owner decisions recorded
 
