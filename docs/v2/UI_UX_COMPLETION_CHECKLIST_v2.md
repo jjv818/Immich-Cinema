@@ -232,11 +232,12 @@ remain.
 - **VIS-007** — the sign-in screen still predates the design system; parked with the login-page
   revamp by owner decision (2026-10-20).
 - **GRID-006 / ALBUM-004** — both are background-artwork items. A custom 250ms backdrop (to replace
-  `BackgroundManager`'s fixed 500ms fade and to re-apply the artwork on resume) was implemented,
-  briefly worked, then failed to load and regressed the album-detail backdrop; it was reverted rather
-  than shipped broken. The items need a focused follow-up: bind the backdrop image in
-  `onViewCreated` (not `onCreate`, where `view` is null — that was the bug), verify it loads, then
-  re-apply on resume.
+  `BackgroundManager`'s fixed 500ms fade and to re-apply the artwork on resume) was implemented and
+  reverted. Two problems: the ImageView was first bound in `onCreate` where `view` is null, and after
+  moving the binding to `onViewCreated` the image still did not load (the backdrop stayed empty and
+  the album-detail artwork regressed). The load path needs proper debugging — likely the
+  `loadBackground` call site or its `isResumed`/preference guard — before this is retried. Reverted
+  rather than shipped regressed.
 
 ### Owner decisions recorded
 
