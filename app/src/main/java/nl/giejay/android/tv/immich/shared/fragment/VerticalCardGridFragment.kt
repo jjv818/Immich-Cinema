@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.KeyEvent
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.leanback.app.BackgroundManager
 import androidx.leanback.widget.ArrayObjectAdapter
@@ -18,14 +19,18 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import arrow.core.Either
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.SimpleTarget
-import com.bumptech.glide.request.transition.Transition
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import nl.giejay.android.tv.immich.ImmichApplication
+import nl.giejay.android.tv.immich.R
 import nl.giejay.android.tv.immich.api.ApiClient
 import nl.giejay.android.tv.immich.api.ApiClientConfig
 import nl.giejay.android.tv.immich.card.Card
@@ -49,6 +54,7 @@ abstract class VerticalCardGridFragment<ITEM> : GridFragment() {
 
     private lateinit var mMetrics: DisplayMetrics
     private var mBackgroundManager: BackgroundManager? = null
+    private var backdrop: ImageView? = null
 
     protected lateinit var apiClient: ApiClient
     private lateinit var keyEvents: KeyEventsViewModel
@@ -235,6 +241,9 @@ abstract class VerticalCardGridFragment<ITEM> : GridFragment() {
         if (assets.isNotEmpty()) {
             progressBar?.visibility = View.GONE
         }
+        // Returning from the viewer restores focus but not the artwork; re-apply the backdrop
+        // for whatever card is selected now (ALBUM-004).
+        view?.post { applyBackdropForSelection() }
     }
 
     private fun setupAdapter() {
@@ -246,12 +255,34 @@ abstract class VerticalCardGridFragment<ITEM> : GridFragment() {
     }
 
     private fun setupBackgroundManager() {
+        // The grid now owns its backdrop (grid_backdrop ImageView) so the cross-fade uses
+        // motion_background_ms instead of BackgroundManager's fixed 500ms. Clear the shared
+        // manager's drawable so a leftover Timeline photo cannot linger behind the grid.
         mBackgroundManager = BackgroundManager.getInstance(activity)
         if (!mBackgroundManager!!.isAttached) {
             mBackgroundManager!!.attach(requireActivity().window)
         }
+        mBackgroundManager?.drawable = null
         mMetrics = DisplayMetrics()
         requireActivity().windowManager.defaultDisplay.getMetrics(mMetrics)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        // onCreate runs before the view exists, so the backdrop is bound here.
+        backdrop = view.findViewById(R.id.grid_backdrop)
+    }
+
+    /** Re-loads the backdrop for the currently selected card, if any. */
+    private fun applyBackdropForSelection() {
+        if (!PreferenceManager.get(LOAD_BACKGROUND_IMAGE)) {
+            backdrop?.setImageDrawable(null)
+            return
+        }
+        val index = currentSelectedIndex
+        val card = if (index in 0 until adapter.size()) adapter.get(index) as? Card else null
+        val url = card?.backgroundUrl ?: card?.thumbnailUrl ?: return
+        loadBackground(url) { }
     }
 
     override fun onPause() {
@@ -263,6 +294,8 @@ abstract class VerticalCardGridFragment<ITEM> : GridFragment() {
     override fun onDestroyView() {
         Debouncer.cancel(BACKGROUND_DEBOUNCE_KEY)
         super.onDestroyView()
+        backdrop?.setImageDrawable(null)
+        backdrop = null
         if (mBackgroundManager?.isAttached == true) {
             mBackgroundManager?.drawable = null
         }
@@ -310,33 +343,42 @@ abstract class VerticalCardGridFragment<ITEM> : GridFragment() {
             Timber.i("Could not load background because background url is null")
             return
         }
-        val width: Int = mMetrics.widthPixels
-        val height: Int = mMetrics.heightPixels
+        val iv = backdrop ?: return
         try {
             Glide.with(requireActivity())
                 .load(backgroundUrl)
                 .centerCrop()
-                .into(object : SimpleTarget<Drawable?>(width, height) {
+                .override(mMetrics.widthPixels, mMetrics.heightPixels)
+                .transition(
+                    DrawableTransitionOptions.withCrossFade(
+                        resources.getInteger(R.integer.motion_background_ms)
+                    )
+                )
+                .listener(object : RequestListener<Drawable> {
                     override fun onResourceReady(
-                        resource: Drawable,
-                        transition: Transition<in Drawable?>?
-                    ) {
-                        // Fragment may already be gone (e.g. user switched to Timeline).
-                        if (!isAdded || !isResumed) return
-                        try {
-                            mBackgroundManager?.drawable = resource
-                        } catch (e: Exception) {
-                            Timber.e(e, "Could not set background")
-                        }
-                    }
+                        resource: Drawable?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        dataSource: DataSource?,
+                        isFirstResource: Boolean
+                    ) = false
 
-                    override fun onLoadFailed(errorDrawable: Drawable?) {
-                        if (!isAdded || !isResumed) return
+                    override fun onLoadFailed(
+                        e: GlideException?,
+                        model: Any?,
+                        target: Target<Drawable>?,
+                        isFirstResource: Boolean
+                    ): Boolean {
+                        // e.g. a video asset's "original"/"preview" cannot decode as a bitmap ??                        // keep the current backdrop and run the caller's fallback chain.
+                        Timber.w("Backdrop load failed: %s", e?.message)
                         onLoadFailed()
+                        return false
                     }
                 })
+                .into(iv)
         } catch (e: Exception) {
             Timber.e(e, "Could not fetch background")
+            onLoadFailed()
         }
     }
 
