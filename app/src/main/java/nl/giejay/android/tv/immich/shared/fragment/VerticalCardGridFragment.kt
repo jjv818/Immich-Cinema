@@ -247,7 +247,11 @@ abstract class VerticalCardGridFragment<ITEM> : GridFragment() {
     }
 
     private fun setupAdapter() {
-        val presenter = VerticalGridPresenter(ZOOM_FACTOR)
+        // Leanback's focus dimmer darkens every unfocused grid item to 40% of its rendered colour.
+        // It is a dimming overlay rather than a view alpha, which is why every alpha probe read 1.0
+        // while the artwork and titles measured a 2.6:1 contrast ratio (VIS-002). The cards supply
+        // their own focus treatment (1.06 scale + hairline + glow), so the dimmer is disabled.
+        val presenter = VerticalGridPresenter(ZOOM_FACTOR, false)
         presenter.numberOfColumns = COLUMNS
         gridPresenter = presenter
         val cardPresenter = CardPresenterSelector(requireContext())
