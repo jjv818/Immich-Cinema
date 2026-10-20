@@ -146,4 +146,91 @@
         <item name="android:backgroundDimAmount">@dimen/settings_window_dim</item>
     </style>
 
+    <!-- ===== Guided step (sign-in; AUTH-001) =====
+         Descendants of the stock Leanback styles, re-pointed at the §5.1 tokens. Every style
+         here is wired through a theme attribute on GuidedStepTheme (see themes.xml) - no
+         app-level lb_* resource overrides, so the change cannot leak into other Leanback
+         surfaces. Text colours are constant per role; focus feedback is the white hairline
+         selector (never colour-only), matching the settings-row reference treatment. -->
+    <style name="GuidedStep.GuidanceContainer" parent="Widget.Leanback.GuidanceContainerStyle">
+        <!-- Safe gutter (48dp) instead of the stock 56dp start padding so the guidance block
+             aligns with every other surface's overscan margin. -->
+        <item name="android:paddingStart">@dimen/overscan_horizontal</item>
+        <item name="android:paddingEnd">@dimen/space_4</item>
+    </style>
+
+    <style name="GuidedStep.GuidanceTitle" parent="Widget.Leanback.GuidanceTitleStyle">
+        <!-- Heading 30sp / text_primary; stock was 36sp sans-serif-light. -->
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">@dimen/text_heading</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
+    <style name="GuidedStep.GuidanceDescription" parent="Widget.Leanback.GuidanceDescriptionStyle">
+        <!-- Body 20sp / text_secondary; stock was 14sp / #88F1F1F1 (~53% white). -->
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">@dimen/text_body</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <style name="GuidedStep.GuidanceBreadcrumb" parent="Widget.Leanback.GuidanceBreadcrumbStyle">
+        <!-- Carries the build version above the product name (Meta 18sp / text_secondary).
+             Stock is 18sp condensed at 53% white; only the family and colour change. -->
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <style name="GuidedStep.GuidanceIcon" parent="Widget.Leanback.GuidanceIconStyle">
+        <!-- Own brand mark at 100dp instead of the stock 140dp, with the margin on the 16dp
+             spacing step: frees ~44dp for the Heading-30sp title so it fits on one line. -->
+        <item name="android:layout_width">@dimen/guided_step_icon_size</item>
+        <item name="android:layout_marginEnd">@dimen/space_2</item>
+    </style>
+
+    <style name="GuidedStep.ButtonActionsList" parent="Widget.Leanback.GuidedButtonActionsListStyle">
+        <!-- 8dp a side instead of 24dp: a Body-20sp button label needs ~90dp of text width and
+             the stock 0.45-weight column only offers ~73dp. -->
+        <item name="android:paddingStart">@dimen/space_1</item>
+        <item name="android:paddingEnd">@dimen/space_1</item>
+    </style>
+
+    <style name="GuidedStep.ActionItemContainer" parent="Widget.Leanback.GuidedActionItemContainerStyle">
+        <!-- Raised chip behind every action row (see guided_action_chip.xml): seamless on the
+             raised main-action panel, individual chips on the page-coloured button column.
+             Padding: 8dp vertical / 16dp horizontal on the spacing scale (stock was 14/13/16/16).
+             The vertical step is deliberately the tighter one: at 16sp a step-2 list of four rows
+             reached the 48dp bottom safe gutter, and a TV overscan margin is not negotiable. -->
+        <item name="android:paddingTop">@dimen/space_1</item>
+        <item name="android:paddingBottom">@dimen/space_1</item>
+        <item name="android:paddingStart">@dimen/space_2</item>
+        <item name="android:paddingEnd">@dimen/space_2</item>
+        <item name="android:background">@drawable/guided_action_chip</item>
+    </style>
+
+    <style name="GuidedStep.ActionItemTitle" parent="Widget.Leanback.GuidedActionItemTitleStyle">
+        <!-- Body 20sp / text_primary; stock was 14sp sans-serif-condensed. Constant colour:
+             the hairline selector carries focus (same contract as settings rows). -->
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">@dimen/text_body</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
+    <style name="GuidedStep.ActionItemDescription" parent="Widget.Leanback.GuidedActionItemDescriptionStyle">
+        <!-- Meta 18sp / text_secondary; stock was 12sp sans-serif-condensed at 50% alpha
+             (unusable at 10 feet). Full alpha - hierarchy comes from the colour, not a
+             focus-dependent fade. -->
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">@dimen/text_meta</item>
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:alpha">1.0</item>
+    </style>
+
+    <style name="GuidedStep.ActionItemCheckmark" parent="Widget.Leanback.GuidedActionItemCheckmarkStyle">
+        <!-- 10-foot legibility: 24dp glyph (same value the settings chevron uses) for the
+             SSL / debug checkboxes, up from the stock 16dp. -->
+        <item name="android:layout_width">@dimen/settings_chevron_size</item>
+        <item name="android:layout_height">@dimen/settings_chevron_size</item>
+    </style>
+
 </resources>

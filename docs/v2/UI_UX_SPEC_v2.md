@@ -92,7 +92,7 @@ Contrast targets (project acceptance targets, not Apple mandates): primary text 
 | Display | 44sp | empty states / QR only |
 | Heading | 30sp | screen & section headings |
 | Body | 20sp | card titles, tab labels, rail items |
-| Meta | 15sp | dates, counts, supporting lines |
+| Meta | 18sp | dates, counts, supporting lines |
 
 Platform default font (AGENTS.md §4 Design). 18sp text floor at 10-foot viewing distance (§2.4).
 

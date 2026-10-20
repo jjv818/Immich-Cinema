@@ -28,10 +28,12 @@ class AuthFragmentStep1 : GuidedStepSupportFragment() {
     override fun onCreateGuidance(savedInstanceState: Bundle?): GuidanceStylist.Guidance {
         val icon: Drawable =
             requireContext().getDrawable(R.drawable.icon)!!
+        // Product name on the title line; the build version sits in the breadcrumb above it so
+        // the Heading-30sp title stays on one line at 10-foot viewing distance.
         return GuidanceStylist.Guidance(
-            getString(R.string.app_name) + " (${BuildConfig.VERSION_NAME})",
+            getString(R.string.app_name),
             getString(R.string.login_immich_description),
-            "",
+            "v${BuildConfig.VERSION_NAME}",
             icon
         )
     }

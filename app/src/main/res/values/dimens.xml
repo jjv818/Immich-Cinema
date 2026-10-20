@@ -25,7 +25,7 @@
     <dimen name="image_card_height">108dp</dimen>
 
     <!-- Text sizes. -->
-    <dimen name="text_size_h3">16sp</dimen>
+    <dimen name="text_size_h3">18sp</dimen>
     <dimen name="text_size_h1">32sp</dimen>
 
     <!-- Error Fragment. -->
@@ -84,7 +84,7 @@
     <dimen name="memory_card_height">133dp</dimen>
     <!-- Bottom scrim over the memory-card cover. Compact at rest, expands on focus so the
          title/date stays legible only when the card is the focus of attention. -->
-    <dimen name="memory_scrim_rest">60dp</dimen>
+    <dimen name="memory_scrim_rest">68dp</dimen>
     <dimen name="memory_scrim_focus">92dp</dimen>
     <!--
       Clears scrubber year labels for the rightmost visible resting card
@@ -96,7 +96,7 @@
     <!-- ===== Immich Cinema design system (AGENTS.md §5.1) ===== -->
     <!-- Type scale (four sizes, no more) -->
     <dimen name="text_heading">30sp</dimen>
-    <dimen name="text_meta">15sp</dimen>
+    <dimen name="text_meta">18sp</dimen>
 
     <!-- Geometry: spacing scale (no ad-hoc values) -->
     <dimen name="space_1">8dp</dimen>
@@ -127,6 +127,10 @@
     <!-- Tab bar -->
     <dimen name="tab_bar_height">64dp</dimen>
     <dimen name="tab_bar_top_margin">28dp</dimen>
+
+    <!-- Guided step (sign-in): brand mark width. Stock is 140dp, which squeezes the
+         Heading-30sp product name onto two lines. -->
+    <dimen name="guided_step_icon_size">96dp</dimen>
 
     <!-- Cards: shared scrim + text padding (no per-component ad-hoc values). -->
     <dimen name="card_scrim_height">72dp</dimen>

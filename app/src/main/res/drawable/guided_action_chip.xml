@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Guided-step action chip (AUTH-001): surface_raised fill on the card radius token. Painted
+     on the shared guidedActionItemContainerStyle, so behaviour differs per surface:
+     - main action list sits on a raised (surface_raised) panel -> same colour = seamless panel;
+     - button-actions column (Continue/Submit) sits on guidedActionsBackgroundDark = surface_base
+       -> the fill reads as individual raised chips.
+     Radius uses radius_card (8dp) so the focus_hairline_selector's corners align with the chip. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/surface_raised" />
+    <corners android:radius="@dimen/radius_card" />
+</shape>

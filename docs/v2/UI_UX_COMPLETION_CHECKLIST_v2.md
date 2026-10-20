@@ -15,11 +15,11 @@ Every item has a unique ID, a concise requirement, an observable definition of d
 |---|---|---|---|---|---|---|
 | VIS-001 | Colours resolve to the spec palette (`surface_base`, `surface_raised`, `text_primary`, `text_secondary`, `text_tertiary`, `focus_hairline`, `accent_brand`, `tab_scrim`) on all chrome surfaces. | Each named token resolves to its AGENTS.md §5.1 hex/opacity value; no ad-hoc per-screen hex values. | `DesignTokenTest` (Robolectric, `includeAndroidResources=true`) — every token resolves; build validation | P0 | tokens defined | PASS |
 | VIS-002 | Contrast: primary text ≥ 4.5:1, large/heading text ≥ 3:1, non-text focus indicator ≥ 3:1 against its surface. | Measured contrast ratio on each text/indicator pairing meets threshold on both bright and dark photos. | Screenshot inspection + contrast measurement on device screenshots | P0 | VIS-001 | PASS |
-| VIS-003 | Typography uses exactly four sizes: Display 44sp, Heading 30sp, Body 20sp, Meta 15sp; platform default font. | No other text sizes appear on principal screens; platform default font family used. | Screenshot inspection + grep of `sp` values in layouts/styles | P0 | VIS-001| PASS |
+| VIS-003 | Typography uses exactly four sizes: Display 44sp, Heading 30sp, Body 20sp, Meta 18sp; platform default font. | No other text sizes appear on principal screens; platform default font family used. | Screenshot inspection + grep of `sp` values in layouts/styles | P0 | VIS-001| PASS |
 | VIS-004 | Spacing uses only the 8/16/24/32/48 dp scale; safe gutters 48dp horizontal / 27dp top / 48dp bottom applied. | No ad-hoc dp values on principal screens; gutters present. | Screenshot inspection + dimen resource audit | P1 | VIS-001 | IN PROGRESS |
 | VIS-005 | Corner radii: card 8dp, rail/memory 12dp, mosaic cell 6dp. | Radii match spec on each card type; no invented per-component radii. | Screenshot inspection + dimen audit | P1 | VIS-001 | PASS |
 | VIS-006 | No gradients, glassmorphism, decorative icons, pills, badges, shadows, or rounded containers without a stated purpose; `tab_scrim` capsule is the sole documented exception. | Each surface justifiable; tab capsule comment documents the exception. | Screenshot inspection + code comment present | P0 | —| PASS |
-| VIS-007 | Visual treatments consistent across Home, Timeline, Grid, Albums, Viewer, Settings, Auth, Screensaver. | Same token set, radii, focus treatment, and text treatment reused; no mixed design languages. | Screenshot comparison across principal screens | P0 | VIS-001..VIS-005 | IN PROGRESS |
+| VIS-007 | Visual treatments consistent across Home, Timeline, Grid, Albums, Viewer, Settings, Auth, Screensaver. | Same token set, radii, focus treatment, and text treatment reused; no mixed design languages. | Screenshot comparison across principal screens | P0 | VIS-001..VIS-005 | PASS |
 | VIS-008 | Image placeholder and error drawables wired; no flat grey tiles on load/error. | `placeholder`/`error` drawables set on Glide requests; grey tiles absent. | Screenshot inspection on load/error + `.override()` present | P0 | — | PASS |
 
 ---
@@ -164,7 +164,7 @@ planning default. Basis for each marker:
   a few are known shortfalls listed below.
 - **`NOT STARTED`** — genuinely absent in v1.
 
-Tally: **57 PASS / 7 IN PROGRESS / 0 NOT STARTED**.
+Tally: **58 PASS / 6 IN PROGRESS / 0 NOT STARTED**.
 
 ### Nothing is left un-started
 
@@ -181,12 +181,39 @@ each verified on the Sony TV:
   `timeline_mosaic_video_duration` in the hierarchy.
 - **VIEWER-004** — D-pad paging verified: `RIGHT` changes the media (91.9% of pixels), `LEFT` returns
   to the exact previous frame (0.0%).
-- **MOTION-003** — the memory scrim now animates `scaleY` (pivot at the bottom, rest ratio 60/92)
+- **MOTION-003** — the memory scrim now animates `scaleY` (pivot at the bottom, rest ratio 68/92)
   instead of `layoutParams.height`; no layout-property animation remains in the codebase.
 - **MOTION-005** — `Motion.durationMs()` resolves the motion tokens against
   `ANIMATOR_DURATION_SCALE` and returns 0 when animations are off. Verified with the scale set to 0:
   focus moves, the tab bar snaps to its end state, and the focused card lands at full ring + scale
   with nothing stuck mid-state.
+- **VIS-007 — the sign-in flow now uses the same design system (last P0, closed 2026-10-20).**
+  Theme-driven, no Kotlin layout code: `GuidedStepTheme` overrides `guidedActionsSelectorDrawable`
+  (the shared white hairline selector, replacing Leanback's stock blue selection), the guidance/action
+  style hooks, and `colorControlActivated`/`colorControlNormal` (`accent_brand` / `text_tertiary` used
+  only for the editable/caret indicators). Six descendant styles in `styles.xml` re-point the stock
+  `Widget.Leanback.*` styles at the tokens: guidance title Heading 30sp bold `text_primary`,
+  description Body 20sp `text_secondary`, action titles Body 20sp `text_primary`, action
+  descriptions Meta 18sp `text_secondary`, 24dp checkmarks, and raised `surface_raised` /
+  8dp-radius action chips (`guided_action_chip.xml`).
+  Verified on the Pixel-3a AVD at 1920×1080 @320dpi — the same 960×540dp / sw540dp configuration as
+  the TV, and Leanback 1.2.0 has no `-television`-qualified guided-step resources, so the render is
+  representative. Evidence, measured from the view hierarchy and screenshots:
+  - `guidedActionsSelectorDrawable` renders the hairline on the focused row (`state_focused`), so focus
+    is never colour-only.
+  - Three layout defects the type increase exposed were fixed rather than accepted: the button column
+    clipped `Continue` to `Continu` (stock 24dp list padding left ~73dp of text width for a 20sp label
+    — now 8dp, giving ~105dp); the 140dp guidance mark squeezed the 30sp title into a truncated third
+    line (now 96dp); and four step-2 rows reached the window bottom, inside the 48dp gutter (row
+    padding is now 8dp vertical / 16dp horizontal). Final bounds: step-2 content ends at 473dp of
+    540dp, i.e. a 67dp bottom gutter.
+  - The breadcrumb carries `v6.2.0` above the product name, so the version stays visible without
+    truncating the title.
+  - Auth is unreachable on the signed-in TV without wiping the stored API key, so this item's visual
+    pass was taken on the AVD; every other surface in this item was captured on the TV.
+  **Known shortfall:** stock action descriptions are capped at two lines
+  (`guidedActionDescriptionMinLines`), so the longer SSL/debug hints ellipsize at 18sp; raising the cap
+  costs ~43dp on step 2 and would breach the 48dp bottom gutter, so the cap is deliberately unchanged.
 
 ### Known shortfalls hiding inside `IN PROGRESS`
 
@@ -200,7 +227,8 @@ each verified on the Sony TV:
   lock release is 250L (spec text said 160L). `AGENTS.md` has been corrected to the as-built values;
   this checklist still carries the original numbers.
 - **BUILD-005** — deep links, playback entry and the screensaver preview path are intact, but the
-  real daydream, TalkBack and the sign-in GuidedStep screen were not exercised.
+  real daydream and TalkBack were not exercised. (The sign-in GuidedStep screen has since been
+  exercised on the AVD — see VIS-007.)
 - **~~NEW P0 — grid card titles render at 40% opacity~~ RESOLVED (VIS-002 / A11Y-001 now PASS).**
   The defect was never in text rendering. `VerticalGridPresenter` was built with the single-argument
   constructor, so Leanback's focus dimmer stayed on and drew its dimming overlay over **every
@@ -221,20 +249,34 @@ each verified on the Sony TV:
   **Still unstyled by design:** the picker dialog that opens on Enter (radio options) is drawn by
   Leanback's own `LeanbackListPreferenceDialogFragmentCompat` item layouts and is not theme-addressable
   without subclassing it — deliberately left as a separate, isolated fix.
-- **A11Y-001 / typography floor — spec conflict, owner call needed.** The measured-contrast clause now
-  passes (6.9–13.8:1 on the grid). The `Meta` token is 15sp, below the "practical ~18sp text floor" in
-  `AGENTS.md` §2.4 — but `Meta 15sp` is itself a locked token in §5.1 (dates, counts, supporting
-  lines). The two statements in the same document disagree; flagged here rather than changing either
-  unilaterally. Body/interactive text is at 20sp and unaffected.
+- **A11Y-001 / typography floor — RESOLVED (owner decision, 2026-10-20: `A11Y-001` wins over the
+  `Meta 15sp` token).** The measured-contrast clause passes (6.9–13.8:1 on the grid). The token table
+  now reads **Meta 18sp**, so `AGENTS.md` §2.4 (18sp floor) and §5.1 (the token) agree, and §5.1 was
+  updated to the as-built value. Enforcement: every live text size in `app/src/main/res` and
+  `mediaslider/mediaslider/src/main/res` is ≥18sp (`text_meta` 15→18sp, `text_size_h3` 16→18sp, and
+  the five 14sp viewer labels — video position/duration, image position/duration, story progress
+  count). Two geometry follow-ups the increase forced:
+  - `story_progress_row` was a fixed 28dp row; an 18sp line box needs ~21.6dp plus 10dp top padding,
+    so the row is now 34dp. Verified in slideshow: the count renders full-height and unclipped.
+  - the resting memory scrim (`memory_scrim_rest`) was 60dp against a card text block that the 18sp
+    date line grew to ~59.6dp — 0.4dp of headroom, i.e. the title sat on the scrim edge. Now 68dp
+    (ratio 68/92). Verified on the Timeline: title and date both sit inside the scrim over bright and
+    dark covers.
+  Body/interactive text is unchanged at 20sp.
 
 ### Read this before treating v2 as "ready to close"
-By this checklist's own gate — *all P0 must be `PASS`* — the only P0 item still open is **VIS-007**
-(the sign-in screen predates the design system), which is blocked solely by the parked login revamp
-(owner decision, 2026-10-20). Everything else on the P0 set is `PASS`, including the two measurement
-items (VIS-002 / A11Y-001) that the focus-dimmer defect had been blocking.
+By this checklist's own gate — *all P0 must be `PASS`* — **the P0 set is now complete.** VIS-007, the
+last open P0, closed on 2026-10-20 when the sign-in flow was brought onto the design system (unparked
+by the owner and verified on the AVD, because the signed-in TV cannot reach auth without wiping the
+stored API key). The two measurement items (VIS-002 / A11Y-001) that the focus-dimmer defect had been
+blocking also pass.
 
 The remaining `IN PROGRESS` items are P1/P2 measurement gaps and the known shortfalls listed above —
 none of them gates the P0 set.
+
+**Unverified by design:** the real screensaver daydream, TalkBack, and the two 18sp viewer transport
+labels (photo/video position and duration) — those labels are hidden by the controller in the paths
+that were exercised, so their change is verified in source and layout geometry only, not on screen.
 
 **GRID-006 / ALBUM-004 are now PASS.** The grid owns its backdrop as a `grid_backdrop` ImageView
 with a 250ms (`motion_background_ms`) cross-fade instead of `BackgroundManager`'s fixed 500ms, and
@@ -245,6 +287,11 @@ previous backdrop is kept for videos — same behaviour as before, now intention
 
 ### Owner decisions recorded
 
+- **A11Y-001 vs `Meta 15sp`** — *`A11Y-001` wins* (2026-10-20): the owner resolved the conflict between
+  `AGENTS.md` §2.4 (18sp floor) and §5.1 (`Meta 15sp`) in favour of the accessibility floor. `Meta` is
+  now 18sp, and every live text size in both resource trees is ≥18sp.
+- **VIS-007 / login revamp** — *unparked* (2026-10-20): the previously parked sign-in revamp was
+  requested and completed as theme-driven styling (no Kotlin layout code), closing the last open P0.
 - **HOME-004** — *accepted scrolling* (2026-10-20): the tab capsule stays centred and 90%-capped;
   Settings is reached by scrolling the bar right. No label/icon change.
 - **ALBUM-002** — album detail appends the asset count to the contextual title
