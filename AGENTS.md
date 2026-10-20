@@ -335,7 +335,7 @@ it uses `DefaultCardTheme` (206×116dp).
 | Display | 44sp | empty states / QR only |
 | Heading | 30sp | screen & section headings |
 | Body | 20sp | card titles, tab labels, rail items |
-| Meta | 15sp | dates, counts, supporting lines |
+| Meta | 18sp | dates, counts, supporting lines |
 
 **Geometry**
 

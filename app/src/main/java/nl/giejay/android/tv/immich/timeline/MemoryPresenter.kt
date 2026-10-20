@@ -44,7 +44,7 @@ class MemoryPresenter(
     /**
      * The scrim is laid out at its focused height and shrunk to the resting look with [View.setScaleY],
      * so focus never animates a layout property (MOTION-003, AGENTS.md §5.7). Rest ratio =
-     * `memory_scrim_rest / memory_scrim_focus` (60dp / 92dp ??0.652).
+     * `memory_scrim_rest / memory_scrim_focus` (68dp / 92dp, roughly 0.74).
      */
     private val scrimRestScale = scrimRestPx.toFloat() / scrimFocusPx.coerceAtLeast(1).toFloat()
 

@@ -10,6 +10,7 @@ import androidx.leanback.widget.GuidedAction
 import androidx.leanback.widget.GuidedActionEditText
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
+import nl.giejay.android.tv.immich.BuildConfig
 import nl.giejay.android.tv.immich.R
 import nl.giejay.android.tv.immich.shared.guidedstep.GuidedStepUtil.addAction
 import nl.giejay.android.tv.immich.shared.guidedstep.GuidedStepUtil.addCheckedAction
@@ -41,7 +42,7 @@ class AuthFragmentStep2 : GuidedStepSupportFragment() {
         return GuidanceStylist.Guidance(
             getString(R.string.app_name),
             getString(R.string.login_immich_description),
-            "",
+            "v${BuildConfig.VERSION_NAME}",
             icon
         )
     }

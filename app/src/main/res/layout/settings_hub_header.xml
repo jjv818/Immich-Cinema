@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Settings hub group header: Meta 15sp uppercase, text_secondary, iOS section style. -->
+<!-- Settings hub group header: Meta 18sp uppercase, text_secondary, iOS section style. -->
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/settings_hub_header_title"
     android:layout_width="match_parent"

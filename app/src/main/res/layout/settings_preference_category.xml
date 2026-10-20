@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Group header between row groups: Meta 15sp in text_secondary (A11Y-safe on raised base),
+<!-- Group header between row groups: Meta 18sp in text_secondary (A11Y-safe on raised base),
      secondary weight + uppercase per iOS section headers. Paddings are typography spacing:
      24dp above separates groups, 8dp below ties the header to its rows. -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"

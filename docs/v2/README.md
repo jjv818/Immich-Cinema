@@ -18,11 +18,13 @@ UI/UX iteration. They are *not* the acceptance criteria for v1.
 
 ## Deferred notes (jotted, not scheduled)
 
-- **Login page revamp.** The GuidedStep sign-in (server URL + API key) predates the design system
-  and does not follow §2 principles. When scheduled: restyle the auth steps with the §5.1 tokens,
-  the GuidedStep theme, and a 10-foot-first layout. **Out of scope for v2** — parked by the owner
-  on 2026-10-20. (Owner also noted: the app has never had a demo mode; if one is wanted, that is a
-  v3 feature.)
+- ~~**Login page revamp.**~~ **Done 2026-10-20** (owner unparked it; it was the last open P0, VIS-007).
+  The two GuidedStep steps now use the §5.1 tokens through `GuidedStepTheme` and six
+  `Widget.Leanback.*` descendant styles: Heading 30sp product name, Body 20sp actions, Meta 18sp
+  descriptions, raised `surface_raised` action chips, and the shared white hairline as the focus
+  selector. Verified on the AVD (the signed-in TV cannot reach auth without wiping its API key).
+  See the checklist for the three layout defects the type increase exposed and how each was fixed.
+  (Owner also noted: the app has never had a demo mode; if one is wanted, that is a v3 feature.)
 - ~~**Grid-page opacity defect.**~~ **Resolved 2026-10-20.** Leanback's focus dimmer (enabled by the
   single-argument `VerticalGridPresenter` constructor) dimmed every unfocused grid item by 40%. See
   the checklist's shortfalls section for the diagnosis and the fix.

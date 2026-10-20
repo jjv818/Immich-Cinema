@@ -33,12 +33,45 @@
         <item name="preferenceTheme">@style/SettingsPreferenceTheme</item>
     </style>
 
-    <!-- Guided Step (sign-in) derived from the same tokens: dark cinematic background, raised
-         action sheet. Text colours follow AppTheme's textColorPrimary/Secondary. -->
+    <!-- Guided Step (sign-in) derived from the same tokens (§5.1): surface_base page,
+         raised action panel, guidance Heading/Body, action rows Body/Meta, white hairline
+         focus.
+         Note: stock Leanback 1.2.0 has no lb_guidedactions_item_selected_text_color or
+         lb_guidedstep_{title,description}_font_size - guidance and item text are restyled
+         via the guidance*/guidedActionItem* style attributes below. -->
     <style name="GuidedStepTheme" parent="Theme.AppCompat.Leanback.GuidedStep">
         <item name="guidedStepBackground">@color/surface_base</item>
         <item name="guidedActionsBackground">@color/surface_raised</item>
+        <!-- Button-action column: page colour, so each Continue/Submit row reads as an
+             individual raised chip (guided_action_chip) instead of a second panel. -->
         <item name="guidedActionsBackgroundDark">@color/surface_base</item>
+        <!-- Focus: the shared state-driven white hairline + glow, replacing the stock
+             selectableItemBackground (colour-dependent ripple). Legible for all viewers,
+             never colour-only. -->
+        <item name="guidedActionsSelectorDrawable">@drawable/focus_hairline_selector</item>
+        <!-- Guidance block (step title + intro line). -->
+        <item name="guidanceContainerStyle">@style/GuidedStep.GuidanceContainer</item>
+        <item name="guidanceTitleStyle">@style/GuidedStep.GuidanceTitle</item>
+        <item name="guidanceDescriptionStyle">@style/GuidedStep.GuidanceDescription</item>
+        <item name="guidanceBreadcrumbStyle">@style/GuidedStep.GuidanceBreadcrumb</item>
+        <!-- Stock icon is 140dp wide, which leaves the 30sp title only ~194dp and forces
+             "Immich Cinema" onto two lines. Narrower mark + tighter margin gives the title
+             one line and keeps the version (breadcrumb) on one line above it. -->
+        <item name="guidanceIconStyle">@style/GuidedStep.GuidanceIcon</item>
+        <!-- Action rows: raised chips, Body/Meta text. -->
+        <item name="guidedActionItemContainerStyle">@style/GuidedStep.ActionItemContainer</item>
+        <item name="guidedActionItemTitleStyle">@style/GuidedStep.ActionItemTitle</item>
+        <item name="guidedActionItemDescriptionStyle">@style/GuidedStep.ActionItemDescription</item>
+        <item name="guidedActionItemCheckmarkStyle">@style/GuidedStep.ActionItemCheckmark</item>
+        <!-- The button column (Continue/Submit) is a 0.45 weight of the action panel. Stock list
+             padding of 24dp a side left only ~73dp of text width, so a Body-20sp "Continue"
+             clipped to "Continu". Trimming the list padding to the 8dp spacing step gives the
+             label ~105dp without stealing width from the main action list. -->
+        <item name="guidedButtonActionsListStyle">@style/GuidedStep.ButtonActionsList</item>
+        <!-- Selection indicators only (AGENTS.md §5.1): in-place editable rows (server URL,
+             API key) render their caret/underline through these. -->
+        <item name="colorControlActivated">@color/accent_brand</item>
+        <item name="colorControlNormal">@color/text_tertiary</item>
     </style>
 
 </resources>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   iOS-style settings row: surface_raised chip, text-first (title Body 20sp + summary
-  Meta 15sp from the preference theme), trailing widget_frame for the toggle switch or a
+  Meta 18sp from the preference theme), trailing widget_frame for the toggle switch or a
   chevron for drill-in rows. No icon tile. Focus renders via settings_row_background
   (focus_hairline + glow); the row as a whole is the single focusable/clickable target.
 -->
