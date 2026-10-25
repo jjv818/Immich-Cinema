@@ -305,6 +305,13 @@ class TimelineFragment : BrandedSupportFragment(), BrowseSupportFragment.MainFra
                     focusScrubberFromMosaic()
                     focused
                 }
+                // No left neighbour: the mosaic's first column has nothing to its left, so focus
+                // search would fail and clear focus (the remote then appears dead). Hand focus to
+                // the nav chrome, the same way UP from the memories row does.
+                direction == View.FOCUS_LEFT -> {
+                    requireActivity().findViewById<HomeTabBarView>(R.id.home_tab_bar)?.requestFocus()
+                    focused
+                }
                 direction == View.FOCUS_UP &&
                     mosaicAdapter?.hasMemoriesRow() == true &&
                     mosaicAdapter?.isInFirstMosaicRow(assetId) == true -> {

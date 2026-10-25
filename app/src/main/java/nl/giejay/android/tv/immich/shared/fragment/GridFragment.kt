@@ -179,12 +179,19 @@ open class GridFragment(val hideProgressBar: Boolean = false) : BrandedSupportFr
         // layout, outside this fragment's focus hierarchy).
         val frame = view.findViewById<BrowseFrameLayout>(R.id.grid_frame)
         frame.onFocusSearchListener = BrowseFrameLayout.OnFocusSearchListener { focused, direction ->
-            if (direction == View.FOCUS_UP && focused != null) {
+            if (focused != null) {
                 // selectedPosition is the focused card's adapter index (getChildAdapterPosition
                 // returns -1 through Leanback's ItemBridgeAdapter wrapper).
                 val pos = mGridViewHolder?.gridView?.selectedPosition ?: -1
                 val columns = mGridPresenter?.numberOfColumns ?: 1
-                if (pos in 0 until columns) {
+                if (direction == View.FOCUS_UP && pos in 0 until columns) {
+                    requireActivity().findViewById<View>(R.id.home_tab_bar)?.requestFocus()
+                    return@OnFocusSearchListener focused
+                }
+                // The grid has no left neighbour at column 0, so focus search would fail and clear
+                // focus (the remote then appears dead). Hand focus to the nav chrome instead, the
+                // same way UP does - AGENTS.md §8.4 requires LEFT from the first card to reach it.
+                if (direction == View.FOCUS_LEFT && pos >= 0 && pos % columns == 0) {
                     requireActivity().findViewById<View>(R.id.home_tab_bar)?.requestFocus()
                     return@OnFocusSearchListener focused
                 }
