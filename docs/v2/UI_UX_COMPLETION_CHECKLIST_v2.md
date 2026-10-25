@@ -102,8 +102,9 @@ Every item has a unique ID, a concise requirement, an observable definition of d
 | FOCUS-003 | Focus constants extracted to `res/values/integers.xml` + `type="fraction"`; `MOSAIC_FOCUS_LOCK_RELEASE_MS = 160L` re-verified against duration. | Constants shared; constant still exceeds focus duration. | Source audit + `TimelineLeaveOffTest` | P0 | —| PASS |
 | FOCUS-004 | Predictable movement between components; no focus traps. | D-pad reaches all interactive elements; no trapped focus. | D-pad interaction test on device | P0 | — | PASS |
 | FOCUS-005 | Focus restoration across navigation (leave-off) on Timeline and viewer. | Focus returns to previously focused cell/item. | D-pad interaction test on device | P0 | HOME-005 | PASS |
-| FOCUS-006 | Scroll positioning preserved; no focus loss on page transitions. | Scroll position and focus stable. | D-pad interaction test | P1 | FOCUS-005 | IN PROGRESS |
+| FOCUS-006 | Scroll positioning preserved; no focus loss on page transitions. | Scroll position and focus stable. | D-pad interaction test | P1 | FOCUS-005 | PASS |
 | FOCUS-007 | Accessibility: TalkBack announces cells and tabs meaningfully; focus visible against white and black photos. | Meaningful announcements; hairline visible on both photo types. | TalkBack test + screenshot | P1 | FOCUS-001 | IN PROGRESS |
+| FOCUS-008 | Mosaic cell focus renders the shared white hairline + glow above the artwork, not only the scale. | Hairline visible on bright and dark photos; `focus_hairline_cell` drawn as the cell foreground. | Source audit + on-device screenshot + pixel probe | P1 | FOCUS-001 | IN PROGRESS |
 
 ---
 
@@ -217,8 +218,14 @@ each verified on the Sony TV:
 
 ### Known shortfalls hiding inside `IN PROGRESS`
 
-- **FOCUS-006** — viewer BACK restores the correct cell, but the list sits ~210dp lower on return.
-  Leave-off is correct; scroll position is not preserved.
+- **~~FOCUS-006 — viewer BACK restores the correct cell, but the list sits ~210dp lower on return~~ RESOLVED (2026-10-25).**
+  Leave-off was correct; the viewport offset was never captured. Fixed with a content-keyed anchor recorded at
+  viewer open and restored via `scrollToPositionWithOffset` (plus a padding-relative `bindLayout` anchor offset).
+  On the Sony TV the pre-fix shift measured −393px; post-fix the focused cell returns to the identical position
+  (Δ0px across two cold-start runs; before/after screenshots byte-identical).
+- **FOCUS-008** — the mosaic focus hairline/glow never renders: `TimelineMosaicAdapter` sets
+  `focus_hairline_cell` as the cell's **background**, underneath the opaque `match_parent` image, so focus is
+  scale-only on the timeline. Memory cards use `foreground` and are unaffected.
 - **HOME-004** — Settings is a tab *label*, not a gear, and because nine labels exceed the 90% width
   cap it is off screen at rest until the bar is scrolled right.
 - **GRID-006 / MOTION-002** — grid background cross-fade is `BackgroundManager`'s internal 500ms,

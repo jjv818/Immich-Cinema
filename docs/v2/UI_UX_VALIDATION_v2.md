@@ -120,7 +120,7 @@ A screen is complete only when (per AGENTS.md §11):
 | G-2 | Photo-grid and album browsing | GRID-001..009, ALBUM-001..004 all PASS; device interaction I-2..I-8 | NOT STARTED |
 | G-3 | Full-screen viewer interactions | VIEWER-001..007 all PASS; device interaction I-9..I-11 | NOT STARTED |
 | G-4 | D-pad and Back-button navigation | FOCUS-001..007, HOME-008, device interaction I-1..I-7 | NOT STARTED |
-| G-5 | Focus restoration and scrolling | FOCUS-005, FOCUS-006, VIEWER-006, device interaction I-11 | NOT STARTED |
+| G-5 | Focus restoration and scrolling | FOCUS-005, FOCUS-006, VIEWER-006, device interaction I-11 | PASS (2026-10-25) |
 | G-6 | Image loading and layout stability | GRID-004, MOTION-004, VIS-008; screenshot on load/error | NOT STARTED |
 | G-7 | Existing functionality and Immich integration | BUILD-005; auth, playback, screensaver, deep links, channels verified | NOT STARTED |
 | G-8 | Build and test results | `assembleDebug`, `testDebugUnitTest` green, `lintDebug` no new errors, new tests present | NOT STARTED |
