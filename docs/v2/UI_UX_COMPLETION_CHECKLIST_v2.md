@@ -16,7 +16,7 @@ Every item has a unique ID, a concise requirement, an observable definition of d
 | VIS-001 | Colours resolve to the spec palette (`surface_base`, `surface_raised`, `text_primary`, `text_secondary`, `text_tertiary`, `focus_hairline`, `accent_brand`, `tab_scrim`) on all chrome surfaces. | Each named token resolves to its AGENTS.md §5.1 hex/opacity value; no ad-hoc per-screen hex values. | `DesignTokenTest` (Robolectric, `includeAndroidResources=true`) — every token resolves; build validation | P0 | tokens defined | PASS |
 | VIS-002 | Contrast: primary text ≥ 4.5:1, large/heading text ≥ 3:1, non-text focus indicator ≥ 3:1 against its surface. | Measured contrast ratio on each text/indicator pairing meets threshold on both bright and dark photos. | Screenshot inspection + contrast measurement on device screenshots | P0 | VIS-001 | PASS |
 | VIS-003 | Typography uses exactly four sizes: Display 44sp, Heading 30sp, Body 20sp, Meta 18sp; platform default font. | No other text sizes appear on principal screens; platform default font family used. | Screenshot inspection + grep of `sp` values in layouts/styles | P0 | VIS-001| PASS |
-| VIS-004 | Spacing uses only the 8/16/24/32/48 dp scale; safe gutters 48dp horizontal / 27dp top / 48dp bottom applied. | No ad-hoc dp values on principal screens; gutters present. | Screenshot inspection + dimen resource audit | P1 | VIS-001 | IN PROGRESS |
+| VIS-004 | Spacing uses only the 8/16/24/32/48 dp scale; safe gutters 48dp horizontal / 27dp top / 48dp bottom applied. | No ad-hoc dp values on principal screens; gutters present. | Screenshot inspection + dimen resource audit | P1 | VIS-001 | PASS (2026-10-25, documented exceptions) |
 | VIS-005 | Corner radii: card 8dp, rail/memory 12dp, mosaic cell 6dp. | Radii match spec on each card type; no invented per-component radii. | Screenshot inspection + dimen audit | P1 | VIS-001 | PASS |
 | VIS-006 | No gradients, glassmorphism, decorative icons, pills, badges, shadows, or rounded containers without a stated purpose; `tab_scrim` capsule is the sole documented exception. | Each surface justifiable; tab capsule comment documents the exception. | Screenshot inspection + code comment present | P0 | —| PASS |
 | VIS-007 | Visual treatments consistent across Home, Timeline, Grid, Albums, Viewer, Settings, Auth, Screensaver. | Same token set, radii, focus treatment, and text treatment reused; no mixed design languages. | Screenshot comparison across principal screens | P0 | VIS-001..VIS-005 | PASS |
@@ -103,7 +103,7 @@ Every item has a unique ID, a concise requirement, an observable definition of d
 | FOCUS-004 | Predictable movement between components; no focus traps. | D-pad reaches all interactive elements; no trapped focus. | D-pad interaction test on device | P0 | — | PASS |
 | FOCUS-005 | Focus restoration across navigation (leave-off) on Timeline and viewer. | Focus returns to previously focused cell/item. | D-pad interaction test on device | P0 | HOME-005 | PASS |
 | FOCUS-006 | Scroll positioning preserved; no focus loss on page transitions. | Scroll position and focus stable. | D-pad interaction test | P1 | FOCUS-005 | PASS |
-| FOCUS-007 | Accessibility: TalkBack announces cells and tabs meaningfully; focus visible against white and black photos. | Meaningful announcements; hairline visible on both photo types. | TalkBack test + screenshot | P1 | FOCUS-001 | IN PROGRESS |
+| FOCUS-007 | Accessibility: TalkBack announces cells and tabs meaningfully; focus visible against white and black photos. | Meaningful announcements; hairline visible on both photo types. | TalkBack test + screenshot | P1 | FOCUS-001 | PASS (2026-10-25) |
 | FOCUS-008 | Mosaic cell focus renders the shared white hairline + glow above the artwork, not only the scale. | Hairline visible on bright and dark photos; `focus_hairline_cell` drawn as the cell foreground. | Source audit + on-device screenshot + pixel probe | P1 | FOCUS-001 | PASS |
 
 ---
@@ -165,7 +165,8 @@ planning default. Basis for each marker:
   a few are known shortfalls listed below.
 - **`NOT STARTED`** — genuinely absent in v1.
 
-Tally: **58 PASS / 6 IN PROGRESS / 0 NOT STARTED**.
+Tally: **62 PASS / 3 IN PROGRESS / 0 NOT STARTED** (65 items; updated 2026-10-25 when VIS-004 and
+FOCUS-007 closed).
 
 ### Nothing is left un-started
 
@@ -188,6 +189,24 @@ each verified on the Sony TV:
   `ANIMATOR_DURATION_SCALE` and returns 0 when animations are off. Verified with the scale set to 0:
   focus moves, the tab bar snaps to its end state, and the focused card lands at full ring + scale
   with nothing stuck mid-state.
+- **VIS-004** — dimen + layout audit across the principal screens found 45 remaining literal dp values.
+  Two were real gutter misses and are fixed: the Timeline list started at 40dp (now `overscan_horizontal`,
+  48dp) and the grid pages inherited Leanback's 56dp `browsePaddingStart/End` (the theme now sets both to
+  48dp). The 100dp tab-bar clearance is one token (`tab_bar_clearance`) shared by `browsePaddingTop`, the
+  Timeline list and the settings hub, and the 64dp right inset is now `timeline_scrubber_clearance` with
+  the 112dp scrubber rail documented. On the Sony TV the first Timeline cell moved 80→96px (40→48dp) with
+  the right edge unchanged at 1792px; grid cards still render at a 56dp inset because the 4×206dp layout
+  centres inside the 48dp padding, so the visible gutter is above the 48dp floor either way.
+  Documented exceptions, unchanged by design: the mosaic row's 8+12dp vertical gap (clearance for the 1.06
+  focus scale) and the vendored `mediaslider` viewer chrome (4/8/10/30/32/36/40/70dp), where 4dp is a
+  legitimate control half-step and §5.8 limits that module to visual changes.
+- **FOCUS-007** — TalkBack pass on the Sony TV with the service temporarily enabled
+  (`Bound services:{Service[label=TalkBack, feedbackType[FEEDBACK_SPOKEN, FEEDBACK_HAPTIC,
+  FEEDBACK_AUDIBLE]…]}`): mosaic cells announce `Video, Today`, tab labels announce `Photos` / `Random`,
+  and the memories rail exposes its `1 YEAR AGO` / `Oct 25, 2025` child text. D-pad navigation was
+  unaffected while the service was on. Hairline visibility on bright (luma 147) and dark (luma 64–67)
+  photos is the FOCUS-008 probe. Settings restored exactly: `enabled_accessibility_services=[]`,
+  `accessibility_enabled=0`, `touch_exploration_enabled=0`, `Bound services:{}`.
 - **VIS-007 — the sign-in flow now uses the same design system (last P0, closed 2026-10-20).**
   Theme-driven, no Kotlin layout code: `GuidedStepTheme` overrides `guidedActionsSelectorDrawable`
   (the shared white hairline selector, replacing Leanback's stock blue selection), the guidance/action
@@ -242,9 +261,12 @@ each verified on the Sony TV:
 - **FOCUS-002 / FOCUS-003** — shipped focus scale is 1.06 (spec says 1.03–1.05) and the mosaic focus
   lock release is 250L (spec text said 160L). `AGENTS.md` has been corrected to the as-built values;
   this checklist still carries the original numbers.
-- **BUILD-005** — deep links, playback entry and the screensaver preview path are intact, but the
-  real daydream and TalkBack were not exercised. (The sign-in GuidedStep screen has since been
-  exercised on the AVD — see VIS-007.)
+- **~~BUILD-005~~ — closed 2026-10-25.** Deep links, playback entry and the screensaver preview path were
+  already intact; the real daydream and TalkBack are now exercised too. Daydream forced through
+  `com.android.systemui/.Somnambulator` (this Sony build has no `cmd dream` and `KEYCODE_SLEEP` only blanks
+  the panel): `DreamManagerService` logged "Entering dreamland" with `mCurrentDreamName=…ScreenSaverService`,
+  two captures 9s apart differ (the slideshow advances), `DPAD_CENTER` exits back to `MainActivity`, and the
+  frame is full-bleed photography with no chrome. The sign-in GuidedStep was exercised on the AVD (VIS-007).
 - **~~NEW P0 — grid card titles render at 40% opacity~~ RESOLVED (VIS-002 / A11Y-001 now PASS).**
   The defect was never in text rendering. `VerticalGridPresenter` was built with the single-argument
   constructor, so Leanback's focus dimmer stayed on and drew its dimming overlay over **every
