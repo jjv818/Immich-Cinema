@@ -8,6 +8,7 @@ import android.view.ViewOutlineProvider
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.leanback.widget.ArrayObjectAdapter
 import androidx.leanback.widget.HorizontalGridView
 import androidx.leanback.widget.ItemBridgeAdapter
@@ -245,7 +246,15 @@ class TimelineMosaicAdapter(
                         .setDuration(Motion.durationMs(v.context, motionUiMs.toInt()))
                         .start()
                     v.elevation = if (hasFocus) 8f * v.context.resources.displayMetrics.density else 0f
-                    if (hasFocus) v.setBackgroundResource(R.drawable.focus_hairline_cell) else v.setBackgroundResource(0)
+                    // Foreground, not background: the child ImageView is match_parent and opaque, so a
+                    // background drawable is painted underneath the photo and never visible. The
+                    // foreground draws above children (same as MemoryPresenter), which is required here
+                    // because the hairline must sit over the artwork, not under it.
+                    v.foreground = if (hasFocus) {
+                        AppCompatResources.getDrawable(v.context, R.drawable.focus_hairline_cell)
+                    } else {
+                        null
+                    }
                     if (!cell.asset.isImage) {
                         videoPlayPause.setImageResource(
                             if (hasFocus) R.drawable.ic_video_badge_pause else R.drawable.ic_video_badge_play
