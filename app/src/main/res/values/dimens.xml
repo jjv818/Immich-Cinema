@@ -105,6 +105,15 @@
     <dimen name="space_4">32dp</dimen>
     <dimen name="space_5">48dp</dimen>
 
+    <!-- Vertical clearance under the floating tab bar: 28dp top margin + 64dp bar height +
+         8dp breathing room. Shared by the Browse pages (`browsePaddingTop`), the Timeline list
+         and the settings hub, which is why it is a token rather than three copies of 100dp. -->
+    <dimen name="tab_bar_clearance">100dp</dimen>
+    <!-- Timeline end clearance for the 112dp scrubber rail that overlays the list's right edge
+         (timeline_fragment.xml). Functional, not a gutter: the list deliberately runs on under
+         the rail so cells stay justified. -->
+    <dimen name="timeline_scrubber_clearance">64dp</dimen>
+
     <!-- Radii -->
     <dimen name="radius_card">8dp</dimen>
     <dimen name="radius_rail">12dp</dimen>
@@ -147,9 +156,9 @@
     <!-- Settings surface (SET-001..SET-005): iOS-style rows over AGENTS.md §5.1 tokens. -->
     <!-- Row minimum height: single 8dp-grid multiple for a comfortable 10-foot D-pad target. -->
     <dimen name="settings_row_min_height">72dp</dimen>
-    <!-- Mirrors AppTheme's browsePaddingTop (100dp): clears the 64dp tab bar at its 28dp
-         top margin for plain-fragment pages that don't sit in Leanback's browse container. -->
-    <dimen name="settings_hub_top_clearance">100dp</dimen>
+    <!-- Same clearance as the Browse pages (see tab_bar_clearance): plain-fragment pages that
+         don't sit in Leanback's browse container have to apply it by hand. -->
+    <dimen name="settings_hub_top_clearance">@dimen/tab_bar_clearance</dimen>
     <!-- iOS-style toggle geometry: 56×32 track, 28dp thumb derived from thumbTextPadding. -->
     <dimen name="settings_switch_width">56dp</dimen>
     <dimen name="settings_switch_height">32dp</dimen>

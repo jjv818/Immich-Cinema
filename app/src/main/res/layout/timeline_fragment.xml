@@ -33,10 +33,10 @@
                 android:clipChildren="false"
                 android:clipToPadding="false"
                 android:elevation="4dp"
-                android:paddingStart="40dp"
-                android:paddingTop="100dp"
-                android:paddingEnd="64dp"
-                android:paddingBottom="48dp" />
+                android:paddingStart="@dimen/overscan_horizontal"
+                android:paddingTop="@dimen/tab_bar_clearance"
+                android:paddingEnd="@dimen/timeline_scrubber_clearance"
+                android:paddingBottom="@dimen/overscan_horizontal" />
 
             <nl.giejay.android.tv.immich.timeline.TimelineScrubberView
                 android:id="@+id/timeline_scrubber"

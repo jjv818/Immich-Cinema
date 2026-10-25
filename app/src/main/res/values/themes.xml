@@ -26,9 +26,13 @@
         <!-- The legacy left rail is removed (top tab bar replaces it). Zero out the browse rows
              margin so content is not still inset by the old ~238dp header width. -->
         <item name="browseRowsMarginStart">0dp</item>
+        <!-- Safe horizontal gutter (AGENTS.md §5.1: 48dp). Leanback defaults to 56dp, which put
+             every grid page 8dp inside the gutter. -->
+        <item name="browsePaddingStart">@dimen/overscan_horizontal</item>
+        <item name="browsePaddingEnd">@dimen/overscan_horizontal</item>
         <!-- Clear the floating top tab bar (28dp margin + 64dp height) so grid/settings content
              starts below it instead of being covered. -->
-        <item name="browsePaddingTop">100dp</item>
+        <item name="browsePaddingTop">@dimen/tab_bar_clearance</item>
         <item name="guidedStepTheme">@style/GuidedStepTheme</item>
         <item name="preferenceTheme">@style/SettingsPreferenceTheme</item>
     </style>
