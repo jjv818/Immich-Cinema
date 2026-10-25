@@ -132,7 +132,10 @@ class HomeTabBarView @JvmOverloads constructor(
                     ViewGroup.LayoutParams.WRAP_CONTENT,
                     ViewGroup.LayoutParams.MATCH_PARENT
                 )
-                setPadding((18 * d).toInt(), 0, (18 * d).toInt(), 0)
+                // 8dp (space_1) per side, not 18dp: nine labels at Body 20sp only fit a 90%-width
+                // capsule at this padding, and the alternative was leaving Settings off-screen at
+                // rest (HOME-004). 8dp keeps the spacing scale rather than inventing 9-10dp.
+                setPadding((8 * d).toInt(), 0, (8 * d).toInt(), 0)
                 includeFontPadding = false
                 setOnFocusChangeListener { v, hasFocus ->
                     paint(v as TextView, v.tag as Tab, hasFocus)

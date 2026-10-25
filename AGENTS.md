@@ -280,9 +280,11 @@ it uses `DefaultCardTheme` (206×116dp).
   gear; no Edit tab; no consolidation.
 - Tab bar **centred if it fits at 20sp**, else left-aligned scrollable (verify by rendering; report
   which one landed).
-  **As built:** 9 labels (8 sections + Settings) do not fit at 20sp, so the bar is a **centred
-  capsule capped at 90% width that scrolls internally** — neither documented outcome. Consequence:
-  Settings sits off-screen at rest and is reached by scrolling the bar right.
+  **As built (v2, 2026-10-25):** all 9 labels fit — the bar is a **centred capsule** inside the 90%
+  width cap, spanning 96–1728px at 1080p with no internal scrolling, so Settings is on screen at rest.
+  This needed the per-tab horizontal padding reduced from 18dp to 8dp (`space_1`); at 18dp nine labels
+  measured ~1945px against 1664px of usable capsule. Type stays `Body` 20sp, so the fix is padding,
+  not a type-scale exception.
 - **Auto-hide** (supersedes "persistent"): the bar slides away when page content scrolls and returns
   when focus moves up into it. DOWN from the bar hands focus into the page.
 - UP-chain: mosaic row 1 → memories rail → tab bar → stop (validate on device).
@@ -354,8 +356,8 @@ it uses `DefaultCardTheme` (206×116dp).
 ### 5.2 Tab bar
 
 - **Centred**, content-sized floating capsule near the top edge, capped at 90% of screen width.
-  With 9 labels it exceeds that cap and scrolls internally (see §4 Navigation — Settings is off
-  screen at rest). 8 content tabs + Settings.
+  All 9 labels (8 content tabs + Settings) fit inside that cap at 8dp per-side tab padding, so the
+  bar does not scroll and Settings is on screen at rest (see §4 Navigation).
 - Height 64dp, fully rounded ends, `tab_scrim` fill, 28dp top margin.
 - Selected tab: solid white pill, near-black `Body` label. Unselected: `text_primary` at ~90%, not
   50% — the reference does not fade unselected labels.

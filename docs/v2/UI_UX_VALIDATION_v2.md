@@ -172,9 +172,9 @@ Every capture is 1920×1080 at 320dpi from the Sony Bravia, pulled to
 No open P0. Every item below is a deliberate as-built deviation, a device/launcher constraint, or a
 verification-path limitation recorded so it is not mistaken for unfinished work.
 
-1. **Settings is off screen at rest.** Nine tab labels exceed the 90% width cap, so the bar scrolls
-   internally and Settings only appears after the bar is scrolled right (eight RIGHT presses from the
-   rest position). HOME-004 is PASS with this documented divergence from the "centred if it fits" plan.
+1. **~~Settings is off screen at rest~~ — resolved 2026-10-25.** Nine tab labels now fit inside the
+   90% width cap at 8dp per-side padding, so the bar does not scroll and Settings is reachable
+   directly. Type is unchanged at `Body` 20sp.
 2. **Focus scale and lock release differ from the spec numbers.** Shipped scale is 1.06 (spec wording
    said 1.03–1.05) and `MOSAIC_FOCUS_LOCK_RELEASE_MS` is 250L (spec text said 160L, which no longer
    cleared the longer scale animation). `AGENTS.md` §3.5/§5.6 were corrected to the as-built values.
@@ -188,8 +188,10 @@ verification-path limitation recorded so it is not mistaken for unfinished work.
    TvProvider accepts the channel row, but the Sony launcher shows no third-party preview channels
    (only Favorite Apps / TV / Play Next / Netflix), and the provider is owner-scoped so the row cannot
    be queried from adb shell. Launcher-side, not a redesign regression.
-5. **Two viewer slideshow buttons share the content description `Slideshow`** (forward and reverse),
-   so TalkBack cannot distinguish them. Fixing it needs new strings inside the vendored module.
+5. **~~Two viewer slideshow buttons share the content description `Slideshow`~~ — resolved
+   2026-10-25.** They now announce `Start slideshow` and `Start slideshow in reverse`
+   (`slideshow_forward` / `slideshow_reverse`, added in `values`, `values-ru` and `values-zh-rCN`
+   inside the vendored module), verified from the view hierarchy with the controller open.
 6. **The error state has no device screenshot.** Reproducing it requires cutting the network or
    pointing a dead HTTP proxy at the TV, and adb runs over the same network. Placeholder/error
    drawables are asserted by `ArtworkCardPresenterTest`; the loading state *is* captured on device.

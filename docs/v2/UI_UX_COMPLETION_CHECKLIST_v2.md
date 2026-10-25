@@ -280,10 +280,12 @@ each verified on the Sony TV:
   independently measured 11–12px scale lift. Hairline visible on bright (luma 147) and dark (luma 64–67)
   photos, following the 6dp corners with a faint outer glow; the video badge keeps ≥3dp clearance
   (`video_badge_margin` 8dp vs ≤5dp hairline intrusion).
-- **HOME-004** — Settings is a tab *label*, not a gear, and because nine labels exceed the 90% width
-  cap it is off screen at rest until the bar is scrolled right. Reachable and verified: eight RIGHT
-  presses from the rest position scroll the bar until Settings sits at `[1568,56][1792,184]`, and
-  CENTER opens the hub.
+- **~~HOME-004~~ — resolved 2026-10-25.** Settings is a tab *label*, not a gear (as decided), but the
+  "off screen at rest" shortfall is gone: per-tab horizontal padding dropped from 18dp to 8dp
+  (`space_1`), so all nine labels fit inside the 90% cap. Measured at rest: `Timeline` starts at 128px
+  and `Settings` occupies `[1518,56][1702,184]`, with no scrolling. Type stays `Body` 20sp — the fix
+  is padding, not a type-scale exception. Navigation re-verified after the change: UP → bar, RIGHT →
+  Photos, CENTER → page with focus in content, LEFT from the first card → bar.
 - **~~GRID-006 / MOTION-002 — grid background cross-fade is `BackgroundManager`'s internal 500ms,
   not the 250ms in the spec~~ RESOLVED.** The grid now owns its backdrop as a `grid_backdrop`
   ImageView cross-fading on `motion_background_ms` (250ms) instead of `BackgroundManager`'s fixed
@@ -293,11 +295,11 @@ each verified on the Sony TV:
   Immich request fail are cutting the network or a dead HTTP proxy, and this TV is reached over the
   same network, so adb would go with it. It is covered by `ArtworkCardPresenterTest` (placeholder and
   error drawables wired) rather than a screenshot.
-- **Viewer slideshow buttons share one content description** — `image_slideshow` and
-  `image_slideshow_reverse` both announce `Slideshow` to TalkBack, so forward and reverse are
-  indistinguishable with the screen reader. Fixing it means adding strings inside the vendored
-  `mediaslider` module (plus `values-ru`/`values-zh-rCN`), which §5.8 keeps to visuals; recorded here
-  rather than changed during close-out.
+- **~~Viewer slideshow buttons share one content description~~ — resolved 2026-10-25.**
+  `image_slideshow` and `image_slideshow_reverse` now announce `Start slideshow` and `Start slideshow
+  in reverse`. The strings were added inside the vendored `mediaslider` module itself (`values`,
+  `values-ru`, `values-zh-rCN`), so the app module's locales are untouched and §5.8's "visuals only"
+  boundary holds — this changes no layout geometry or behaviour.
 - **Home-screen channels do not surface on this launcher** — the sync runs and completes without an
   error (`Syncing home screen channels (app_foreground)`, with `enable_home_screen_channels=true` and
   a stored API key, and `createChannel` throws on a null insert URI, so the TvProvider accepted the
@@ -379,8 +381,9 @@ previous backdrop is kept for videos — same behaviour as before, now intention
   now 18sp, and every live text size in both resource trees is ≥18sp.
 - **VIS-007 / login revamp** — *unparked* (2026-10-20): the previously parked sign-in revamp was
   requested and completed as theme-driven styling (no Kotlin layout code), closing the last open P0.
-- **HOME-004** — *accepted scrolling* (2026-10-20): the tab capsule stays centred and 90%-capped;
-  Settings is reached by scrolling the bar right. No label/icon change.
+- **HOME-004** — *superseded 2026-10-25*: the "accepted scrolling" call (2026-10-20, tab capsule
+  stays centred, Settings reached by scrolling right) is no longer needed. Per-tab padding went
+  18dp → 8dp and all nine labels now fit at rest, with no label or type change.
 - **ALBUM-002** — album detail appends the asset count to the contextual title
   (`2026 Lake Como · 48 items`), verified on device. Count comes from `ApiClient.getAlbum()` because
   the paged search response does not carry `assetCount`.

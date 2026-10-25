@@ -15,6 +15,8 @@
     <string name="people">人物</string>
     <string name="image_controller_previous">上一张</string>
     <string name="slideshow">幻灯片播放</string>
+    <string name="slideshow_forward">开始幻灯片播放</string>
+    <string name="slideshow_reverse">反向播放幻灯片</string>
 
     <string name="media_mute">静音</string>
     <string name="media_play">播放</string>
