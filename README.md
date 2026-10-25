@@ -1,111 +1,120 @@
-# Immich Android TV
+# Immich Cinema
 
-Immich is a self hosted backup solution for photos and videos. Current features include:
+A premium Android TV client for a personal [Immich](https://immich.app) photo and video library.
+Built for a television: photography fills the screen, navigation is D-pad only, and nothing is
+sized like a phone.
 
-- Upload and view videos and photos
-- Auto backup when the app is opened
-- Selective album(s) for backup
-- Multi-user support
-- Album and Shared albums
+Immich Cinema is an **unofficial** fork of
+[`giejay/Immich-Android-TV`](https://github.com/giejay/Immich-Android-TV) (6.2.0 / 148), redesigned
+from the navigation shell out. It is not affiliated with, endorsed by, or sponsored by the Immich
+project; the name is used descriptively to say it works with an Immich server.
 
-More info here: https://github.com/immich-app/immich
-
-## Compatibility
-
-This app is compatible with Immich server **v3.0.0 and newer**. Immich 3.0.0 introduced several
-breaking API changes (album asset loading via `search/metadata`, search visibility defaults,
-error response format); this app has been adapted accordingly. No additional API key permissions
-are required for v3 compared to earlier versions — the existing `asset.read`/`album.read`
-permissions listed below already cover the endpoints this app uses.
-
-This Android TV app will allow you to view those uploaded photos and videos. Current features
-include:
-
-| Features                                                                       | Status       |
-|:-------------------------------------------------------------------------------|--------------|
-| Sign in by phone (https://github.com/giejay/Immich-Android-TV-Authentication)  | Done         |
-| Sign in by entering API key                                                    | Done         |
-| Demo environment                                                               | Done         |
-| Album fetching + Lazy loading                                                  | Done         |
-| Showing the photos inside an album                                             | Done         |
-| Showing people, random, recent or seasonal photos                              | Done         |
-| Slideshow of the photos and videos with a configured interval                  | Done         |
-| Setting the app as the screensaver                                             | Done         |
-| Setting the albums to show in the screensaver                                  | Done         |
-| Configure the interval of the screensaver                                      | Done         |
-| Add generic sorting of albums and photos                                       | Done         |
-| Add sorting for specific album (select last item in row and press right again) | Done         |
-| Showing the 4K thumbnail instead of the full image to speed up loading         | Done         |
-| Showing the EXIF data and improving the slideshow view                         | Done         |
-| Configure whether to play sound with videos                                    | Done         |
-| Smarter merging of portrait photos (same people, same date, same city)         | Todo         |
-| Add transitions to slideshow                                                   | Done         |
-| Add places/tags view                                                           | Todo         |
-| Add background media playing info to screensaver                               | Todo         |
-| Casting capabilities                                                           | Out of scope |
-| Searching in and for albums                                                    | Todo         |
-| Dependency injection with Hilt/Dagger                                          | Todo         |
-
-## Required API Permissions
-
-When setting up your API key in Immich, make sure to grant the following permissions for the app to function properly:
-
-- `activity.read` - Read activity data
-- `album.download` - Download album content
-- `album.read` - Read album information
-- `archive.read` - Read archived items
-- `asset.download` - Download assets for viewing
-- `asset.read` - Read asset metadata
-- `asset.view` - View assets (photos/videos)
-- `face.read` - Read face detection data
-- `folder.read` - Read folder information
-- `library.read` - Read library information
-- `memory.read` - Read memory/moment data
-- `partner.read` - Read partner sharing data
-- `person.read` - Read person/people data
-- `session.read` - Read session information
-- `tag.asset` - Read asset tag associations
-- `tag.read` - Read tag information
-- `timeline.read` - Read timeline data
+Current release: **6.2.0-cinema.1** — see [Releases](../../releases).
 
 ## Screenshots
 
-|                                                                                    |                                                                      |                                                                                    |
-|:----------------------------------------------------------------------------------:|:--------------------------------------------------------------------:|:----------------------------------------------------------------------------------:|
-|        ![Alt text](/screenshots/homescreen-1.png?raw=true "Album overview")        |      ![Alt text](/screenshots/photos.png?raw=true "All photos")      |      ![Alt text](/screenshots/sorting-options.png?raw=true "Sorting options")      |
-|         ![Alt text](/screenshots/home-edit.png?raw=true "Edit homescreen")         | ![Alt text](/screenshots/settings-view.png?raw=true "View settings") | ![Alt text](/screenshots/settings-screensaver.png?raw=true "Screensaver settings") |
-| ![Alt text](/screenshots/screensaver-portrait.png?raw=true "Screensaver portrait") |        ![Alt text](/screenshots/people.png?raw=true "People")        |             ![Alt text](/screenshots/seasonl.png?raw=true "Seasonal")              |
+| Timeline | Viewer |
+|---|---|
+| ![Timeline](screenshots/timeline.png) | ![Viewer](screenshots/viewer.png) |
 
-## Build steps
+| Video controls | Screensaver |
+|---|---|
+| ![Video controls](screenshots/viewer-video-controls.png) | ![Screensaver](screenshots/screensaver.png) |
 
-1. Clone project with `git clone --recurse git@github.com:giejay/Immich-Android-TV.git`
-2. copy app/strings_other.xml.example to app/src/main/res/values/strings_other.xml and modify
-   the address and API keys for your demo server.
-3. Build apk with `./gradlew assembleRelease`
+![Sign in](screenshots/sign-in.png)
 
-## Support the project
+## Features
 
-You can support the project in several ways. The first one is by creating nice descriptive bug
-reports if you find any: https://github.com/giejay/Immich-Android-TV/issues/new/choose.
-<br><br>Even better is creating a PR: https://github.com/giejay/Immich-Android-TV/pulls.
-<br><br>
-Lastly, if you feel this Android TV app is a useful addition to the already great Immich app, you
-might consider buying me a coffee or a beer:
+- **Timeline** — full-bleed justified mosaic of your whole library, with a memories rail, day
+  headers and a year scrubber. Photos are never cropped here.
+- **Albums, Photos, People, Recent, Seasonal, Folders** — 4:3 cards with titles over a scrim,
+  and the focused item's artwork filling the background.
+- **Viewer** — photos and video, metadata overlay (date, city, country, album), slideshow forwards
+  and in reverse, favourite toggle, external player.
+- **Screensaver** — the same presentation as the viewer, as a real Android TV daydream.
+- **Remote-first** — every action reachable from a D-pad; focus is a white hairline plus a scale
+  lift, never colour alone. TalkBack describes cells, tabs and transport buttons.
+- **Deep links** — `immichtv://home`, `immichtv://asset/<id>`, `immichtv://album/<id>?name=<name>`.
+- **Home-screen channels** — publishes recent photos as an Android TV channel where the launcher
+  supports it (Sony's launcher does not render third-party channels).
 
-[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/giejay)
+Sign-in is by API key, or demo mode. The QR "sign in by phone" flow, Firebase analytics and the
+upstream donation features are deliberately absent — they depend on infrastructure or Play Console
+products that belong to the original author.
 
-## FAQ
+## Requirements
 
-#### I'n not able to set the app as a screensaver
+- Android TV or Google TV, Android 7.0 (API 24) or newer. Developed and verified on a Sony BRAVIA
+  (Android 12, 1920×1080 at 320dpi).
+- An Immich server **v3.0.0 or newer**, reachable from the TV, and an API key for it. The key needs
+  `asset.read` and `album.read`.
 
-1. Enable development mode on the device (click the build number or "Android TV OS Build" 7 times in
-   the System->About settings).
-2. Go to System -> Developer Options and enable USB Debugging.
-3. If you don't have ADB installed on your PC, follow these
-   instructions: https://www.xda-developers.com/install-adb-windows-macos-linux/
-4. After downloading/installing ADB on the PC, connect to the device using it's IP: adb connect
-   192.168.xx.xx.
-5. If you have an Amazon Fire TV, first execute this command and reboot after: 'adb shell settings put secure amazon_ambient_enabled 0'
-6. Execute the following command: 'adb shell settings put secure
-   screensaver_components nl.giejay.android.tv.immich/.screensaver.ScreenSaverService'
-7. Done!
+## Install
+
+There is no Play Store listing; install the APK from [Releases](../../releases):
+
+```bash
+adb connect <tv-ip>:5555
+adb install -r ImmichCinema-6.2.0-cinema.1.apk
+```
+
+Launch it once, then enter your server address and API key.
+
+To use it as the screensaver as well:
+
+```bash
+adb shell settings put secure screensaver_components \
+  com.immichcinema.tv/nl.giejay.android.tv.immich.screensaver.ScreenSaverService
+```
+
+The setting only takes effect once the app has been launched at least once.
+
+Because the application id changed from the upstream app (`nl.giejay.android.tv.immich`), Immich
+Cinema installs alongside it rather than upgrading it.
+
+## Build from source
+
+Requires JDK 17 and the Android SDK with `compileSdk 37`.
+
+```bash
+# debug build
+./gradlew :app:assembleDebug
+
+# tests and lint (lint is baselined: it fails only on new issues)
+./gradlew :app:testDebugUnitTest :app:lintDebug
+
+# release build: supply your own signing key, nothing is committed
+export RELEASE_KEYSTORE_PATH=/path/to/release.keystore
+export RELEASE_KEYSTORE_PASSWORD=...
+export RELEASE_KEY_ALIAS=...
+export RELEASE_KEY_PASSWORD=...
+./gradlew :app:assembleRelease
+```
+
+The release variant is R8-minified and resource-shrunk; keep the generated
+`app/build/outputs/mapping/release/mapping.txt` for the build you ship, or its stack traces cannot
+be de-obfuscated.
+
+CI (`.github/workflows/android.yml`) builds and runs the test suite and lint on pushes to `main`
+and `redesign`. Releases are cut locally with a locally held key, not by CI.
+
+## Documentation
+
+- [`docs/v2/UI_UX_SPEC_v2.md`](docs/v2/UI_UX_SPEC_v2.md) — the design system and screen specification.
+- [`docs/v2/UI_UX_VALIDATION_v2.md`](docs/v2/UI_UX_VALIDATION_v2.md) — release gates, the interaction
+  matrix, the screenshot manifest, and the known limitations.
+- [`docs/v2/UI_UX_COMPLETION_CHECKLIST_v2.md`](docs/v2/UI_UX_COMPLETION_CHECKLIST_v2.md) — 65
+  checklist items with the evidence for each.
+- [`docs/releases/`](docs/releases) — per-release notes.
+- [`AGENTS.md`](AGENTS.md) — the project's scope, locked decisions and hard rules for contributors.
+- [`scripts/branding/generate-icons.ps1`](scripts/branding/generate-icons.ps1) — the icon, banner and
+  channel logo are generated from geometry, not stored bitmaps.
+
+## Licence
+
+GPL-3.0 — see [`LICENSE`](LICENSE). The vendored `mediaslider` module keeps its Apache-2.0 licence
+([`mediaslider/LICENSE.md`](mediaslider/LICENSE.md)), as do the inherited files that carry Apache
+headers. See [`NOTICE`](NOTICE) for what this fork changed and when.
+
+The app icon, TV banner, channel logo and sign-in mark are original artwork. No Immich logo or
+wordmark artwork is included.
