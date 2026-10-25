@@ -87,7 +87,7 @@ Every item has a unique ID, a concise requirement, an observable definition of d
 | VIEWER-002 | Controls restyled: scrims, type, radii, button sizing per spec. | Chrome matches design system; no view IDs renamed. | Screenshot inspection + source audit (IDs unchanged) | P0 | VIS-001, VIS-003| PASS |
 | VIEWER-003 | Metadata presented via scrim + text, not global dimming. | Legible metadata on bright and dark photos. | Screenshot inspection | P0 | VIS-002 | PASS |
 | VIEWER-004 | Previous/next navigation via D-pad; wraps or stops at boundaries predictably. | D-pad Left/Right moves between media. | D-pad interaction test on device | P0 | —| PASS |
-| VIEWER-005 | Entry/exit transitions: background cross-fade (~250ms). | Cross-fade on enter/exit. | Screenshot + timing (visual) | P1 | GRID-006 | IN PROGRESS |
+| VIEWER-005 | Entry/exit transitions: background cross-fade (~250ms). | Cross-fade on enter/exit. | Screenshot + timing (visual) | P1 | GRID-006 | PASS (2026-10-25) |
 | VIEWER-006 | Back returns to the same cell (leave-off) via `NavFocusContract` + `TimelineLeaveOff`. | Grid position and focus restored. | D-pad Back interaction test on device | P0 | HOME-005 | PASS |
 | VIEWER-007 | View IDs unchanged (`exo_player_control_view.xml` nextFocus wiring, `surface_view` type, `MediaSliderController` key handling untouched). | Source audit confirms no ID/key changes. | Build + source audit | P0 | — | PASS |
 
@@ -117,7 +117,7 @@ Every item has a unique ID, a concise requirement, an observable definition of d
 | MOTION-003 | Animations use `transform`/`opacity` (scale/alpha); no animating `width`/`height`/`top`/`left`. | Source audit confirms property choices. | Source audit | P1 | MOTION-002| PASS |
 | MOTION-004 | No layout shifts, flicker, or unnecessary redraws on focus/image load. | Stable layout during interaction. | Screenshot + device observation | P0 | GRID-004| PASS |
 | MOTION-005 | Reduced motion respected where practical (P1 best-effort). | Motion can be reduced without breaking layout. | Interaction test with reduced motion | P1 | MOTION-001| PASS |
-| MOTION-006 | Performance acceptable on target Android TV hardware (Sony TV at 1080p); no jank during `TimelineFocusVideoPreview` decodes. | Smooth D-pad navigation; acceptable frame times. | Device measurement (visual/jank) | P1 | GRID-004 | IN PROGRESS |
+| MOTION-006 | Performance acceptable on target Android TV hardware (Sony TV at 1080p); no jank during `TimelineFocusVideoPreview` decodes. | Smooth D-pad navigation; acceptable frame times. | Device measurement (visual/jank) | P1 | GRID-004 | PASS (2026-10-25) |
 
 ---
 
@@ -127,7 +127,7 @@ Every item has a unique ID, a concise requirement, an observable definition of d
 |---|---|---|---|---|---|---|
 | A11Y-001 | Readability and contrast: text ≥ 4.5:1 normal / 3:1 large; 18sp text floor. | Measured against spec on bright and dark photos. | Screenshot + contrast measurement | P0 | VIS-002 | PASS |
 | A11Y-002 | Clear selection states: focus hairline + brightness on tabs/rails; colour never the only cue. | Selection visible without colour. | Screenshot + interaction | P0 | FOCUS-001 | PASS |
-| A11Y-003 | Empty, loading, error states handled where applicable to existing implementation. | Placeholders/errors rendered; no blank screens. | Screenshot inspection | P1 | VIS-008 | IN PROGRESS |
+| A11Y-003 | Empty, loading, error states handled where applicable to existing implementation. | Placeholders/errors rendered; no blank screens. | Screenshot inspection | P1 | VIS-008 | PASS (2026-10-25, load state) |
 | A11Y-004 | Per-cell content descriptions for TalkBack; focus visible on white and black photos. | Descriptions present; hairline visible. | TalkBack test + screenshot | P1 | FOCUS-007 | PASS |
 
 ---
@@ -165,8 +165,8 @@ planning default. Basis for each marker:
   a few are known shortfalls listed below.
 - **`NOT STARTED`** — genuinely absent in v1.
 
-Tally: **62 PASS / 3 IN PROGRESS / 0 NOT STARTED** (65 items; updated 2026-10-25 when VIS-004 and
-FOCUS-007 closed).
+Tally: **65 PASS / 0 IN PROGRESS / 0 NOT STARTED** (65 items; updated 2026-10-25 when VIEWER-005,
+MOTION-006 and A11Y-003 closed, which were the last three measurement gaps).
 
 ### Nothing is left un-started
 
@@ -200,6 +200,32 @@ each verified on the Sony TV:
   Documented exceptions, unchanged by design: the mosaic row's 8+12dp vertical gap (clearance for the 1.06
   focus scale) and the vendored `mediaslider` viewer chrome (4/8/10/30/32/36/40/70dp), where 4dp is a
   legitimate control half-step and §5.8 limits that module to visual changes.
+- **VIEWER-005** — the viewer entry/exit is a real cross-fade, not a cut. Sampling over adb cannot
+  resolve a 250ms fade (each `screencap` round-trip is ~400ms), so the transition was re-measured with
+  `window_animation_scale`/`transition_animation_scale` temporarily at 10× and restored to 1.0
+  afterwards: the frame changes progress across five captures (`f1→f2` 99.9%, `f2→f3` 73.9%, `f3→f4`
+  79.7%, `f4→f5` 83.5%, still 19% to settle), and a mid-transition frame shows the incoming photo
+  composited over the outgoing content. At the default scale the same sequence settles within one
+  capture interval, consistent with the `motion_background_ms = 250` token.
+- **MOTION-006** — measured with `dumpsys gfxinfo` around a 26-key D-pad sweep over the mosaic (which
+  is where `TimelineFocusVideoPreview` decodes): 132 frames rendered, 7 janky (5.30%), p50 8ms,
+  p90 11ms, p95 19ms, 0 slow bitmap uploads, 0 slow draw commands. The single 200ms p99 outlier is one
+  scroll/navigation hitch, not a decode stall.
+- **A11Y-003** — the loading state was captured on a cold start into the Random page: the tab bar stays
+  put and the content area shows Leanback's progress indicator with no blank or white flash, then the
+  grid resolves at the same position with no layout jump. Placeholder/error drawables are wired and
+  asserted by `ArtworkCardPresenterTest`. The *error* state cannot be forced on this device without
+  cutting the network (which would also cut adb), so it is covered by that test rather than a
+  screenshot — see the known limitations.
+- **NEW P0, found and fixed 2026-10-25 — LEFT dropped focus instead of reaching the tab bar.**
+  With the header rail hidden, the first card of a grid row and the first mosaic cell have no left
+  neighbour, so focus search failed and Android cleared focus; the remote looked dead until a RIGHT or
+  DOWN re-entered the content (I-4 in the interaction matrix). Both surfaces already handed focus to
+  the bar for UP through `BrowseFrameLayout.onFocusSearchListener`; LEFT now takes the same path
+  (`GridFragment` for column 0 of any row, `TimelineFragment` when `leftAssetId` is null — a navigation
+  rule, not a change to the leave-off state machine). Verified: first card → LEFT → bar with the
+  selected pill focused, LEFT again walks the bar, DOWN returns to the grid; Timeline first cell →
+  LEFT → bar, DOWN returns to the same cell (bounds 96,617–747,995).
 - **FOCUS-007** — TalkBack pass on the Sony TV with the service temporarily enabled
   (`Bound services:{Service[label=TalkBack, feedbackType[FEEDBACK_SPOKEN, FEEDBACK_HAPTIC,
   FEEDBACK_AUDIBLE]…]}`): mosaic cells announce `Video, Today`, tab labels announce `Photos` / `Random`,
@@ -235,7 +261,7 @@ each verified on the Sony TV:
   (`guidedActionDescriptionMinLines`), so the longer SSL/debug hints ellipsize at 18sp; raising the cap
   costs ~43dp on step 2 and would breach the 48dp bottom gutter, so the cap is deliberately unchanged.
 
-### Known shortfalls hiding inside `IN PROGRESS`
+### Documented deviations and remaining shortfalls
 
 - **~~FOCUS-006 — viewer BACK restores the correct cell, but the list sits ~210dp lower on return~~ RESOLVED (2026-10-25).**
   Leave-off was correct; the viewport offset was never captured. Fixed with a content-keyed anchor recorded at
@@ -255,9 +281,31 @@ each verified on the Sony TV:
   photos, following the 6dp corners with a faint outer glow; the video badge keeps ≥3dp clearance
   (`video_badge_margin` 8dp vs ≤5dp hairline intrusion).
 - **HOME-004** — Settings is a tab *label*, not a gear, and because nine labels exceed the 90% width
-  cap it is off screen at rest until the bar is scrolled right.
-- **GRID-006 / MOTION-002** — grid background cross-fade is `BackgroundManager`'s internal 500ms,
-  not the 250ms in the spec.
+  cap it is off screen at rest until the bar is scrolled right. Reachable and verified: eight RIGHT
+  presses from the rest position scroll the bar until Settings sits at `[1568,56][1792,184]`, and
+  CENTER opens the hub.
+- **~~GRID-006 / MOTION-002 — grid background cross-fade is `BackgroundManager`'s internal 500ms,
+  not the 250ms in the spec~~ RESOLVED.** The grid now owns its backdrop as a `grid_backdrop`
+  ImageView cross-fading on `motion_background_ms` (250ms) instead of `BackgroundManager`'s fixed
+  500ms — see the GRID-006 note below.
+- **~~A11Y-003 error state~~** — the *loading* state is captured on device (progress indicator, no
+  blank flash, no layout jump). The *error* state is not forced on the TV: the only ways to make the
+  Immich request fail are cutting the network or a dead HTTP proxy, and this TV is reached over the
+  same network, so adb would go with it. It is covered by `ArtworkCardPresenterTest` (placeholder and
+  error drawables wired) rather than a screenshot.
+- **Viewer slideshow buttons share one content description** — `image_slideshow` and
+  `image_slideshow_reverse` both announce `Slideshow` to TalkBack, so forward and reverse are
+  indistinguishable with the screen reader. Fixing it means adding strings inside the vendored
+  `mediaslider` module (plus `values-ru`/`values-zh-rCN`), which §5.8 keeps to visuals; recorded here
+  rather than changed during close-out.
+- **Home-screen channels do not surface on this launcher** — the sync runs and completes without an
+  error (`Syncing home screen channels (app_foreground)`, with `enable_home_screen_channels=true` and
+  a stored API key, and `createChannel` throws on a null insert URI, so the TvProvider accepted the
+  row), but the Sony launcher renders no third-party preview channels at all — only Favorite Apps /
+  TV / Play Next / Netflix. `content query content://android.media.tv/channel` is owner-scoped on this
+  build (`SecurityException: Selection not allowed …`, and an unfiltered query returns nothing for
+  uid shell), so the row cannot be confirmed from adb. This is a launcher-side limitation, not a
+  regression introduced by the redesign.
 - **FOCUS-002 / FOCUS-003** — shipped focus scale is 1.06 (spec says 1.03–1.05) and the mosaic focus
   lock release is 250L (spec text said 160L). `AGENTS.md` has been corrected to the as-built values;
   this checklist still carries the original numbers.
@@ -309,12 +357,13 @@ by the owner and verified on the AVD, because the signed-in TV cannot reach auth
 stored API key). The two measurement items (VIS-002 / A11Y-001) that the focus-dimmer defect had been
 blocking also pass.
 
-The remaining `IN PROGRESS` items are P1/P2 measurement gaps and the known shortfalls listed above —
-none of them gates the P0 set.
+Nothing is left `IN PROGRESS`: the last three measurement gaps (VIEWER-005, MOTION-006, A11Y-003)
+closed on 2026-10-25, and the deviations that remain are the documented ones listed above — none
+gates the P0 set.
 
-**Unverified by design:** the real screensaver daydream, TalkBack, and the two 18sp viewer transport
-labels (photo/video position and duration) — those labels are hidden by the controller in the paths
-that were exercised, so their change is verified in source and layout geometry only, not on screen.
+**Unverified on screen:** the two 18sp viewer transport labels (photo/video position and duration) —
+they are hidden by the controller in the paths that were exercised, so their change is verified in
+source and layout geometry only. (The real daydream and TalkBack were verified on 2026-10-25.)
 
 **GRID-006 / ALBUM-004 are now PASS.** The grid owns its backdrop as a `grid_backdrop` ImageView
 with a 250ms (`motion_background_ms`) cross-fade instead of `BackgroundManager`'s fixed 500ms, and
