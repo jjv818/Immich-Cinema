@@ -196,6 +196,40 @@ verification-path limitation recorded so it is not mistaken for unfinished work.
 7. **Two 18sp viewer transport labels are not visible in the exercised paths** (position/duration),
    so their typography is verified in source and layout geometry rather than on screen.
 
+### 4.4 Release-build (R8) smoke — 2026-10-25
+
+The debug APK is not what ships: `buildTypes.release` sets `minifyEnabled true` and
+`shrinkResources true`, so the release variant was built and exercised on the TV. It was signed with
+the **debug keystore on purpose** — that is a test rig, not a distributable artifact, because it lets
+`adb install -r` replace the debug build in place and keep the stored login. No keystore was added to
+the repo.
+
+- `assembleRelease` succeeds; `lintVitalRelease` reports no new issues. Artifact is 27.8 MB against
+  41.4 MB for the debug build (−33%).
+- Verified on the Sony Bravia, with `logcat` scanned for `ClassNotFoundException`,
+  `NoSuchMethodException`, `NoSuchFieldException`, `JsonSyntaxException`, `IllegalAccessException`
+  and `FATAL EXCEPTION` after every step — none appeared:
+  - cold start → Timeline with memory-rail and mosaic artwork (Glide image loading);
+  - Albums grid with titles and backdrop;
+  - Settings hub and the `View Settings` sub-screens (General / Ordering / Slideshow / Content) —
+    the declarative `Pref` schema builds via `sealedSubclasses` reflection and class names as keys;
+  - viewer on eight assets, with the metadata overlay rendering `Sunday, 25th October 2026` +
+    `Ma Wan` / `Hong Kong` and `Saturday, 24th October 2026` + `Gaoxin` / `China`
+    (`MetaDataItem` Gson round-trip);
+  - `immichtv://home` cold and warm (nav-graph `argType` resolved by fully-qualified name);
+  - video playback: `ExoPlayerImpl` reports `AndroidXMedia3/1.10.1 … [BRAVIA_VH1, Sony, 31]` with
+    codec buffers flowing and a clean `Release`, no `PlaybackException`.
+- Static confirmation from `build/outputs/mapping/release/mapping.txt`: `Asset`, `MetaDataItem`,
+  `MetaDataClock`, `MetaDataMediaCount` and `MetaDataSliderItem` all keep their original names, and
+  `MetaDataScreen` is in `seeds.txt` — the keep rules in `proguard-rules.pro` are doing their job.
+
+One false alarm worth recording: an early viewer capture showed the date overlay but no city/country.
+That asset simply has no city/country EXIF; the same build renders both lines on assets that do.
+
+**Not covered:** a properly-signed (non-debug) release APK has not been installed. Installing it over
+the debug build fails with `INSTALL_FAILED_UPDATE_INCOMPATIBLE`, so that first install needs a
+confirmed one-time uninstall of the debug build (which discards the stored API key).
+
 ---
 
 ## 5. Verification ownership
