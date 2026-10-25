@@ -18,7 +18,8 @@ Still **unverified**: screensaver daydream, TalkBack, the sign-in GuidedStep scr
 flow visually. Treat those as open, not done.
 
 Upstream: `giejay/Immich-Android-TV` (GPL-3.0). Baseline: commit `037cb7c` (`6.2.0 (148)`).
-Working branches: `main` tracks `origin/main` (upstream, for cherry-picks); all work happens on
+Working branches: `main` tracks `upstream/main` (the remote was renamed from `origin` so a bare
+`git push` cannot reach the upstream repository); all work happens on
 `redesign`, branched from `037cb7c`.
 
 All paths below are **relative to the repo root** unless stated otherwise.
