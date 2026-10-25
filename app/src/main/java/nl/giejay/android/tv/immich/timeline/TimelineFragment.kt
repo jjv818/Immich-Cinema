@@ -672,8 +672,12 @@ class TimelineFragment : BrandedSupportFragment(), BrowseSupportFragment.MainFra
             anchorAssetId != null -> adapter.positionOfAsset(anchorAssetId)
             else -> lm?.findFirstVisibleItemPosition() ?: RecyclerView.NO_POSITION
         }
+        val rvPaddingTop = rv?.paddingTop ?: 0
         val anchorOffset = if (anchorPos != RecyclerView.NO_POSITION) {
-            lm?.findViewByPosition(anchorPos)?.top ?: 0
+            // The offset passed to scrollToPositionWithOffset is measured from the padded
+            // content start, while `top` includes paddingTop. Strip it or every re-anchor
+            // drifts the viewport by one paddingTop (FOCUS-006).
+            (lm?.findViewByPosition(anchorPos)?.top ?: rvPaddingTop) - rvPaddingTop
         } else {
             0
         }
@@ -848,21 +852,52 @@ class TimelineFragment : BrandedSupportFragment(), BrowseSupportFragment.MainFra
                 val first = lm?.findFirstVisibleItemPosition() ?: RecyclerView.NO_POSITION
                 val last = lm?.findLastVisibleItemPosition() ?: RecyclerView.NO_POSITION
                 val visible = first != RecyclerView.NO_POSITION && position in first..last
-                // Land on the leave-off asset (last viewed in the slider, or the one just
-                // opened). Do not reinstate open-time LayoutManager state — that fights
-                // scrubber jumps and adapter changes while the slider was open.
-                when (
-                    TimelineLeaveOff.mosaicFocusMode(
-                        cellBound = cell != null,
-                        rowVisible = visible,
-                        allowScrollAdjust = target.allowScrollAdjust
-                    )
-                ) {
-                    TimelineLeaveOff.MosaicFocusMode.RequestFocusOnly -> cell!!.requestFocus()
-                    TimelineLeaveOff.MosaicFocusMode.AdjustScrollIntoView ->
-                        navigator.focusAsset(assetId, adjustScroll = true, lockScroll = true)
-                    TimelineLeaveOff.MosaicFocusMode.BindWithoutAdjust ->
-                        navigator.focusAsset(assetId, adjustScroll = false, lockScroll = true)
+                val anchorAssetId = viewModel.viewerAnchorAssetId
+                val anchorPos = if (anchorAssetId != null) {
+                    adapter.positionOfAsset(anchorAssetId)
+                } else {
+                    RecyclerView.NO_POSITION
+                }
+                val anchorRowTopPx = viewModel.viewerAnchorRowTopPx
+                val restoreViewport = TimelineLeaveOff.shouldRestoreViewport(
+                    allowScrollAdjust = target.allowScrollAdjust,
+                    anchorPos = anchorPos,
+                    restorePos = position
+                )
+                if (restoreViewport && anchorRowTopPx != null && lm != null) {
+                    // Slider round-trip to the very row that opened the viewer: reinstate the
+                    // exact pre-viewer pixel offset instead of letting focusAsset drop the row
+                    // at the padded content start (FOCUS-006). The offset passed here is
+                    // content-relative — paddingTop is added back by the LayoutManager.
+                    lm.scrollToPositionWithOffset(anchorPos, anchorRowTopPx - rv.paddingTop)
+                    // The scroll lands on the next layout pass; focus the rebound cell after it.
+                    rv.post {
+                        if (!isAdded) return@post
+                        val restoredCell = adapter.findCellView(rv, assetId)
+                        if (restoredCell != null) {
+                            restoredCell.requestFocus()
+                        } else {
+                            // Still unbound — fall back to the existing bind path.
+                            navigator.focusAsset(assetId, adjustScroll = false, lockScroll = true)
+                        }
+                    }
+                } else {
+                    // Land on the leave-off asset (last viewed in the slider, or the one just
+                    // opened). Do not reinstate open-time LayoutManager state — that fights
+                    // scrubber jumps and adapter changes while the slider was open.
+                    when (
+                        TimelineLeaveOff.mosaicFocusMode(
+                            cellBound = cell != null,
+                            rowVisible = visible,
+                            allowScrollAdjust = target.allowScrollAdjust
+                        )
+                    ) {
+                        TimelineLeaveOff.MosaicFocusMode.RequestFocusOnly -> cell!!.requestFocus()
+                        TimelineLeaveOff.MosaicFocusMode.AdjustScrollIntoView ->
+                            navigator.focusAsset(assetId, adjustScroll = true, lockScroll = true)
+                        TimelineLeaveOff.MosaicFocusMode.BindWithoutAdjust ->
+                            navigator.focusAsset(assetId, adjustScroll = false, lockScroll = true)
+                    }
                 }
                 viewModel.pendingResumeAssetId = null
                 viewModel.rememberSelectionByAssetId(assetId)
@@ -871,6 +906,14 @@ class TimelineFragment : BrandedSupportFragment(), BrowseSupportFragment.MainFra
                 rv.postDelayed({
                     if (!isAdded) return@postDelayed
                     viewModel.leaveOffAllowScrollAdjust = true
+                    // Drop the anchor only after focus settled, so a re-run cannot lose it —
+                    // and only while it is still the one this restore consumed (a viewer
+                    // re-opened inside the lock window may have replaced it).
+                    if (viewModel.viewerAnchorAssetId == anchorAssetId &&
+                        viewModel.viewerAnchorRowTopPx == anchorRowTopPx
+                    ) {
+                        viewModel.clearViewerAnchor()
+                    }
                     finishResumeFocusLock()
                 }, TimelineLeaveOff.MOSAIC_FOCUS_LOCK_RELEASE_MS)
                 return
@@ -1012,12 +1055,31 @@ class TimelineFragment : BrandedSupportFragment(), BrowseSupportFragment.MainFra
         return true
     }
 
+    /**
+     * Record the focused row's pixel position (RecyclerView coordinates, `paddingTop`
+     * included) before leaving for the viewer, so the round-trip can reinstate the exact
+     * viewport. Without it, restore scrolls the row to the padded content start and the
+     * list visibly moves (FOCUS-006).
+     */
+    private fun captureViewerAnchor(assetId: String) {
+        val adapter = mosaicAdapter
+        val lm = recyclerView?.layoutManager as? LinearLayoutManager
+        val rowPos = adapter?.positionOfAsset(assetId) ?: RecyclerView.NO_POSITION
+        val rowTopPx = if (rowPos != RecyclerView.NO_POSITION) {
+            lm?.findViewByPosition(rowPos)?.top
+        } else {
+            null
+        }
+        viewModel.captureViewerAnchor(assetId, rowTopPx)
+    }
+
     private fun onItemClicked(assetId: String) {
         // Scrubber Enter jump must not re-anchor after we leave for the slider.
         stickyJumpBucketKey = null
         pendingJumpMonth = null
         pendingJumpFocus = false
         selectionRestored = false
+        captureViewerAnchor(assetId)
         viewModel.applyLeaveOffSnapshot(TimelineLeaveOff.afterOpeningMosaic(assetId))
         viewModel.rememberSelectionByAssetId(assetId)
 

@@ -142,4 +142,19 @@ object TimelineLeaveOff {
      */
     fun shouldForceLeaveOffRestore(pendingResumeAssetId: String?): Boolean =
         !pendingResumeAssetId.isNullOrBlank()
+
+    /**
+     * Whether a mosaic slider round-trip must reinstate the exact viewport offset captured
+     * when the viewer opened (FOCUS-006).
+     *
+     * Only when the user did not advance out of the opened row ([anchorPos] and [restorePos]
+     * resolve to the same adapter row) and the viewport must not jump
+     * ([allowScrollAdjust] == false). Keyed by asset position rather than raw indices, so a
+     * month inserted above the viewport while the slider was open cannot shift the decision.
+     */
+    fun shouldRestoreViewport(
+        allowScrollAdjust: Boolean,
+        anchorPos: Int,
+        restorePos: Int
+    ): Boolean = !allowScrollAdjust && anchorPos >= 0 && restorePos >= 0 && anchorPos == restorePos
 }

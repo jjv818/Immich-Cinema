@@ -404,6 +404,31 @@ class TimelineViewModelTest {
     }
 
     @Test
+    fun `viewer anchor capture and clear round trip`() {
+        val vm = TimelineViewModel(
+            fetchBuckets = { Either.Right(emptyList()) },
+            fetchBucket = { Either.Right(emptyList()) },
+            prefetchDebounceMs = 0
+        )
+        assertNull(vm.viewerAnchorAssetId)
+        assertNull(vm.viewerAnchorRowTopPx)
+
+        vm.captureViewerAnchor("asset-anchored", 593)
+        assertEquals("asset-anchored", vm.viewerAnchorAssetId)
+        assertEquals(593, vm.viewerAnchorRowTopPx)
+
+        // A capture without a laid-out row must not leave a stale anchor behind.
+        vm.captureViewerAnchor("asset-unlaid", null)
+        assertNull(vm.viewerAnchorAssetId)
+        assertNull(vm.viewerAnchorRowTopPx)
+
+        vm.captureViewerAnchor("asset-anchored", 593)
+        vm.clearViewerAnchor()
+        assertNull(vm.viewerAnchorAssetId)
+        assertNull(vm.viewerAnchorRowTopPx)
+    }
+
+    @Test
     fun `menu capture after Left keeps sticky memory on ViewModel`() {
         val vm = TimelineViewModel(
             fetchBuckets = { Either.Right(emptyList()) },

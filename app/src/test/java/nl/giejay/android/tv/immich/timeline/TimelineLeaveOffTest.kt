@@ -200,4 +200,62 @@ class TimelineLeaveOffTest {
         assertFalse(TimelineLeaveOff.shouldForceLeaveOffRestore(null))
         assertFalse(TimelineLeaveOff.shouldForceLeaveOffRestore(""))
     }
+
+    @Test
+    fun `viewport restore only for slider round-trip on the opened row`() {
+        assertTrue(
+            TimelineLeaveOff.shouldRestoreViewport(
+                allowScrollAdjust = false,
+                anchorPos = 12,
+                restorePos = 12
+            )
+        )
+    }
+
+    @Test
+    fun `viewport restore false when menu may adjust scroll`() {
+        assertFalse(
+            TimelineLeaveOff.shouldRestoreViewport(
+                allowScrollAdjust = true,
+                anchorPos = 12,
+                restorePos = 12
+            )
+        )
+    }
+
+    @Test
+    fun `viewport restore false when open row is unknown`() {
+        assertFalse(
+            TimelineLeaveOff.shouldRestoreViewport(
+                allowScrollAdjust = false,
+                anchorPos = -1,
+                restorePos = 12
+            )
+        )
+        assertFalse(
+            TimelineLeaveOff.shouldRestoreViewport(
+                allowScrollAdjust = false,
+                anchorPos = 12,
+                restorePos = -1
+            )
+        )
+        assertFalse(
+            TimelineLeaveOff.shouldRestoreViewport(
+                allowScrollAdjust = false,
+                anchorPos = -1,
+                restorePos = -1
+            )
+        )
+    }
+
+    @Test
+    fun `viewport restore false when slider advanced to another row`() {
+        assertFalse(
+            TimelineLeaveOff.shouldRestoreViewport(
+                allowScrollAdjust = false,
+                anchorPos = 12,
+                restorePos = 34
+            )
+        )
+    }
 }

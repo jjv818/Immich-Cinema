@@ -94,6 +94,36 @@ class TimelineViewModel(
      */
     var leaveOffAllowScrollAdjust: Boolean = true
 
+    /**
+     * Asset whose row was focused when the full-screen viewer opened — keys the viewport
+     * anchor captured by [captureViewerAnchor] so a slider round-trip can land on the same
+     * pixel offset instead of the padded content start (FOCUS-006).
+     */
+    var viewerAnchorAssetId: String? = null
+
+    /** Row `top` in RecyclerView coordinates (padding included) at viewer open; null = none. */
+    var viewerAnchorRowTopPx: Int? = null
+
+    /**
+     * Record the viewport at viewer open. [rowTopPx] is the row view's `top` in RecyclerView
+     * coordinates, i.e. including `paddingTop`; restore strips it before scrolling.
+     * A null [rowTopPx] (row never laid out) clears the anchor and falls back to the old
+     * `scrollToPosition` restore path.
+     */
+    fun captureViewerAnchor(assetId: String, rowTopPx: Int?) {
+        if (rowTopPx == null) {
+            clearViewerAnchor()
+            return
+        }
+        viewerAnchorAssetId = assetId
+        viewerAnchorRowTopPx = rowTopPx
+    }
+
+    fun clearViewerAnchor() {
+        viewerAnchorAssetId = null
+        viewerAnchorRowTopPx = null
+    }
+
     fun applyLeaveOffSnapshot(snapshot: TimelineLeaveOff.Snapshot) {
         lastSelectedMemoryId = snapshot.memoryId
         pendingResumeAssetId = snapshot.pendingAssetId
