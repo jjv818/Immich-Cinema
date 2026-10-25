@@ -10,12 +10,18 @@
 # is the hairline, not photo content.
 param(
     [string]$Adb = "$env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe",
-    [string]$Serial = "<tv-serial>",
+    [string]$Serial = $env:ADB_SERIAL,
     [string]$Package = "com.immichcinema.tv",
     [string]$Activity = "com.immichcinema.tv/nl.giejay.android.tv.immich.MainActivity",
     [string]$OutDir = "$env:TEMP\immich-cinema-device\focus008_ab",
     [int]$Samples = 8
 )
+
+# The device serial is deliberately not committed. Find it with `adb devices`, then either export
+# ADB_SERIAL for the session ($env:ADB_SERIAL = "<serial>") or pass -Serial explicitly.
+if (-not $Serial) {
+    throw "No device serial. Export ADB_SERIAL (see 'adb devices') or pass -Serial <serial>."
+}
 
 $ErrorActionPreference = "Continue"
 New-Item -ItemType Directory -Force -Path $OutDir | Out-Null

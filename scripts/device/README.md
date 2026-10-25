@@ -12,7 +12,10 @@ They exist because compilation and unit tests cannot show whether the rendered s
 ## Prerequisites
 
 - `adb` from the Android SDK platform-tools, on `PATH` or passed with `-Adb`.
-- The TV connected and authorised: `adb connect <tv-ip>:5555`. Default serial is `<tv-serial>`.
+- The TV connected and authorised: `adb connect <tv-ip>:5555`.
+- The serial exported for the session — the scripts commit no address:
+  `$env:ADB_SERIAL = "<serial>"` (find it with `adb devices`, e.g. `192.168.1.50:5555`).
+  You can also pass `-Serial <serial>` per run; with neither, the script stops with an error.
 - The debug APK installed (`./gradlew :app:assembleDebug`, then `adb install -r`).
 - The scripts set `wm size 1920x1080` / `wm density 320` (the 960x540dp television canvas) and
   cold-start the app themselves, so the app is force-stopped by each run.
